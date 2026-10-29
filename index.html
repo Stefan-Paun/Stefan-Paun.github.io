@@ -21,6 +21,8 @@
 <meta name="twitter:description" content="17, Wien. Ich baue KI-Agents und lerne Cybersecurity.">
 <meta name="twitter:image" content="https://stefan-paun.github.io/img/agent-board.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect width='28' height='28' fill='%230B0F14'/%3E%3Ccircle cx='14' cy='14' r='12' fill='none' stroke='%233A5A7A'/%3E%3Ccircle cx='14' cy='14' r='7' fill='none' stroke='%23223244'/%3E%3Cpath d='M14 14L25 4' stroke='%2335D0FF' stroke-width='1.6'/%3E%3Cpath d='M14 14C17 17 21 18 25 17' stroke='%23FFD23A' stroke-width='1.6' fill='none'/%3E%3Ccircle cx='14' cy='14' r='2' fill='%23E8ECF1'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 /* Layout: collider event display. One vertex (Stefan), projects as tracks through detector rings; readouts pinned by 1px leaders. */
 @font-face{font-family:"Archivo";src:url("fonts/archivo-latin.woff2") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
@@ -121,7 +123,8 @@ h1 span + span{color:var(--ring-hi)}
 /* detector */
 .detector{position:relative;min-width:0}
 .stage{position:relative;width:100%;aspect-ratio:1.18/1}
-.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation;cursor:grab}
+.stage canvas.orbiting{cursor:grabbing}
 .tags{position:absolute;inset:0;pointer-events:none}
 .tag{all:unset;pointer-events:auto;cursor:pointer;position:absolute;right:0;transform:translateY(-50%);width:clamp(150px,24%,220px);padding:6px 0 6px 10px;display:grid;gap:3px;transition:opacity .35s}
 .tag b{font-stretch:125%;font-weight:700;font-size:.74rem;letter-spacing:.16em;color:var(--c)}
@@ -130,6 +133,7 @@ h1 span + span{color:var(--ring-hi)}
 .tag:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 .tag.faded{opacity:.28}
 .note{margin:10px 0 0;color:var(--dim);font-size:.75rem;text-align:right}
+@media (hover:none){.orbit-hint{display:none}}
 
 /* sections */
 section.part{border-top:1px solid var(--rule)}
@@ -293,7 +297,7 @@ footer .wrap span:last-child{margin-left:auto}
         <canvas id="cv" aria-hidden="true"></canvas>
         <div class="tags" id="tags"></div>
       </div>
-      <p class="note">Spurenbild schematisch. Die Zahlen sind echt, Turmhöhe auf Log-Skala.</p>
+      <p class="note">Spurenbild schematisch. Die Zahlen sind echt, Turmhöhe auf Log-Skala. <span class="orbit-hint">Ziehen dreht das Ereignis, Doppelklick stellt es zurück.</span></p>
     </div>
   </div>
 </section>
@@ -321,7 +325,10 @@ footer .wrap span:last-child{margin-left:auto}
           </div>
         </div>
         <figure class="plate">
-          <img src="img/agent-board.jpg" width="1200" height="750" loading="lazy" alt="Agent-Board bei Nacht: eine Pixel-Wohnung mit Räumen für Archiv, Werkstatt und Terminal, darin kleine Agenten-Figuren, rechts die Liste der aktiven Agents.">
+          <picture>
+            <source type="image/webp" srcset="img/agent-board-720.webp">
+            <img src="img/agent-board.jpg" width="1200" height="750" loading="lazy" alt="Agent-Board bei Nacht: eine Pixel-Wohnung mit Räumen für Archiv, Werkstatt und Terminal, darin kleine Agenten-Figuren, rechts die Liste der aktiven Agents.">
+          </picture>
           <figcaption>Demo-Sitzung, Nachtmodus</figcaption>
         </figure>
       </li>
@@ -368,7 +375,10 @@ footer .wrap span:last-child{margin-left:auto}
           <dl class="figs"><dt>GWB-Rallye</dt><dd>273 Fragen</dd><dt>Cyber-Rallye</dt><dd>135 Fragen</dd><dt>Gesamt</dt><dd>408 Fragen</dd></dl>
         </div>
         <figure class="plate">
-          <img src="img/cyber-rallye.jpg" width="1200" height="844" loading="lazy" alt="Cyber-Rallye: Weltkarte mit den Welten Careers in Cyber und Cold Boot, links das Panel „Heute fällig“ mit den Leitner-Boxen.">
+          <picture>
+            <source type="image/webp" srcset="img/cyber-rallye-720.webp">
+            <img src="img/cyber-rallye.jpg" width="1200" height="844" loading="lazy" alt="Cyber-Rallye: Weltkarte mit den Welten Careers in Cyber und Cold Boot, links das Panel „Heute fällig“ mit den Leitner-Boxen.">
+          </picture>
           <figcaption>Cyber-Rallye, Weltkarte und Wiederholung</figcaption>
         </figure>
       </li>
@@ -528,7 +538,7 @@ footer .wrap span:last-child{margin-left:auto}
     b.querySelector("b").textContent = t.name;
     b.querySelector("span").textContent = t.line;
     b.querySelector("em").textContent = t.val;
-    b.setAttribute("aria-label", t.title + ", " + t.val + ". Spur auswählen");
+    b.setAttribute("aria-label", t.name + ", " + t.line + ", " + t.val + ". Spur auswählen");
     b.addEventListener("click", function(){ select(sel === t.id ? null : t.id, true); });
     b.addEventListener("mouseenter", function(){ hover(t.id); });
     b.addEventListener("mouseleave", function(){ hover(null); });
@@ -571,29 +581,61 @@ footer .wrap span:last-child{margin-left:auto}
   }
   function hover(id){ if(hov === id) return; hov = id; renderDetail(); draw(); }
 
-  // --- canvas ---
+  // --- canvas: the event in 3D ---
+  // The beam runs along z. At rest the camera looks down the beam (the classic end view);
+  // scrolling tilts it toward a side view so the helices open up along the beam axis,
+  // and a mouse drag orbits freely. Depth is shown with opacity only.
   var stage = document.getElementById("stage");
   var cv = document.getElementById("cv");
   var ctx = cv.getContext("2d");
   var W = 0, H = 0, dpr = 1, cx = 0, cy = 0, R = 0, wide = true;
   var progress = reduce ? 1 : 0, t0 = 0;
 
+  // camera: scroll tilt (0..1) plus drag offsets, eased toward their targets
+  var cam = {tilt:0, dy:0, dp:0}, goal = {tilt:0, dy:0, dp:0};
+  var MAXP = 1.08, MAXY = .42;
+  var pitch = 0, yaw = 0, persp = 0, zoom = 1, sp = 0, cpch = 1, syw = 0, cyw = 1;
+
+  function camera(){
+    pitch = Math.max(-1.45, Math.min(1.45, cam.tilt*MAXP + cam.dp));
+    yaw = cam.tilt*MAXY + cam.dy;
+    sp = Math.sin(pitch); cpch = Math.cos(pitch); syw = Math.sin(yaw); cyw = Math.cos(yaw);
+    // perspective fades in with the tilt so the end view stays a true cross-section
+    persp = Math.min(1, Math.abs(sp)*1.6 + Math.abs(syw)*1.6) * .16;
+    // keep the whole barrel (half-length 1.05) inside the stage
+    var ext = Math.max(Math.abs(cpch) + Math.abs(sp)*1.05, Math.abs(cyw) + Math.abs(syw)*1.05);
+    zoom = 1/Math.max(1, ext*(1 + persp*1.1));
+  }
+  // world (x right, y down, z toward the viewer at rest) -> [sx, sy, depth -1..1]
+  function P(x, y, z){
+    var x1 = x*cyw - z*syw, z1 = x*syw + z*cyw;
+    var y2 = y*cpch - z1*sp, z2 = y*sp + z1*cpch;
+    var k = zoom/(1 - z2*persp);
+    return [cx + x1*R*k, cy + y2*R*k, z2];
+  }
+  function depthA(z){ return .5 + .5*Math.max(0, Math.min(1, (z + 1.1)/2.2)); }
+  function moved(){ return persp > 0; }
+
   // deterministic soft tracks (decoration)
   var seed = 1024;
   function rnd(){ seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
   var SOFT = [];
-  for(var i=0;i<34;i++){ SOFT.push({phi:rnd()*360, k:(rnd()<.5?-1:1)*(2.2+rnd()*5), end:.18+rnd()*.3, col: rnd()<.55 ? C.y : (rnd()<.5 ? C.c : C.ring)}); }
+  for(var i=0;i<34;i++){ SOFT.push({phi:rnd()*360, k:(rnd()<.5?-1:1)*(2.2+rnd()*5), end:.18+rnd()*.3, col: rnd()<.55 ? C.y : (rnd()<.5 ? C.c : C.ring), tl:(rnd()-.5)*2.4}); }
   var EMC = [], HC = [];
   for(i=0;i<64;i++) EMC.push(.25 + rnd()*.5);
   for(i=0;i<32;i++) HC.push(rnd());
+  // dip of each real track along the beam (schematic, like phi and k)
+  var DIP = {"tryhackme":.55, "werkzeuge":-.7, "agent-board":.35, "jarvis":-.3, "gwb-rallye":.8, "cyber-rallye":-.5};
+  TRACKS.forEach(function(t){ t.tl = DIP[t.id] || 0; });
 
-  // helix projected on the transverse plane: circle through the vertex
+  // helix: transverse circle through the vertex, z grows linearly with path length
   function pt(t, s){
     var a = t.phi * Math.PI/180, k = t.k;
     if(Math.abs(k) < 1e-4) return [Math.cos(a)*s, Math.sin(a)*s];
     return [(Math.sin(a + k*s) - Math.sin(a))/k, -(Math.cos(a + k*s) - Math.cos(a))/k];
   }
-  // path length until radius r
+  function pt3(t, s){ var q = pt(t, s); return P(q[0], q[1], s*(t.tl || 0)); }
+  // path length until transverse radius r
   function lenTo(t, r){
     var lo = 0, hi = 4;
     for(var j=0;j<40;j++){ var m=(lo+hi)/2, p=pt(t,m); if(Math.hypot(p[0],p[1]) < r) lo=m; else hi=m; }
@@ -622,7 +664,7 @@ footer .wrap span:last-child{margin-left:auto}
     draw();
   }
 
-  function endPoint(t){ var p = pt(t, t.len); return [cx + p[0]*R, cy + p[1]*R]; }
+  function endPoint(t){ return pt3(t, t.len); }
 
   function placeTags(){
     if(!wide) return;
@@ -638,42 +680,80 @@ footer .wrap span:last-child{margin-left:auto}
 
   function ease(x){ return x >= 1 ? 1 : 1 - Math.pow(2, -10*x); }
 
-  function ringCells(r0, r1, n, gapDeg, stroke, fillFn){
+  // polyline helpers in world space
+  function arcPath(r, a0, a1, z, first){
+    var n = Math.max(2, Math.ceil(Math.abs(a1 - a0)/.09));
+    for(var j=0;j<=n;j++){
+      var a = a0 + (a1 - a0)*j/n, q = P(Math.cos(a)*r, Math.sin(a)*r, z);
+      if(first && j === 0) ctx.moveTo(q[0], q[1]); else ctx.lineTo(q[0], q[1]);
+    }
+  }
+  function ring(r, z){ ctx.beginPath(); arcPath(r, 0, Math.PI*2, z, true); ctx.closePath(); }
+  function ringCells(r0, r1, n, gapDeg, stroke, fillFn, z){
+    z = z || 0;
     var g = gapDeg*Math.PI/180;
     for(var j=0;j<n;j++){
       var a0 = j/n*Math.PI*2 + g/2, a1 = (j+1)/n*Math.PI*2 - g/2;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r1, a0, a1); ctx.arc(cx, cy, r0, a1, a0, true); ctx.closePath();
+      ctx.beginPath(); arcPath(r1, a0, a1, z, true); arcPath(r0, a1, a0, z, false); ctx.closePath();
       var f = fillFn && fillFn(j);
       if(f){ ctx.fillStyle = f; ctx.fill(); }
       ctx.strokeStyle = stroke; ctx.stroke();
     }
   }
+  // a barrel seen from outside: both end rings plus the two silhouette lines
+  function barrel(r, L, stroke, alpha){
+    ctx.strokeStyle = stroke;
+    ctx.globalAlpha = alpha * .9; ring(r, L); ctx.stroke();
+    ctx.globalAlpha = alpha * .55; ring(r, -L); ctx.stroke();
+    // silhouette: where the surface normal is perpendicular to the view direction
+    var best = [0, 0], bv = [-1, -1];
+    for(var a=0;a<Math.PI*2;a+=.02){
+      var p1 = P(Math.cos(a)*r, Math.sin(a)*r, L), p2 = P(Math.cos(a)*r, Math.sin(a)*r, -L);
+      var d = Math.hypot(p1[0]-cx, p1[1]-cy) + Math.hypot(p2[0]-cx, p2[1]-cy);
+      var side = ((p1[0]-cx)*(p2[1]-p1[1]) - (p1[1]-cy)*(p2[0]-p1[0])) > 0 ? 0 : 1;
+      if(d > bv[side]){ bv[side] = d; best[side] = a; }
+    }
+    ctx.globalAlpha = alpha * .7;
+    best.forEach(function(a){
+      var p1 = P(Math.cos(a)*r, Math.sin(a)*r, L), p2 = P(Math.cos(a)*r, Math.sin(a)*r, -L);
+      ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke();
+    });
+  }
 
   function draw(){
     if(!W) return;
+    camera();
     ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.clearRect(0,0,W,H);
     var f = focusId();
     var p = ease(progress);
+    var tiltA = Math.min(1, persp/.16);
     ctx.lineWidth = 1;
 
-    // muon chambers
-    ctx.globalAlpha = 1;
-    ringCells(R*.9, R*.99, 12, 9, "rgba(58,90,122,.55)", function(){ return "rgba(34,50,68,.35)"; });
-    ringCells(R*.925, R*.955, 12, 9, "rgba(58,90,122,.35)");
-    // hadron calorimeter
-    ringCells(R*.7, R*.86, 32, 1.2, "rgba(34,50,68,1)", function(j){ return "rgba(34,50,68," + (.2 + HC[j]*.25).toFixed(2) + ")"; });
-    // electromagnetic calorimeter
-    ringCells(R*.56, R*.68, 64, .6, "rgba(34,50,68,.9)", function(j){ return "rgba(58,90,122," + (EMC[j]*.22).toFixed(2) + ")"; });
-    // tracker barrels
+    // barrels along the beam fade in as the camera leaves the end view
+    if(tiltA > 0){
+      barrel(.99, 1.05, "rgba(58,90,122,.55)", tiltA*.8);
+      barrel(.86, .9, "rgba(58,90,122,.5)", tiltA*.6);
+      barrel(.53, .72, "rgba(58,90,122,.5)", tiltA*.55);
+      // beam line
+      var b0 = P(0,0,-1.3), b1 = P(0,0,1.3);
+      ctx.globalAlpha = tiltA*.7; ctx.strokeStyle = C.ring; ctx.setLineDash([2,5]);
+      ctx.beginPath(); ctx.moveTo(b0[0], b0[1]); ctx.lineTo(b1[0], b1[1]); ctx.stroke(); ctx.setLineDash([]);
+    }
+
+    // the cross-section through the vertex
+    ctx.globalAlpha = 1 - tiltA*.35;
+    ringCells(.9, .99, 12, 9, "rgba(58,90,122,.55)", function(){ return "rgba(34,50,68,.35)"; });
+    ringCells(.925, .955, 12, 9, "rgba(58,90,122,.35)");
+    ringCells(.7, .86, 32, 1.2, "rgba(34,50,68,1)", function(j){ return "rgba(34,50,68," + (.2 + HC[j]*.25).toFixed(2) + ")"; });
+    ringCells(.56, .68, 64, .6, "rgba(34,50,68,.9)", function(j){ return "rgba(58,90,122," + (EMC[j]*.22).toFixed(2) + ")"; });
     for(var b=1;b<=6;b++){
-      ctx.beginPath(); ctx.arc(cx, cy, R*(.08 + b*.068), 0, Math.PI*2);
+      ring(.08 + b*.068, 0);
       ctx.strokeStyle = b % 2 ? "rgba(58,90,122,.5)" : "rgba(34,50,68,.9)"; ctx.stroke();
     }
-    ringCells(R*.505, R*.53, 40, 3, "rgba(58,90,122,.6)", function(){ return "rgba(58,90,122,.25)"; });
-    // beam pipe
-    ctx.beginPath(); ctx.arc(cx, cy, R*.035, 0, Math.PI*2); ctx.strokeStyle = C.ring; ctx.stroke();
+    ringCells(.505, .53, 40, 3, "rgba(58,90,122,.6)", function(){ return "rgba(58,90,122,.25)"; });
+    ctx.globalAlpha = 1;
+    ring(.035, 0); ctx.strokeStyle = C.ring; ctx.stroke();
 
     // soft tracks
     ctx.lineWidth = 1;
@@ -682,19 +762,19 @@ footer .wrap span:last-child{margin-left:auto}
       strokeTrack(t, t.len * p, t.col);
     });
 
-    // calorimeter deposits for the jets (stacked after tracks land)
+    // calorimeter deposits, at the depth where each track arrives
     var dep = reduce ? 1 : Math.max(0, Math.min(1, (progress - .55)/.45));
     TRACKS.forEach(function(t){
-      var e = endPoint(t), ang = Math.atan2(e[1]-cy, e[0]-cx);
+      var e2 = pt(t, t.len), ang = Math.atan2(e2[1], e2[0]), z = t.len*t.tl;
       var on = !f || f === t.id;
-      ctx.globalAlpha = on ? 1 : .15;
-      // tower height = log10 of the real figure, two blocks per decade
       var blocks = Math.max(1, Math.round(Math.log10(t.dep + 1) * 2));
       for(var q=0;q<blocks;q++){
-        var r0 = R*(.70 + q*.04), r1 = r0 + R*.034;
+        var r0 = .70 + q*.04, r1 = r0 + .034;
         var shown = dep*blocks - q; if(shown <= 0) continue;
         var spread = (4.6 - q*.22) * Math.PI/180 * Math.min(1, shown);
-        ctx.beginPath(); ctx.arc(cx, cy, r1, ang - spread, ang + spread); ctx.arc(cx, cy, r0, ang + spread, ang - spread, true); ctx.closePath();
+        var zq = z * (r0/t.end);
+        ctx.globalAlpha = (on ? 1 : .15) * depthA(P(Math.cos(ang)*r0, Math.sin(ang)*r0, zq)[2]);
+        ctx.beginPath(); arcPath(r1, ang - spread, ang + spread, zq, true); arcPath(r0, ang + spread, ang - spread, zq, false); ctx.closePath();
         ctx.fillStyle = C.r; ctx.fill();
         ctx.strokeStyle = C.vac; ctx.lineWidth = 1; ctx.stroke();
       }
@@ -704,33 +784,38 @@ footer .wrap span:last-child{margin-left:auto}
     TRACKS.forEach(function(t, idx){
       var on = !f || f === t.id;
       var local = reduce ? 1 : ease(Math.max(0, Math.min(1, (progress - idx*.06)/(.75))));
-      ctx.globalAlpha = on ? 1 : .16;
+      var base = on ? 1 : .16;
+      ctx.globalAlpha = base;
       ctx.lineWidth = f === t.id ? 2.4 : 1.6;
-      strokeTrack(t, t.len*local, t.col);
+      strokeTrack(t, t.len*local, t.col, base);
       if(t.jet){
-        // jet cone: a few short companions
         ctx.lineWidth = 1;
         [-.06,.05,.1].forEach(function(dk, m){
-          var c = {phi:t.phi + (m-1)*3.2, k:t.k + dk*6, end:t.end};
-          strokeTrack(c, lenTo(c, t.end*.98)*local, t.col);
+          var c = {phi:t.phi + (m-1)*3.2, k:t.k + dk*6, end:t.end, tl:t.tl + (m-1)*.08};
+          strokeTrack(c, lenTo(c, t.end*.98)*local, t.col, base);
         });
       }
-      // hits on tracker barrels
+      // hits on the tracker barrels
       ctx.fillStyle = t.col;
       for(var b=1;b<=6;b++){
         var rr = .08 + b*.068; if(rr > t.end) break;
         var s = lenTo(t, rr); if(s > t.len*local) break;
-        var q = pt(t, s);
-        ctx.beginPath(); ctx.arc(cx + q[0]*R, cy + q[1]*R, f === t.id ? 2.6 : 1.9, 0, Math.PI*2); ctx.fill();
+        var q = pt3(t, s);
+        ctx.globalAlpha = base * depthA(q[2]);
+        ctx.beginPath(); ctx.arc(q[0], q[1], f === t.id ? 2.6 : 1.9, 0, Math.PI*2); ctx.fill();
       }
-      // muon: 5 hits in the chambers = 5 rooms done, then dashed onwards
+      // muon: 5 hits in the chambers = 5 rooms done
       if(t.muon && local >= 1){
         var a = t.phi*Math.PI/180;
         for(var h=0;h<5;h++){
-          var r = R*(.9 + h*.02);
-          ctx.beginPath(); ctx.arc(cx + Math.cos(a)*r, cy + Math.sin(a)*r, 2.2, 0, Math.PI*2); ctx.fill();
+          var r = .9 + h*.02, m3 = P(Math.cos(a)*r, Math.sin(a)*r, r*t.tl);
+          ctx.globalAlpha = base * depthA(m3[2]);
+          ctx.beginPath(); ctx.arc(m3[0], m3[1], 2.2, 0, Math.PI*2); ctx.fill();
         }
       }
+      // cache the projected path for picking
+      t.proj = [];
+      for(var j=0;j<=40;j++){ var pp = pt3(t, t.len*j/40); t.proj.push(pp); }
       // leader line to its tag
       if(wide && t.tagY != null && local >= 1){
         var e = endPoint(t);
@@ -739,7 +824,7 @@ footer .wrap span:last-child{margin-left:auto}
         ctx.strokeStyle = f === t.id ? t.col : C.ring;
         ctx.lineWidth = 1;
         ctx.setLineDash(t.muon ? [4,4] : []);
-        var elbowX = Math.max(e[0] + 14, cx + R + 10);
+        var elbowX = Math.max(e[0] + 14, cx + R*zoom*1.05 + 10);
         ctx.beginPath(); ctx.moveTo(e[0], e[1]); ctx.lineTo(elbowX, t.tagY); ctx.lineTo(lx, t.tagY); ctx.stroke();
         ctx.setLineDash([]);
         ctx.fillStyle = f === t.id ? t.col : C.ring;
@@ -749,29 +834,93 @@ footer .wrap span:last-child{margin-left:auto}
 
     // vertex
     ctx.globalAlpha = 1;
-    ctx.beginPath(); ctx.arc(cx, cy, 3.2, 0, Math.PI*2); ctx.fillStyle = C.bone; ctx.fill();
+    var v = P(0,0,0);
+    ctx.beginPath(); ctx.arc(v[0], v[1], 3.2, 0, Math.PI*2); ctx.fillStyle = C.bone; ctx.fill();
   }
 
-  function strokeTrack(t, len, col){
+  // strokes in short runs so the far part of a helix fades back
+  function strokeTrack(t, len, col, base){
     if(len <= 0) return;
+    var a0 = base == null ? ctx.globalAlpha : base;
     var steps = Math.max(8, Math.ceil(len*60));
-    ctx.beginPath(); ctx.moveTo(cx, cy);
-    for(var j=1;j<=steps;j++){ var q = pt(t, len*j/steps); ctx.lineTo(cx + q[0]*R, cy + q[1]*R); }
-    ctx.strokeStyle = col; ctx.stroke();
+    var prev = P(0,0,0);
+    ctx.strokeStyle = col;
+    if(!moved()){
+      ctx.beginPath(); ctx.moveTo(prev[0], prev[1]);
+      for(var j=1;j<=steps;j++){ var q = pt3(t, len*j/steps); ctx.lineTo(q[0], q[1]); }
+      ctx.stroke(); return;
+    }
+    var run = 6;
+    for(var s0=0;s0<steps;s0+=run){
+      ctx.beginPath(); ctx.moveTo(prev[0], prev[1]);
+      var last = prev;
+      for(var j2=s0+1;j2<=Math.min(steps, s0+run);j2++){ last = pt3(t, len*j2/steps); ctx.lineTo(last[0], last[1]); }
+      ctx.globalAlpha = a0 * depthA((prev[2] + last[2])/2);
+      ctx.stroke();
+      prev = last;
+    }
+    ctx.globalAlpha = a0;
   }
 
-  // pointer picking on canvas
+  // pointer picking on the projected tracks
   function pick(ev){
     var rect = cv.getBoundingClientRect(), x = ev.clientX - rect.left, y = ev.clientY - rect.top;
     var best = null, bd = 16;
     TRACKS.forEach(function(t){
-      for(var j=0;j<=40;j++){ var q = pt(t, t.len*j/40), d = Math.hypot(cx + q[0]*R - x, cy + q[1]*R - y); if(d < bd){ bd = d; best = t.id; } }
+      (t.proj || []).forEach(function(q){ var d = Math.hypot(q[0] - x, q[1] - y); if(d < bd){ bd = d; best = t.id; } });
     });
     return best;
   }
-  cv.addEventListener("pointermove", function(ev){ if(ev.pointerType === "mouse"){ var id = pick(ev); cv.style.cursor = id ? "pointer" : "default"; hover(id); } });
-  cv.addEventListener("pointerleave", function(){ hover(null); });
+
+  // camera easing: runs only while the camera is catching up, then stops
+  var camRaf = 0;
+  function camStep(){
+    var done = true;
+    ["tilt","dy","dp"].forEach(function(k){
+      var d = goal[k] - cam[k];
+      if(Math.abs(d) > .0008){ cam[k] += d*.16; done = false; } else cam[k] = goal[k];
+    });
+    draw();
+    camRaf = done ? 0 : requestAnimationFrame(camStep);
+  }
+  function nudge(){ if(!camRaf) camRaf = requestAnimationFrame(camStep); }
+
+  // scroll tilts from end view to side view while the hero leaves the screen
+  function onScroll(){
+    if(reduce) return;
+    var span = Math.max(240, stage.getBoundingClientRect().height*.85);
+    var t = Math.max(0, Math.min(1, window.scrollY / span));
+    goal.tilt = t; nudge();
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+
+  // drag to orbit (mouse and pen; touch keeps scrolling the page)
+  var drag = null, dragged = false;
+  cv.addEventListener("pointerdown", function(ev){
+    if(ev.pointerType === "touch") return;
+    drag = {x:ev.clientX, y:ev.clientY, dy:goal.dy, dp:goal.dp}; dragged = false;
+    cv.setPointerCapture(ev.pointerId);
+  });
+  cv.addEventListener("pointermove", function(ev){
+    if(drag){
+      var mx = ev.clientX - drag.x, my = ev.clientY - drag.y;
+      if(!dragged && Math.hypot(mx, my) > 4){ dragged = true; cv.classList.add("orbiting"); hover(null); }
+      if(dragged){
+        goal.dy = drag.dy + mx*.008;
+        goal.dp = Math.max(-1.4, Math.min(1.4, drag.dp + my*.008));
+        if(reduce){ cam.dy = goal.dy; cam.dp = goal.dp; draw(); } else nudge();
+        return;
+      }
+    }
+    if(ev.pointerType === "mouse"){ var id = pick(ev); cv.style.cursor = id ? "pointer" : "grab"; hover(id); }
+  });
+  function endDrag(){ drag = null; cv.classList.remove("orbiting"); }
+  cv.addEventListener("pointerup", endDrag);
+  cv.addEventListener("pointercancel", endDrag);
+  cv.addEventListener("pointerleave", function(){ if(!drag) hover(null); });
+  cv.addEventListener("dblclick", function(){ goal.dy = 0; goal.dp = 0; if(reduce){ cam.dy = 0; cam.dp = 0; draw(); } else nudge(); });
   cv.addEventListener("click", function(ev){
+    if(dragged){ dragged = false; return; }
     var id = pick(ev);
     select(id && id !== sel ? id : null, true);
     if(!wide && id){ document.getElementById("readout").scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"nearest"}); }
@@ -788,7 +937,7 @@ footer .wrap span:last-child{margin-left:auto}
 
   if(window.ResizeObserver){ new ResizeObserver(layout).observe(stage); } else { window.addEventListener("resize", layout); }
   layout();
-  var start = function(){ if(!reduce) requestAnimationFrame(run); else draw(); };
+  var start = function(){ if(!reduce) requestAnimationFrame(run); else draw(); onScroll(); };
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ placeTags(); start(); }); } else start();
 
   var m = /^#t-([a-z-]+)$/.exec(location.hash);
