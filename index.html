@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Stefan Paun</title>
-<meta name="description" content="Stefan Paun baut KI-Agents und lernt Cybersecurity. Projekte: Agent-Board, Jarvis, Lernspiele, TryHackMe.">
+<meta name="description" content="Stefan Paun baut KI-Agents und lernt Cybersecurity. Projekte: Agent-Board, Jarvis, Claude-Code-Werkzeuge, Lernspiele, Security.">
 <meta name="theme-color" content="#0B0F14">
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="https://stefan-paun.github.io/">
@@ -280,7 +280,7 @@ footer .wrap span:last-child{margin-left:auto}
       <div class="readout" id="readout">
         <header>
           <span class="evt num">EVT-2026-1024</span>
-          <span class="meta label">5 Spuren</span>
+          <span class="meta label">6 Spuren</span>
           <span class="meta label">1 Vertex</span>
         </header>
         <ul class="tracks" id="trackList"></ul>
@@ -314,7 +314,7 @@ footer .wrap span:last-child{margin-left:auto}
           
           <p>Eine Live-Ansicht in Pixel-Art für Claude-Code-Agents. Claude sitzt am Schreibtisch, jeder Subagent ist eine kleine Figur, die in den Raum des Werkzeugs geht, das sie gerade benutzt: Archiv zum Lesen, Werkstatt zum Schreiben, Terminal für Befehle.</p>
           <p>So sieht man auf einen Blick, wer arbeitet, wer fertig ist und wer auf eine Freigabe wartet. Ohne Abhängigkeiten, nur Node, Canvas und WebAudio. Alles bleibt auf dem eigenen Rechner.</p>
-          <dl class="figs"><dt>Abhängigkeiten</dt><dd>0</dd><dt>Tests</dt><dd>66</dd><dt>Sprachen</dt><dd>3</dd><dt>Betriebssysteme in CI</dt><dd>3</dd></dl>
+          <dl class="figs"><dt>Abhängigkeiten</dt><dd>0</dd><dt>Tests</dt><dd>70</dd><dt>Sprachen</dt><dd>3</dd><dt>Betriebssysteme in CI</dt><dd>3</dd></dl>
           <div class="links">
             <a href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Live-Demo öffnen</a>
             <a href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Code auf GitHub</a>
@@ -335,9 +335,9 @@ footer .wrap span:last-child{margin-left:auto}
         </div>
         <div>
           
-          <p>Mein Sprachassistent für den Mac. Ich drücke eine Taste oder sage „Hey Jarvis“, er hört zu, versteht mich, erledigt Aufgaben mit seinen Werkzeugen und antwortet mit Stimme. Am iPhone gibt es eine Web-Version dazu.</p>
+          <p>Mein Sprachassistent für den Mac, inzwischen auch als Windows-Version mit derselben Codebasis. Ich drücke eine Taste oder sage „Hey Jarvis“, er hört zu, versteht mich, erledigt Aufgaben mit seinen Werkzeugen und antwortet mit Stimme. Am iPhone gibt es eine Web-Version dazu.</p>
           <p>Weil er mit meinen eigenen Daten arbeitet, ist Sicherheit eingebaut: verschlüsselte Daten mit dem Schlüssel im macOS-Schlüsselbund, Entsperren per Touch ID, und jede Nacht testet eine Cloud-Routine den Code auf Linux und meldet Fehler. Dreimal pro Woche baut eine zweite Routine über Nacht eine Aufgabe aus meiner Liste und legt mir morgens einen Pull Request zur Prüfung hin. Der Code bleibt privat.</p>
-          <dl class="figs"><dt>Automatische Tests</dt><dd>2.850</dd><dt>Testlauf in der Cloud</dt><dd>jede Nacht, Linux</dd></dl>
+          <dl class="figs"><dt>Automatische Tests</dt><dd>3.619</dd><dt>Betriebssysteme</dt><dd>macOS, Windows</dd><dt>Testlauf in der Cloud</dt><dd>jede Nacht, Linux</dd></dl>
           <div class="links"><span class="na">Kein öffentlicher Code, weil persönliche Daten im Spiel sind.</span></div>
         </div>
         <figure class="chain">
@@ -374,17 +374,18 @@ footer .wrap span:last-child{margin-left:auto}
       </li>
 
       <li class="entry" id="tryhackme">
-        <h3>TryHackMe</h3>
+        <h3>Security</h3>
         <div class="meta-col">
           <span class="trk num">TRK-04</span>
           <span class="kind label" style="color:var(--cyan)"><svg width="28" height="10" aria-hidden="true"><path d="M1 9 L27 1" stroke="#35D0FF" fill="none" stroke-width="1.5"/></svg>Security</span>
           <span class="state"><svg width="28" height="6" aria-hidden="true"><path d="M0 3H28" stroke="#35D0FF" stroke-width="1.5" stroke-dasharray="4 4"/></svg>Läuft gerade</span>
         </div>
         <div>
-          
-          <p>Ich lerne Cybersecurity mit dem Lernpfad Pre Security auf TryHackMe. Dort arbeitet man in echten Übungsumgebungen statt nur mit Theorie. Ein Zertifikat habe ich noch nicht, der Pfad läuft.</p>
-          <p>Was ich dort lerne, fließt zurück in meine Projekte: Bei Agent-Board und Jarvis prüfe ich vor dem Veröffentlichen, welche Angriffswege es gibt.</p>
-          <dl class="figs"><dt>Räume abgeschlossen</dt><dd>6</dd><dt>Zertifikat</dt><dd>noch keins</dd></dl>
+
+          <p>Ich lerne Cybersecurity mit dem Lernpfad Pre Security auf TryHackMe. Dort arbeitet man in echten Übungsumgebungen statt nur mit Theorie. Dazu kommt der Kurs Introduction to Cybersecurity der Cisco Networking Academy. Ein Zertifikat habe ich noch nicht, beides läuft.</p>
+          <p>Praxis an meinem eigenen iPhone: Ich habe es per USB vom Mac aus auf Spyware geprüft, mit dem Mobile Verification Toolkit von Amnesty International. Absturzberichte, ein Diagnosepaket und ein Netzwerk-Mitschnitt liefen gegen die öffentlichen Indikatoren für Spyware wie Pegasus und Predator, dazu kamen Profile, App-Signaturen und der Entwicklermodus. Ergebnis: sauber.</p>
+          <p>Was ich lerne, fließt zurück in meine Projekte: Bei Agent-Board und Jarvis prüfe ich vor dem Veröffentlichen, welche Angriffswege es gibt.</p>
+          <dl class="figs"><dt>Räume abgeschlossen</dt><dd>6</dd><dt>Spyware-Indikatoren geprüft</dt><dd>6.630</dd><dt>Zertifikat</dt><dd>noch keins</dd></dl>
         </div>
         <figure class="chain" style="--c:var(--cyan)">
           <ol>
@@ -396,6 +397,31 @@ footer .wrap span:last-child{margin-left:auto}
             <li><span class="hit"><i></i></span><div><b>Cloud Computing Fundamentals</b><span>IaaS, PaaS, SaaS</span></div></li>
           </ol>
           <figcaption>Lernpfad Pre Security</figcaption>
+        </figure>
+      </li>
+
+      <li class="entry" id="werkzeuge">
+        <h3>Claude-Code-Werkzeuge</h3>
+        <div class="meta-col">
+          <span class="trk num">TRK-05</span>
+          <span class="kind label" style="color:var(--yellow)"><svg width="28" height="10" aria-hidden="true"><path d="M1 5 C9 3 18 3 27 5" stroke="#FFD23A" fill="none" stroke-width="1.5"/></svg>KI-Agent</span>
+          <span class="state"><svg width="28" height="6" aria-hidden="true"><path d="M0 3H28" stroke="#E8ECF1" stroke-width="1.5"/></svg>Im Einsatz, privat</span>
+        </div>
+        <div>
+
+          <p>Eigene Erweiterungen für Claude Code, mit denen ich meinen KI-Agents Regeln und Überblick gebe. Der Wächter prüft jeden Commit und Push, bevor er passiert: Er blockiert API-Schlüssel und private E-Mail-Adressen in öffentlichen Repos, verhindert, dass alte Branches hochgeladen werden, und fragt nach, bevor Jarvis Cloud-Testminuten verbraucht.</p>
+          <p>Das Cockpit ist ein Panel neben dem Chat mit allen Pull Requests, die auf mich warten, der Aufgabenliste der Nacht-Routinen und den nächsten Fristen. Dazu kommen Skills für wiederkehrende Abläufe: ein kompletter Jarvis-Testlauf mit Prüfung auf Datenlecks und ein Sicherheits-Check für mein iPhone.</p>
+          <dl class="figs"><dt>Mods</dt><dd>2</dd><dt>Skills</dt><dd>2</dd><dt>Prüfmuster vor jedem Commit</dt><dd>11</dd></dl>
+          <div class="links"><span class="na">Noch nicht veröffentlicht.</span></div>
+        </div>
+        <figure class="chain">
+          <ol>
+            <li><span class="hit"><i></i></span><div><b>Agent will committen</b><span>git commit oder push</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Wächter liest die Änderung</b><span>bevor sie passiert</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Schlüssel, Gmail, alter Branch?</b><span>Muster und Regeln je Repo</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Blockieren oder nachfragen</b><span>öffentlich blockiert, privat gefragt</span></div></li>
+          </ol>
+          <figcaption>Was der Wächter vor jedem Commit prüft</figcaption>
         </figure>
       </li>
     </ol>
@@ -455,15 +481,18 @@ footer .wrap span:last-child{margin-left:auto}
 
   // Real facts only. Geometry (phi, k) is schematic.
   var TRACKS = [
-    {id:"tryhackme", name:"TRYHACKME", kind:"Security", col:C.c, line:"Pre Security, läuft", val:"6 Räume", phi:-64, k:0, end:1.0, muon:true,
-      title:"TryHackMe", text:"Lernpfad Pre Security mit echten Übungsumgebungen. Ein Zertifikat gibt es noch nicht, der Pfad läuft.",
-      dep:6, kv:[["Typ","Security"],["Stand","läuft"],["Räume","6 abgeschlossen"]], log:"#tryhackme"},
-    {id:"agent-board", name:"AGENT-BOARD", kind:"KI-Agent", col:C.y, line:"Live-Ansicht für Claude-Code-Agents, v1.4.0", val:"66 Tests", phi:-36, k:.75, end:.66,
+    {id:"tryhackme", name:"SECURITY", kind:"Security", col:C.c, line:"TryHackMe, Cisco, iPhone-Check", val:"6 Räume", phi:-64, k:0, end:1.0, muon:true,
+      title:"Security", text:"TryHackMe Pre Security und der Cisco-Kurs laufen. Praxis: mein iPhone mit dem Amnesty-Toolkit auf Spyware geprüft, Ergebnis sauber.",
+      dep:6, kv:[["Typ","Security"],["Stand","läuft"],["Räume","6 abgeschlossen"],["iPhone-Check","sauber"]], log:"#tryhackme"},
+    {id:"werkzeuge", name:"CC-WERKZEUGE", kind:"KI-Agent", col:C.y, line:"Mods und Skills für Claude Code", val:"2 Mods", phi:-8, k:.4, end:.66,
+      title:"Claude-Code-Werkzeuge", text:"Wächter für Commits und Pushes, ein Cockpit für offene Pull Requests und Skills für wiederkehrende Abläufe.",
+      dep:4, kv:[["Typ","KI-Agent"],["Stand","im Einsatz, privat"],["Mods","2"],["Skills","2"]], log:"#werkzeuge"},
+    {id:"agent-board", name:"AGENT-BOARD", kind:"KI-Agent", col:C.y, line:"Live-Ansicht für Claude-Code-Agents, v1.4.0", val:"70 Tests", phi:-36, k:.75, end:.66,
       title:"Agent-Board", text:"Pixel-Art-Ansicht, in der jeder Claude-Code-Agent als Figur in den Raum seines Werkzeugs geht.",
-      dep:66, kv:[["Typ","KI-Agent"],["Stand","öffentlich, v1.4.0"],["Tests","66"],["Sprachen","Englisch, Deutsch, Spanisch"]], log:"#agent-board", href:"https://stefan-paun.github.io/agent-board/?demo=1", hrefText:"Live-Demo öffnen"},
-    {id:"jarvis", name:"JARVIS", kind:"KI-Agent", col:C.y, line:"Sprachassistent für den Mac", val:"2.850 Tests", phi:22, k:-.45, end:.66,
+      dep:70, kv:[["Typ","KI-Agent"],["Stand","öffentlich, v1.4.0"],["Tests","70"],["Sprachen","Englisch, Deutsch, Spanisch"]], log:"#agent-board", href:"https://stefan-paun.github.io/agent-board/?demo=1", hrefText:"Live-Demo öffnen"},
+    {id:"jarvis", name:"JARVIS", kind:"KI-Agent", col:C.y, line:"Sprachassistent für Mac und Windows", val:"3.619 Tests", phi:22, k:-.45, end:.66,
       title:"Jarvis", text:"Sprachassistent mit Stimme, Werkzeugen, verschlüsselten Daten und nächtlichen Tests in der Cloud.",
-      dep:2850, kv:[["Typ","KI-Agent"],["Stand","im Einsatz, privat"],["Tests","2.850"]], log:"#jarvis"},
+      dep:3619, kv:[["Typ","KI-Agent"],["Stand","im Einsatz, privat"],["Tests","3.619"],["Systeme","macOS, Windows"]], log:"#jarvis"},
     {id:"gwb-rallye", name:"GWB-RALLYE", kind:"Lernspiel", col:C.r, line:"Lernspiel Geografie und Wirtschaft", val:"273 Fragen", phi:34, k:.3, end:.84, jet:true,
       title:"GWB-Rallye", text:"Pixel-Lernspiel mit Weltkarte, Bossen, Shop und Probetest für Geografie und Wirtschaft.",
       dep:273, kv:[["Typ","Lernspiel"],["Stand","spielbar"],["Fragen","273"]], log:"#rallye"},
