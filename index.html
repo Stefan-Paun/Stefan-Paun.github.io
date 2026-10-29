@@ -424,7 +424,7 @@ footer .wrap span:last-child{margin-left:auto}
         <div>
 
           <p>Ich lerne Cybersecurity mit dem Lernpfad Pre Security auf TryHackMe. Dort arbeitet man in echten Übungsumgebungen statt nur mit Theorie. Dazu kommt der Kurs Introduction to Cybersecurity der Cisco Networking Academy. Ein Zertifikat habe ich noch nicht, beides läuft.</p>
-          <p>Praxis an meinem eigenen iPhone: Ich habe es per USB vom Mac aus auf Spyware geprüft, mit dem Mobile Verification Toolkit von Amnesty International. Absturzberichte, ein Diagnosepaket und ein Netzwerk-Mitschnitt liefen gegen die öffentlichen Indikatoren für Spyware wie Pegasus und Predator, dazu kamen Profile, App-Signaturen und der Entwicklermodus. Ergebnis: sauber.</p>
+          <p>Praxis an meinem eigenen iPhone: Ich habe es per USB vom Mac aus auf Spyware geprüft, mit dem Mobile Verification Toolkit von Amnesty International. Absturzberichte, ein Diagnosepaket und ein Netzwerk-Mitschnitt liefen gegen die öffentlichen Indikatoren für Spyware wie Pegasus und Predator, dazu kamen Profile, App-Signaturen und der Entwicklermodus. Ergebnis: keine bekannten Indikatoren gefunden. Das ist ein Abgleich mit bekannten Mustern, kein Beweis.</p>
           <p>Was ich lerne, fließt zurück in meine Projekte: Bei Agent-Board und Jarvis prüfe ich vor dem Veröffentlichen, welche Angriffswege es gibt.</p>
           <dl class="figs"><dt>Räume abgeschlossen</dt><dd>6</dd><dt>Spyware-Indikatoren geprüft</dt><dd>6.630</dd><dt>Zertifikat</dt><dd>noch keins</dd></dl>
         </div>
@@ -459,7 +459,7 @@ footer .wrap span:last-child{margin-left:auto}
           <ol>
             <li><span class="hit"><i></i></span><div><b>Agent will committen</b><span>git commit oder push</span></div></li>
             <li><span class="hit"><i></i></span><div><b>Wächter liest die Änderung</b><span>bevor sie passiert</span></div></li>
-            <li><span class="hit"><i></i></span><div><b>Schlüssel, Gmail, alter Branch?</b><span>Muster und Regeln je Repo</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Schlüssel, private Mail, alter Branch?</b><span>Muster und Regeln je Repo</span></div></li>
             <li><span class="hit"><i></i></span><div><b>Blockieren oder nachfragen</b><span>öffentlich blockiert, privat gefragt</span></div></li>
           </ol>
           <figcaption>Was der Wächter vor jedem Commit prüft</figcaption>
@@ -525,8 +525,8 @@ footer .wrap span:last-child{margin-left:auto}
   // Real facts only. Geometry (phi, k) is schematic.
   var TRACKS = [
     {id:"tryhackme", name:"SECURITY", kind:"Security", col:C.c, line:"TryHackMe, Cisco, iPhone-Check", val:"6 Räume", phi:-64, k:0, end:1.0, muon:true,
-      title:"Security", text:"TryHackMe Pre Security und der Cisco-Kurs laufen. Praxis: mein iPhone mit dem Amnesty-Toolkit auf Spyware geprüft, Ergebnis sauber.",
-      dep:6, kv:[["Typ","Security"],["Stand","läuft"],["Räume","6 abgeschlossen"],["iPhone-Check","sauber"]], log:"#tryhackme"},
+      title:"Security", text:"TryHackMe Pre Security und der Cisco-Kurs laufen. Praxis: mein iPhone mit dem Amnesty-Toolkit gegen bekannte Spyware-Indikatoren abgeglichen, keine gefunden.",
+      dep:6, kv:[["Typ","Security"],["Stand","läuft"],["Räume","6 abgeschlossen"],["iPhone-Check","keine Treffer"]], log:"#tryhackme"},
     {id:"werkzeuge", name:"CC-WERKZEUGE", kind:"KI-Agent", col:C.y, line:"Mods und Skills für Claude Code", val:"2 Mods", phi:-8, k:.4, end:.66,
       title:"Claude-Code-Werkzeuge", text:"Wächter für Commits und Pushes, ein Cockpit für offene Pull Requests und Skills für wiederkehrende Abläufe.",
       dep:4, kv:[["Typ","KI-Agent"],["Stand","im Einsatz, privat"],["Mods","2"],["Skills","2"]], log:"#werkzeuge"},
