@@ -152,6 +152,22 @@ section.part{border-top:1px solid var(--rule)}
 section.part > .wrap{padding-block:clamp(56px,8vw,112px)}
 h2.sec{margin:0;color:var(--bone);font-stretch:125%;font-weight:700;font-size:clamp(1.9rem,3.6vw,3rem);line-height:1;letter-spacing:-.005em;text-wrap:balance}
 .lede{margin:18px 0 0;max-width:58ch}
+p{text-wrap:pretty}
+/* section heads: headline left, the lede set large beside it on the same baseline */
+.sec-head{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:last baseline;padding-bottom:clamp(28px,4vw,48px);border-bottom:1px solid var(--rule)}
+.sec-head h2.sec{font-size:clamp(2.2rem,4.6vw,3.9rem);font-weight:800;letter-spacing:-.01em}
+.sec-head .lede{margin:0;max-width:34ch;color:var(--text);font-size:clamp(1.15rem,1.6vw,1.45rem);line-height:1.4;text-wrap:balance}
+.sec-head + .log > .entry:first-child{border-top:0}
+/* contact closes the page in the same voice as the name */
+.contact h2.sec{font-size:clamp(2.8rem,5.6vw + .6rem,5.4rem);font-weight:800;line-height:.9;letter-spacing:.01em;text-transform:uppercase}
+/* crop marks on figures, like the corners of a detector drawing */
+.plate,.chain{position:relative}
+.plate::before,.plate::after,.chain::before,.chain::after{content:"";position:absolute;width:12px;height:12px;pointer-events:none}
+.plate::before,.chain::before{top:-5px;left:-5px;border-top:1px solid var(--ring-hi);border-left:1px solid var(--ring-hi)}
+.plate::after,.chain::after{bottom:-5px;right:-5px;border-bottom:1px solid var(--ring-hi);border-right:1px solid var(--ring-hi)}
+.entry:hover:not(:target) .trk{color:var(--bone)}
+.trk{transition:color .25s}
+@media (max-width:760px){ .sec-head{grid-template-columns:minmax(0,1fr);gap:16px} .sec-head .lede{max-width:none} }
 
 /* log */
 .log{list-style:none;margin:clamp(36px,5vw,64px) 0 0;padding:0}
@@ -318,8 +334,10 @@ footer .wrap span:last-child{margin-left:auto}
 
 <section class="part" id="log" aria-labelledby="log-h">
   <div class="wrap">
-    <h2 class="sec" id="log-h">Ereignis-Log</h2>
-    <p class="lede">Jede Spur im Detail: was sie ist, womit sie gebaut ist und was sie misst.</p>
+    <div class="sec-head">
+      <h2 class="sec" id="log-h">Ereignis-Log</h2>
+      <p class="lede">Jede Spur im Detail: was sie ist, womit sie gebaut ist und was sie misst.</p>
+    </div>
     <ol class="log">
       <li class="entry" id="agent-board">
         <h3>Agent-Board</h3>
@@ -454,8 +472,10 @@ footer .wrap span:last-child{margin-left:auto}
 
 <section class="part" id="arbeitsweise" aria-labelledby="arb-h">
   <div class="wrap">
-    <h2 class="sec" id="arb-h">So baue ich</h2>
-    <p class="lede">Jedes Projekt geht durch dieselben Schichten, von innen nach außen. Was eine Schicht nicht schafft, kommt nicht weiter.</p>
+    <div class="sec-head">
+      <h2 class="sec" id="arb-h">So baue ich</h2>
+      <p class="lede">Jedes Projekt geht durch dieselben Schichten, von innen nach außen. Was eine Schicht nicht schafft, kommt nicht weiter.</p>
+    </div>
     <div class="layers-box">
     <span class="beam" id="beam" aria-hidden="true"></span>
     <ol class="layers">
