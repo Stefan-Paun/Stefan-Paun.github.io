@@ -64,7 +64,13 @@ img{max-width:100%;display:block}
 .skip:focus{left:var(--gutter)}
 
 /* run header */
-.run{border-bottom:1px solid var(--rule)}
+.run{border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:20;background:var(--vacuum)}
+.run::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--yellow);transform-origin:left;transform:scaleX(var(--run,0))}
+.run nav a{position:relative}
+.run nav a[aria-current="true"]{color:var(--bone)}
+.run nav a::after{content:"";position:absolute;left:12px;right:12px;bottom:2px;height:1px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.run nav a[aria-current="true"]::after{transform:scaleX(1)}
+section[id]{scroll-margin-top:64px}
 .run .wrap{display:flex;align-items:center;gap:24px;min-height:64px;flex-wrap:wrap;padding-block:10px}
 .mark{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--bone)}
 .mark svg{flex:none}
@@ -123,7 +129,13 @@ h1 span + span{color:var(--ring-hi)}
 /* detector */
 .detector{position:relative;min-width:0}
 .stage{position:relative;width:100%;aspect-ratio:1.18/1}
-.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation;cursor:grab}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation;cursor:crosshair}
+.xh{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .2s}
+.xh.on{opacity:1}
+.xh i{position:absolute;background:var(--ring);opacity:.45}
+.xh .xv{top:0;bottom:0;width:1px;left:0}
+.xh .xz{left:0;right:0;height:1px;top:0}
+.xh b{position:absolute;left:0;top:0;font:400 .72rem/1 var(--mono);font-stretch:87.5%;font-variant-numeric:tabular-nums;color:var(--dim);white-space:nowrap;padding:4px 6px;background:var(--vacuum);border:1px solid var(--rule)}
 .stage canvas.orbiting{cursor:grabbing}
 .tags{position:absolute;inset:0;pointer-events:none}
 .tag{all:unset;pointer-events:auto;cursor:pointer;position:absolute;right:0;transform:translateY(-50%);width:clamp(150px,24%,220px);padding:6px 0 6px 10px;display:grid;gap:3px;transition:opacity .35s}
@@ -143,9 +155,10 @@ h2.sec{margin:0;color:var(--bone);font-stretch:125%;font-weight:700;font-size:cl
 
 /* log */
 .log{list-style:none;margin:clamp(36px,5vw,64px) 0 0;padding:0}
-.entry{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,5fr) minmax(0,4fr);grid-template-rows:auto 1fr;grid-template-areas:"meta h3 plate" "meta body plate";column-gap:clamp(20px,3vw,48px);row-gap:0;padding-block:clamp(36px,5vw,56px);border-top:1px solid var(--rule);scroll-margin-top:24px}
+.entry{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,5fr) minmax(0,4fr);grid-template-rows:auto 1fr;grid-template-areas:"meta h3 plate" "meta body plate";column-gap:clamp(20px,3vw,48px);row-gap:0;padding-block:clamp(36px,5vw,56px);border-top:1px solid var(--rule);scroll-margin-top:88px}
 .entry:target .trk{color:var(--yellow)}
 .meta-col{grid-area:meta;display:grid;gap:14px;align-content:start}
+@media (min-width:1101px){ .meta-col{position:sticky;top:104px;align-self:start} }
 .entry > h3{grid-area:h3;margin-bottom:16px}
 .entry > div:not(.meta-col){grid-area:body;min-width:0}
 .entry > figure{grid-area:plate}
@@ -295,6 +308,7 @@ footer .wrap span:last-child{margin-left:auto}
     <div class="detector">
       <div class="stage" id="stage">
         <canvas id="cv" aria-hidden="true"></canvas>
+        <div class="xh" id="xh" aria-hidden="true"><i class="xv"></i><i class="xz"></i><b></b></div>
         <div class="tags" id="tags"></div>
       </div>
       <p class="note">Spurenbild schematisch. Die Zahlen sind echt, Turmhöhe auf Log-Skala. <span class="orbit-hint">Ziehen dreht das Ereignis, Doppelklick stellt es zurück.</span></p>
@@ -904,7 +918,7 @@ footer .wrap span:last-child{margin-left:auto}
   cv.addEventListener("pointermove", function(ev){
     if(drag){
       var mx = ev.clientX - drag.x, my = ev.clientY - drag.y;
-      if(!dragged && Math.hypot(mx, my) > 4){ dragged = true; cv.classList.add("orbiting"); hover(null); }
+      if(!dragged && Math.hypot(mx, my) > 4){ dragged = true; cv.classList.add("orbiting"); hover(null); xh.classList.remove("on"); }
       if(dragged){
         goal.dy = drag.dy + mx*.008;
         goal.dp = Math.max(-1.4, Math.min(1.4, drag.dp + my*.008));
@@ -912,8 +926,24 @@ footer .wrap span:last-child{margin-left:auto}
         return;
       }
     }
-    if(ev.pointerType === "mouse"){ var id = pick(ev); cv.style.cursor = id ? "pointer" : "grab"; hover(id); }
+    if(ev.pointerType === "mouse"){ var id = pick(ev); cv.style.cursor = id ? "pointer" : ""; hover(id); aim(ev); }
   });
+  // crosshair with a cursor readout in detector coordinates (azimuth and transverse radius)
+  var xh = document.getElementById("xh"), xv = xh.querySelector(".xv"), xz = xh.querySelector(".xz"), xb = xh.querySelector("b");
+  function aim(ev){
+    var rect = cv.getBoundingClientRect(), x = ev.clientX - rect.left, y = ev.clientY - rect.top;
+    var v = P(0,0,0), dx = (x - v[0])/(R*zoom), dy = (y - v[1])/(R*zoom), r = Math.hypot(dx, dy);
+    if(r > 1.08 || drag){ xh.classList.remove("on"); return; }
+    var phi = (Math.atan2(-dy, dx)*180/Math.PI + 360) % 360;
+    xv.style.transform = "translateX(" + x + "px)"; xz.style.transform = "translateY(" + y + "px)";
+    xb.textContent = "\u03c6 " + ("00" + phi.toFixed(1)).slice(-5) + "\u00b0  r " + r.toFixed(2);
+    var bx = x + 14, by = y + 14;
+    if(bx + xb.offsetWidth > W) bx = x - 14 - xb.offsetWidth;
+    if(by + xb.offsetHeight > H) by = y - 14 - xb.offsetHeight;
+    xb.style.transform = "translate(" + bx + "px," + by + "px)";
+    xh.classList.add("on");
+  }
+  cv.addEventListener("mouseleave", function(){ xh.classList.remove("on"); });
   function endDrag(){ drag = null; cv.classList.remove("orbiting"); }
   cv.addEventListener("pointerup", endDrag);
   cv.addEventListener("pointercancel", endDrag);
@@ -951,6 +981,27 @@ footer .wrap span:last-child{margin-left:auto}
     if(vert){ beam.style.transform = "scaleY(.04)"; beam.style.transformOrigin = "center top"; }
     beam.style.transition = "transform 1.2s cubic-bezier(.16,1,.3,1)";
     new IntersectionObserver(function(es, ob){ es.forEach(function(e){ if(e.isIntersecting){ beam.style.transform = "none"; ob.disconnect(); } }); }, {threshold:.4}).observe(beam.parentNode);
+  }
+
+  // run header: a yellow beam along its bottom rule follows the scroll, and the nav marks the section in view
+  var runBar = document.querySelector(".run"), runRaf = 0;
+  function runBeam(){
+    runRaf = 0;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    runBar.style.setProperty("--run", max > 0 ? Math.min(1, window.scrollY/max).toFixed(4) : 0);
+  }
+  window.addEventListener("scroll", function(){ if(!runRaf) runRaf = requestAnimationFrame(runBeam); }, {passive:true});
+  runBeam();
+  var navLinks = document.querySelectorAll(".run nav a");
+  if("IntersectionObserver" in window){
+    var seen = {};
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){ seen[e.target.id] = e.isIntersecting; });
+      var cur = null;
+      navLinks.forEach(function(a){ var id = a.getAttribute("href").slice(1); if(seen[id] && !cur) cur = id; });
+      navLinks.forEach(function(a){ if(a.getAttribute("href") === "#" + cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+    }, {rootMargin:"-45% 0px -50% 0px"});
+    navLinks.forEach(function(a){ var el = document.getElementById(a.getAttribute("href").slice(1)); if(el) spy.observe(el); });
   }
 
   // Vienna clock
