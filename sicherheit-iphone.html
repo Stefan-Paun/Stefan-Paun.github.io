@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>iPhone auf Spyware prüfen · Stefan Paun</title>
+<meta name="description" content="Wie ich mein eigenes iPhone mit dem Mobile Verification Toolkit auf bekannte Spyware-Spuren geprüft habe: Vorgehen, Ergebnis und Grenzen.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefan-paun.github.io/sicherheit-iphone.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wie ich mein iPhone auf Spyware geprüft habe">
+<meta property="og:description" content="Vorgehen, Ergebnis und Grenzen eines Abgleichs mit dem Mobile Verification Toolkit.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <a href="index.html"><svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="3.2" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="3.4" fill="#f5f5f7"/></svg>Stefan Paun</a>
+  <a class="back" href="index.html#p-security">Zurück zu den Projekten</a>
+</div></header>
+
+<main>
+  <article>
+    <h1>Wie ich mein iPhone auf Spyware geprüft habe. <span>Vorgehen, Ergebnis, Grenzen.</span></h1>
+    <p class="meta">Geprüft am <time datetime="2026-10-28">28. Oktober 2026</time> · eigenes Gerät, per USB vom Mac aus</p>
+    <p class="lede">Ich wollte wissen, wie man ein Handy auf staatliche Spyware wie Pegasus oder Predator untersucht. Also habe ich es an meinem eigenen iPhone ausprobiert, mit den Werkzeugen, die auch Forschende verwenden.</p>
+
+    <ul class="take" aria-label="Das Wichtigste in drei Sätzen" style="--c:var(--cyan)">
+      <li><b>Werkzeug:</b> das Mobile Verification Toolkit (MVT) von Amnesty International und die öffentlichen Indikatoren für bekannte Spyware.</li>
+      <li><b>Ergebnis:</b> keine Treffer. Ein paar Auffälligkeiten habe ich einzeln nachgeprüft, alle waren Fehlalarme.</li>
+      <li><b>Grenze:</b> Das ist ein Abgleich mit bekannten Mustern. Neue oder unbekannte Spyware findet so ein Test nicht.</li>
+    </ul>
+
+    <h2>Was ich untersucht habe</h2>
+    <p>Absturzberichte und ein Diagnosepaket des Systems, beides per USB ausgelesen. Dazu einen achtminütigen Mitschnitt des Netzwerkverkehrs, damit ich sehe, mit welchen Servern das Handy spricht. Außerdem habe ich nachgesehen, ob Konfigurationsprofile installiert sind, ob der Entwicklermodus an ist und ob alle Apps aus dem App Store signiert sind.</p>
+
+    <div class="figs">
+      <div><b>6.630</b><span>öffentliche Indikatoren abgeglichen (83 Prozessnamen, 6.547 Domains)</span></div>
+      <div><b>712</b><span>Absturzberichte durchsucht</span></div>
+      <div><b>77</b><span>Server im Netzwerk-Mitschnitt, 0 Treffer</span></div>
+    </div>
+
+    <h2>Ein Umweg, den ich gehen musste</h2>
+    <p>Die Version von MVT, die ich hatte, wertet das Diagnosepaket nicht mehr forensisch aus, sie zeigt nur noch Informationen an. Ich habe die Indikatoren deshalb selbst gegen die Dateien abgeglichen. Den Netzwerk-Mitschnitt konnte das Standardwerkzeug nicht lesen, also habe ich die Servernamen mit einem kleinen eigenen Parser herausgezogen.</p>
+
+    <h2>Die Fehlalarme</h2>
+    <p>Ein paar Treffer sahen zuerst verdächtig aus. Bei genauerem Hinsehen waren es normale Systemprozesse von Apple an ihrem üblichen Ort, zufällig passende Zeichenfolgen in Datenmüll oder Einträge aus Apples eigenen Texttabellen. Genau dafür ist das Nachprüfen da: Ein Treffer ist ein Hinweis, kein Beweis.</p>
+
+    <h2>Was der Test nicht kann</h2>
+    <p>MVT erkennt nur, was schon bekannt und beschrieben ist. Hochentwickelte Spyware kann Spuren löschen, und ein vollständiges Backup habe ich mangels Speicherplatz nicht ausgewertet. Das Ergebnis heißt also: keine bekannten Spuren gefunden. Es heißt nicht: Das Handy ist garantiert sauber.</p>
+
+    <h2>Was ich daraus mitnehme</h2>
+    <p>Sicherheit ist zum größten Teil Nachprüfen und sauberes Formulieren. Die ehrliche Aussage ist schwächer als <q>alles sauber</q>, aber sie stimmt. Seitdem prüfe ich auch bei meinen eigenen Projekten zuerst, was ich wirklich belegen kann.</p>
+
+    <p class="note">Ich nenne hier bewusst keine Details zu meinen Apps oder Einstellungen. Wer selbst prüfen will, findet MVT und die Anleitung öffentlich.</p>
+    <div class="links">
+      <a href="https://docs.mvt.re/" target="_blank" rel="noopener">MVT-Dokumentation<span class="sr-only"> (neuer Tab)</span></a>
+      <a href="https://github.com/AmnestyTech/investigations" target="_blank" rel="noopener">Öffentliche Indikatoren von Amnesty Tech<span class="sr-only"> (neuer Tab)</span></a>
+    </div>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="index.html">Zur Startseite</a></div></footer>
+<style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style>
+</body>
+</html>

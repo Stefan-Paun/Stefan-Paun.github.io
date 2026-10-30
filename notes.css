@@ -1,0 +1,44 @@
+/* Shared look for the long-form pages (case study, notes). Same tokens as the home page. */
+@font-face{font-family:"Archivo";src:url("fonts/archivo-latin.woff2") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@view-transition{navigation:auto}
+:root{
+  --black:#000;--card:#1d1d1f;--text:#f5f5f7;--grey:#86868b;--grey-2:#a1a1a6;--body:#c7c7cc;--hair:rgba(255,255,255,.12);
+  --blue:#2997ff;--blue-btn:#0071e3;--yellow:#FFD23A;--cyan:#35D0FF;--red:#FF4D4D;
+  --sf:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  --gutter:max(22px,env(safe-area-inset-left));
+}
+*{box-sizing:border-box}
+html{background:var(--black);-webkit-text-size-adjust:100%;scrollbar-color:#3a3a3c var(--black)}
+body{margin:0;background:var(--black);color:var(--text);font:400 17px/1.6 var(--sf);letter-spacing:-.011em;-webkit-font-smoothing:antialiased}
+::selection{background:var(--blue-btn);color:#fff}
+a{color:var(--blue);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+.nav{position:sticky;top:0;z-index:10;height:52px;background:rgba(22,22,23,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--hair)}
+.nav .in{width:min(720px,100% - 2*var(--gutter));margin:0 auto;height:100%;display:flex;align-items:center;gap:10px}
+.nav a{color:var(--text);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:10px;min-height:44px}
+.nav .back{margin-left:auto;color:var(--grey-2);font-weight:400;font-size:.875rem}
+.nav .back:hover{color:var(--text)}
+main{width:min(720px,100% - 2*var(--gutter));margin:0 auto;padding:clamp(56px,9vw,96px) 0 96px}
+.kicker-less h1,h1{margin:0;font-size:clamp(2.2rem,5.4vw,3.6rem);line-height:1.06;letter-spacing:-.032em;font-weight:700;text-wrap:balance}
+h1 span{color:var(--grey-2)}
+.meta{margin:16px 0 0;color:var(--grey-2);font-size:.875rem}
+.lede{margin:28px 0 0;color:var(--body);font-size:1.25rem;line-height:1.5;text-wrap:pretty}
+.take{margin:36px 0 0;padding:22px 24px;border-radius:22px;background:var(--card);list-style:none}
+.take li{position:relative;padding-left:22px;margin:6px 0;color:var(--body)}
+.take li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--c,var(--yellow))}
+.take b{color:var(--text)}
+h2{margin:64px 0 0;font-size:clamp(1.5rem,3vw,1.9rem);letter-spacing:-.025em;line-height:1.15}
+h2 + p{margin-top:14px}
+p{color:var(--body);text-wrap:pretty}
+code{font-family:var(--mono);font-size:.9em;background:rgba(255,255,255,.08);padding:.08em .35em;border-radius:6px;color:var(--text)}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:28px 0 0}
+.figs div{background:var(--card);border-radius:18px;padding:18px 20px}
+.figs b{display:block;font-size:2.2rem;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.figs span{display:block;margin-top:6px;color:var(--grey-2);font-size:.875rem}
+.note{margin:28px 0 0;padding:16px 20px;border-left:2px solid var(--grey);color:var(--grey-2);font-size:1rem}
+.links{display:flex;flex-wrap:wrap;gap:10px 24px;margin:40px 0 0}
+.links a{display:inline-flex;align-items:center;min-height:44px}
+footer{border-top:1px solid var(--hair);padding:22px 0 calc(22px + env(safe-area-inset-bottom));color:var(--grey-2);font-size:.875rem}
+footer .in{width:min(720px,100% - 2*var(--gutter));margin:0 auto;display:flex;gap:20px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}

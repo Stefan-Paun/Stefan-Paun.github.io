@@ -12,6 +12,38 @@
     rv.forEach(function(el){ io.observe(el); });
   } else rv.forEach(function(el){ el.classList.add("in"); });
 
+
+  // quick search: Cmd/Ctrl+K or the nav button opens a list of destinations
+  var pal = document.getElementById("palette"), pq = document.getElementById("pq"), kbtn = document.getElementById("kbtn");
+  if(pal && pal.showModal){
+    var items = Array.prototype.slice.call(pal.querySelectorAll("li")), sel = 0;
+    function shown(){ return items.filter(function(li){ return !li.hidden; }); }
+    function mark(){ shown().forEach(function(li, i){ li.setAttribute("aria-selected", String(i === sel)); }); }
+    function openPal(){ pq.value = ""; items.forEach(function(li){ li.hidden = false; }); sel = 0; mark(); pal.showModal(); pq.focus(); }
+    if(kbtn) kbtn.addEventListener("click", openPal);
+    document.addEventListener("keydown", function(ev){
+      if((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === "k"){ ev.preventDefault(); pal.open ? pal.close() : openPal(); }
+    });
+    pq.addEventListener("input", function(){
+      var q = pq.value.trim().toLowerCase();
+      items.forEach(function(li){ li.hidden = q && li.textContent.toLowerCase().indexOf(q) < 0; });
+      sel = 0; mark();
+    });
+    pq.addEventListener("keydown", function(ev){
+      var list = shown();
+      if(ev.key === "ArrowDown"){ ev.preventDefault(); sel = Math.min(list.length - 1, sel + 1); mark(); }
+      else if(ev.key === "ArrowUp"){ ev.preventDefault(); sel = Math.max(0, sel - 1); mark(); }
+      else if(ev.key === "Enter"){ ev.preventDefault(); var a = list[sel] && list[sel].querySelector("a"); if(a){ pal.close(); a.click(); } }
+    });
+    pal.addEventListener("click", function(ev){ if(ev.target === pal) pal.close(); if(ev.target.closest("a")) pal.close(); });
+  }
+
+  // for the people who open the console
+  try {
+    console.log("%cHallo!%c Diese Seite hat kein Framework und keine Abhängigkeiten. Der Code liegt offen: view-source oder scene.js. Agent-Board: https://github.com/Stefan-Paun/agent-board",
+      "font:700 16px -apple-system,sans-serif;color:#FFD23A", "font:13px -apple-system,sans-serif;color:#a1a1a6");
+  } catch(e){}
+
   // nav switches to the light material while it sits over the light band
   var nav = document.querySelector(".nav"), light = document.querySelector(".light");
   function navTone(){}

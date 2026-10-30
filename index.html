@@ -23,6 +23,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@view-transition{navigation:auto}
 @font-face{font-family:"Archivo";src:url("fonts/archivo-latin.woff2") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
 :root{
   --black:#000;--card:#1d1d1f;--light:#f5f5f7;--ink:#1d1d1f;
@@ -179,6 +180,31 @@ a.shot:focus-visible{outline-offset:-3px}
 .steps p{margin:0;color:#515154;font-size:.875rem;line-height:1.5}
 .steps li:last-child svg{color:var(--blue-ink)}
 
+/* now + principles */
+.now-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,96px)}
+.now h2{margin:0 0 28px;font-weight:700;font-size:clamp(1.9rem,4vw,2.75rem);line-height:1.08;letter-spacing:-.03em}
+.now h2 span{color:var(--grey-2)}
+.now-list,.rules{margin:0;padding:0;list-style:none;display:grid;gap:18px}
+.now-list li{position:relative;padding-left:22px;color:#c7c7cc;font-size:1.0625rem}
+.now-list li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--c)}
+.rules{counter-reset:r}
+.rules li{counter-increment:r;position:relative;padding-left:40px;color:#c7c7cc;font-size:1.0625rem}
+.rules li::before{content:counter(r);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--hair);display:grid;place-items:center;font-size:.875rem;color:var(--grey-2);font-variant-numeric:tabular-nums}
+.now b,.rules b{color:var(--text);font-weight:600}
+.avatar{display:block;margin:0 auto 26px;width:96px;height:96px;border-radius:24px;image-rendering:pixelated;box-shadow:0 0 0 1px var(--hair)}
+/* quick search */
+.kbtn{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:8px;border:1px solid var(--hair);background:transparent;color:var(--grey-2);font:inherit;font-size:.875rem;cursor:pointer}
+.kbtn:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
+.kbtn kbd{font:inherit}
+.palette{width:min(560px,calc(100% - 32px));margin:14vh auto auto;padding:0;border:1px solid var(--hair);border-radius:18px;background:#1d1d1f;color:var(--text);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.palette::backdrop{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.palette input{width:100%;padding:18px 20px;border:0;border-bottom:1px solid var(--hair);background:transparent;color:var(--text);font:inherit;font-size:1.0625rem;outline:none}
+.palette ul{list-style:none;margin:0;padding:8px;max-height:min(60vh,420px);overflow:auto}
+.palette a{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border-radius:12px;color:var(--text);text-decoration:none}
+.palette a span{color:var(--grey-2);font-size:.875rem}
+.palette li[aria-selected="true"] a,.palette a:hover{background:rgba(255,255,255,.08)}
+.palette li[hidden]{display:none}
+
 /* contact */
 .contact{text-align:center}
 .contact h2{margin:0;font-weight:700;font-size:clamp(3rem,8vw,5.6rem);letter-spacing:-.04em;line-height:1.04}
@@ -200,6 +226,8 @@ footer .wrap > :last-child{margin-left:auto}
   .steps li:last-child{grid-column:span 2}
 }
 @media (max-width:834px){
+  .now-grid{grid-template-columns:minmax(0,1fr)}
+  .kbtn{display:none}
   .nav nav{display:none}
   .nav .pill{margin-left:auto}
   .t-ab{grid-template-columns:minmax(0,1fr)}
@@ -260,6 +288,7 @@ footer .wrap > :last-child{margin-left:auto}
       <a href="#arbeitsweise">Arbeitsweise</a>
       <a href="#kontakt">Kontakt</a>
     </nav>
+    <button class="kbtn" type="button" id="kbtn" aria-label="Schnellsuche öffnen (Cmd oder Strg und K)"><kbd>⌘K</kbd></button>
     <a class="pill" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Live-Demo<span class="sr-only"> (neuer Tab)</span></a>
   </div>
 </header>
@@ -286,7 +315,7 @@ footer .wrap > :last-child{margin-left:auto}
   <div class="sticky">
     <ul class="legend" aria-hidden="true"><li style="--c:var(--yellow)">KI-Agents</li><li style="--c:var(--cyan)">Security</li><li style="--c:var(--red)">Lernspiele</li><li class="plain">Form schematisch, Zahlen echt</li></ul>
     <canvas id="cv" tabindex="0" aria-roledescription="interaktive Grafik" aria-label="Meine Projekte als farbige Spuren aus einem Punkt, Form schematisch, Zahlen echt. Pfeiltasten wählen ein Projekt, Enter öffnet es, Escape schließt." aria-describedby="cv-list"></canvas>
-    <div class="pick" id="pick"><b></b><span class="v"></span><a></a><span class="kh">Enter öffnet · Escape schließt</span></div>
+    <div class="pick" id="pick"><b></b><span class="v"></span><a href="#projekte">Zum Projekt</a><span class="kh">Enter öffnet · Escape schließt</span></div>
     <p class="kbd-hint" aria-hidden="true">Pfeiltasten wählen ein Projekt · Tab verlässt die Grafik</p>
     <p class="sr-only" id="pick-live" aria-live="polite"></p>
     <a class="skip-scene more" href="#projekte">Zu den Projekten</a>
@@ -317,6 +346,7 @@ footer .wrap > :last-child{margin-left:auto}
           </div>
           <div class="links">
             <a class="btn btn-p btn-sm" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Live-Demo ansehen<span class="sr-only"> (neuer Tab)</span></a>
+            <a class="more" href="agent-board-fallstudie.html">Fallstudie lesen</a>
             <a class="more" href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Code auf GitHub<span class="sr-only"> (neuer Tab)</span></a>
           </div>
           <span class="kind" style="--c:var(--yellow)">KI-Agent · öffentlich, Release v1.4.0</span>
@@ -344,6 +374,7 @@ footer .wrap > :last-child{margin-left:auto}
         <h3>Security</h3>
         <p>Mein iPhone hab ich mit dem Mobile Verification Toolkit von Amnesty International gegen 6.630 öffentliche Spyware-Indikatoren abgeglichen: keine gefunden, aber das ist kein Beweis. Dazu 6 Räume im Lernpfad Pre Security auf TryHackMe und der Cisco-Kurs Introduction to Cybersecurity.</p>
         <span class="kind" style="--c:var(--cyan)">Security · läuft gerade</span>
+        <div class="links"><a class="more" href="sicherheit-iphone.html">So bin ich vorgegangen</a></div>
         <span class="note">Ein Zertifikat habe ich noch nicht.</span>
       </article>
 
@@ -388,9 +419,31 @@ footer .wrap > :last-child{margin-left:auto}
   </div>
 </section>
 
+<section class="sec now" id="jetzt" aria-labelledby="now-h">
+  <div class="wrap now-grid">
+    <div class="rv">
+      <h2 id="now-h">Gerade. <span>Stand <time datetime="2026-10">Oktober 2026</time>.</span></h2>
+      <ul class="now-list">
+        <li style="--c:var(--yellow)"><b>Agent-Board</b> bekommt eine Stadtansicht, in der jeder Agent durch eine kleine Pixel-Stadt läuft. In Arbeit.</li>
+        <li style="--c:var(--cyan)"><b>Security:</b> Lernpfad Pre Security auf TryHackMe und der Cisco-Kurs laufen.</li>
+        <li style="--c:var(--red)"><b>Schule:</b> Matura-Vorbereitung, auch mit eigenen Lernspielen.</li>
+      </ul>
+    </div>
+    <div class="rv" style="--i:1">
+      <h2>Woran ich mich halte.</h2>
+      <ol class="rules">
+        <li><b>Belege statt Adjektive.</b> Jedes Projekt zeigt, was es tut, und eine echte Zahl.</li>
+        <li><b>Ehrlich über mein Level.</b> Ich bin 17 und lerne öffentlich. Kein Senior, aber ich liefere.</li>
+        <li><b>Privatsphäre zuerst.</b> Auch diese Seite verrät nichts Persönliches, das nicht hierher gehört.</li>
+        <li><b>Schnell und leicht.</b> Eine Seite ohne Framework, die auch im LinkedIn-Browser am Handy läuft.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
 <section class="sec contact" id="kontakt" aria-labelledby="kon-h">
   <div class="wrap rv">
-    <svg class="mark" style="margin:0 auto 26px;display:block" width="64" height="64" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="2.4" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="2.4" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="2.8" fill="#f5f5f7"/></svg>
+    <img class="avatar" src="img/avatar.png" width="96" height="96" alt="Mein Pixel-Avatar">
     <h2 id="kon-h">Kontakt.</h2>
     <p>Für Fragen zu meinen Projekten, Feedback oder Zusammenarbeit: am schnellsten über GitHub.</p>
     <div class="row">
@@ -412,6 +465,21 @@ footer .wrap > :last-child{margin-left:auto}
   </div>
 </footer>
 
+<dialog class="palette" id="palette" aria-label="Schnellsuche">
+  <form method="dialog">
+    <input id="pq" type="text" placeholder="Wohin? z. B. Demo, Security, Kontakt" autocomplete="off" aria-label="Suchbegriff" aria-controls="pl">
+    <ul id="pl" role="listbox" aria-label="Ziele">
+      <li role="option"><a href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Agent-Board Live-Demo <span>öffnet neuen Tab</span></a></li>
+      <li role="option"><a href="#p-agent-board">Projekte <span>Agent-Board, Jarvis, Security, Rallye, Werkzeuge</span></a></li>
+      <li role="option"><a href="agent-board-fallstudie.html">Fallstudie Agent-Board <span>Problem, Entscheidungen, Tests</span></a></li>
+      <li role="option"><a href="sicherheit-iphone.html">Security: iPhone-Check <span>Vorgehen, Ergebnis, Grenzen</span></a></li>
+      <li role="option"><a href="#arbeitsweise">Arbeitsweise <span>Plan, Agents, Tests, Security, Release</span></a></li>
+      <li role="option"><a href="#jetzt">Gerade <span>woran ich arbeite</span></a></li>
+      <li role="option"><a href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub <span>öffnet neuen Tab</span></a></li>
+      <li role="option"><a href="#kontakt">Kontakt</a></li>
+    </ul>
+  </form>
+</dialog>
 <script src="scene.js" defer></script>
 </body>
 </html>
