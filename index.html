@@ -177,6 +177,14 @@ a.shot:focus-visible{outline-offset:-3px}
 .t-cc{grid-column:span 2}
 
 
+.t-mr{grid-column:span 6;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,56px);align-items:center}
+.mr-shots{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mr-shots figure{margin:0}
+.mr-shots .mr-main{grid-column:span 2}
+.mr-shots img{display:block;width:100%;height:auto}
+.t-mr .num-l{margin-bottom:24px}
+.t-mr .trk-art{display:none}
+@media (max-width:834px){.t-mr .trk-art{display:block}}
 /* light band */
 .light{background:var(--light);color:var(--ink)}
 .light .head h2 span{color:#515154}
@@ -249,6 +257,7 @@ footer .wrap > :last-child{margin-left:auto}
   .nav .pill{margin-left:auto}
   .t-ab{grid-template-columns:minmax(0,1fr)}
   .t-jv,.t-sec,.t-ry,.t-cc{grid-column:span 6}
+  .t-mr{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:760px){
   .scene{height:140vh}
@@ -421,6 +430,21 @@ footer .wrap > :last-child{margin-left:auto}
         <div class="links"><a class="more" href="https://github.com/Stefan-Paun/waechter" target="_blank" rel="noopener">Wächter auf GitHub<span class="sr-only"> (neuer Tab)</span></a></div>
         <span class="note">Der Wächter ist Open Source, Cockpit und Skills sind privat.</span>
       </article>
+      <article class="tile t-mr rv" id="p-matura" style="--i:5">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 60 86, 110 52, 150 14" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 64 92, 116 64, 156 32" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 56 80, 100 40, 140 6" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 70 96, 124 80, 158 54" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <div class="mr-text">
+          <span class="num">1.445</span><span class="num-l">echte Matura-Fragen</span>
+          <h3>Nachtschule</h3>
+          <p>Mein 3D-Lernspiel für die eigene Matura: Mathe, Englisch, Deutsch und Latein, jede Frage aus echten Klausuren mit Quelle. Man läuft in 3D durch eine nächtliche Schule. Wissen ist Licht, Vergessen ist Dunkelheit, und ein „Prüfer“ mit einem leeren Blatt als Gesicht jagt dich. Wiederholt wird nach Abständen, damit es hängen bleibt.</p>
+          <span class="kind" style="--c:var(--red)">Lernspiel · 3D im Browser mit three.js · privat, nur für mich</span>
+          <span class="note">Nicht öffentlich spielbar, weil es für meine eigene Vorbereitung gebaut ist.</span>
+        </div>
+        <div class="mr-shots">
+          <figure class="shot mr-main"><img src="img/matura-klasse.webp" width="960" height="540" loading="lazy" alt="Nachtschule in 3D: ein dunkles Klassenzimmer, an der Tafel Mathe-Formeln, davor die Gestalt des Prüfers."></figure>
+          <figure class="shot"><img src="img/matura-kammer.webp" width="960" height="540" loading="lazy" alt="Die Kammer des Hausmeisters mit Klavier; an der Tafel der Plan: Deutsch in der Bibliothek, Englisch im Westflügel, Mathematik im Ostflügel, Latein im Keller."></figure>
+          <figure class="shot"><img src="img/matura-frage.webp" width="960" height="540" loading="lazy" alt="Eine Mathe-Frage im Spiel: Punkt an einer Geraden spiegeln, mit Koordinatensystem und Eingabefeld."></figure>
+        </div>
+      </article>
     </div>
   </div>
 </section>
@@ -498,7 +522,7 @@ footer .wrap > :last-child{margin-left:auto}
     <input id="pq" type="text" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-activedescendant="po0" placeholder="Wohin? z. B. Demo, Security, Kontakt" autocomplete="off" aria-label="Suchbegriff" aria-controls="pl">
     <ul id="pl" role="listbox" aria-label="Ziele">
       <li role="option" id="po0"><a href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Agent-Board Live-Demo <span>öffnet neuen Tab</span></a></li>
-      <li role="option" id="po1"><a href="#p-agent-board">Projekte <span>Agent-Board, Jarvis, Security, Rallye, Werkzeuge</span></a></li>
+      <li role="option" id="po1"><a href="#p-agent-board">Projekte <span>Agent-Board, Jarvis, Security, Rallye, Werkzeuge, Nachtschule</span></a></li>
       <li role="option" id="po2"><a href="agent-board-fallstudie.html">Fallstudie Agent-Board <span>Problem, Entscheidungen, Tests</span></a></li>
       <li role="option" id="po3"><a href="sicherheit-iphone.html">Security: iPhone-Check <span>Vorgehen, Ergebnis, Grenzen</span></a></li>
       <li role="option" id="po8"><a href="jarvis.html">Jarvis <span>wie mein Sprachassistent aufgebaut ist</span></a></li>

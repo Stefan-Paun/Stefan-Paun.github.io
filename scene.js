@@ -90,7 +90,8 @@
     {name:"Agent-Board", val:"85 Tests, Open Source", valEn:"85 tests, open source", href:"https://stefan-paun.github.io/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:85, tl:.35},
     {name:"Jarvis", val:"3.619 automatische Tests", valEn:"3,619 automated tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3619, tl:-.3},
     {name:"GWB-Rallye", nameEn:"GWB Rally", val:"273 Fragen", valEn:"273 questions", href:"#p-rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
-    {name:"Cyber-Rallye", nameEn:"Cyber Rally", val:"135 Fragen", valEn:"135 questions", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5}
+    {name:"Cyber-Rallye", nameEn:"Cyber Rally", val:"135 Fragen", valEn:"135 questions", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5},
+    {name:"Nachtschule", nameEn:"Night School", val:"1.445 echte Matura-Fragen", valEn:"1,445 real exam questions", href:"#p-matura", col:C.r, phi:118, k:-.35, end:.84, jet:true, dep:1445, tl:.45}
   ];
   document.getElementById("cv-list").innerHTML = "";
   var EN = document.documentElement.lang === "en";
