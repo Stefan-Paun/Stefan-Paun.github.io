@@ -18,7 +18,7 @@
   if(pal && pal.showModal){
     var items = Array.prototype.slice.call(pal.querySelectorAll("li")), sel = 0;
     function shown(){ return items.filter(function(li){ return !li.hidden; }); }
-    function mark(){ shown().forEach(function(li, i){ li.setAttribute("aria-selected", String(i === sel)); }); }
+    function mark(){ shown().forEach(function(li, i){ li.setAttribute("aria-selected", String(i === sel)); if(i === sel) pq.setAttribute("aria-activedescendant", li.id); }); }
     function openPal(){ pq.value = ""; items.forEach(function(li){ li.hidden = false; }); sel = 0; mark(); pal.showModal(); pq.focus(); }
     if(kbtn) kbtn.addEventListener("click", openPal);
     document.addEventListener("keydown", function(ev){
@@ -293,8 +293,8 @@
   var faC = TRACKS.map(function(){ return 1; }), hvC = TRACKS.map(function(){ return 0; });
   var pick = document.getElementById("pick"), live = document.getElementById("pick-live"), legend = document.querySelector(".legend");
   function hit(ev){
-    var r = cv.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top, best = -1, bd = 18;
-    labels.forEach(function(l){ if(x >= l.x0 - 6 && x <= l.x1 + 6 && Math.abs(y - l.y) < 12){ best = l.i; bd = 0; } });
+    var r = cv.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top, best = -1, touch = ev.pointerType && ev.pointerType !== "mouse", bd = touch ? 28 : 18, lh = touch ? 16 : 12;
+    labels.forEach(function(l){ if(x >= l.x0 - 6 && x <= l.x1 + 6 && Math.abs(y - l.y) < lh){ best = l.i; bd = 0; } });
     if(best < 0) TRACKS.forEach(function(t, i){ (t.proj || []).forEach(function(q){ var d = Math.hypot(q[0] - x, q[1] - y); if(d < bd){ bd = d; best = i; } }); });
     return best;
   }
@@ -330,7 +330,8 @@
   cv.addEventListener("pointerleave", function(){ if(hov >= 0){ hov = -1; kick(); } });
   cv.addEventListener("click", function(ev){
     var i = hit(ev);
-    if(i >= 0){ var r = cv.getBoundingClientRect(); pulses.push({x:ev.clientX - r.left, y:ev.clientY - r.top, t:performance.now(), c:TRACKS[i].col}); }
+    var r = cv.getBoundingClientRect();
+    pulses.push({x:ev.clientX - r.left, y:ev.clientY - r.top, t:performance.now(), c:i >= 0 ? TRACKS[i].col : "rgba(161,161,166,.6)"});
     showPick(i === focus ? -1 : i);
   });
   // keyboard: arrows walk through the projects, Enter follows the card's link
@@ -376,7 +377,7 @@
     var m1 = settle(faC, function(i){ return focus < 0 || focus === i ? 1 : .18; }, rate(.2, dt));
     var m2 = settle(hvC, function(i){ return hov === i ? 1 : 0; }, rate(.3, dt));
     if(progress < 1.6) introStep(ts);
-    draw();
+    if(sceneOn) draw();
     if(shown !== target || m1 || m2 || pulses.length || progress < 1.6) raf = requestAnimationFrame(step); else lastT = 0;
   }
   function kick(){ if(!raf) raf = requestAnimationFrame(step); }

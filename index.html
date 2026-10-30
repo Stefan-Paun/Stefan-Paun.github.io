@@ -197,6 +197,9 @@ a.shot:focus-visible{outline-offset:-3px}
 .kbtn:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
 .kbtn kbd{font:inherit}
 .palette{width:min(560px,calc(100% - 32px));margin:14vh auto auto;padding:0;border:1px solid var(--hair);border-radius:18px;background:#1d1d1f;color:var(--text);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.palette[open]{animation:palIn .22s var(--ease)}
+@keyframes palIn{from{opacity:0;transform:translateY(-8px) scale(.98)}}
+.palette li a{transition:background .12s}
 .palette::backdrop{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .palette input{width:100%;padding:18px 20px;border:0;border-bottom:1px solid var(--hair);background:transparent;color:var(--text);font:inherit;font-size:1.0625rem;outline:none}
 .palette ul{list-style:none;margin:0;padding:8px;max-height:min(60vh,420px);overflow:auto}
@@ -245,12 +248,12 @@ footer .wrap > :last-child{margin-left:auto}
   .hero{padding-top:56px}
 }
 @media (max-width:560px){
-  .cta .btn-p{flex:1 1 auto}
-  .cta .btn-s{flex:0 0 auto}
+  .cta .btn{flex:1 1 100%}
   .links .btn{flex:1 1 auto}
   .nav nav{display:flex;margin-left:auto;gap:16px}
   .nav nav a{font-size:.875rem;padding:14px 0}
-  .nav .pill{display:none}
+  .nav nav a[href="#arbeitsweise"]{display:none}
+  .nav .pill{display:inline-flex;margin-left:0;height:36px;padding:0 14px}
   .brand{font-size:1.1rem}
   .steps{grid-template-columns:minmax(0,1fr)}
   .steps li:last-child{grid-column:auto}
@@ -304,17 +307,14 @@ footer .wrap > :last-child{margin-left:auto}
       <a class="btn btn-p" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Agent-Board live ansehen<span class="sr-only"> (neuer Tab)</span></a>
       <a class="btn btn-s" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub<span class="sr-only"> (neuer Tab)</span></a>
     </div>
-    <ul class="proof" aria-label="Agent-Board nachprüfen">
-      <li><a href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Quellcode auf GitHub<svg class="ext" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 7.5 7.5 2.5M3.5 2.5h4v4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg><span class="sr-only"> (neuer Tab)</span></a></li>
-      <li><a href="https://github.com/Stefan-Paun/agent-board/actions" target="_blank" rel="noopener">CI-Läufe ansehen<svg class="ext" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 7.5 7.5 2.5M3.5 2.5h4v4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg><span class="sr-only"> (neuer Tab)</span></a></li>
-    </ul>
+    <p class="proof"><a class="more" href="agent-board-fallstudie.html">Wie ich einen Fehler in Agent-Board gelöst habe</a></p>
   </div>
 </section>
 
 <section class="scene" id="scene" aria-label="Alle Projekte als ein Teilchen-Ereignis">
   <div class="sticky">
     <ul class="legend" aria-hidden="true"><li style="--c:var(--yellow)">KI-Agents</li><li style="--c:var(--cyan)">Security</li><li style="--c:var(--red)">Lernspiele</li><li class="plain">Form schematisch, Zahlen echt</li></ul>
-    <canvas id="cv" tabindex="0" aria-roledescription="interaktive Grafik" aria-label="Meine Projekte als farbige Spuren aus einem Punkt, Form schematisch, Zahlen echt. Pfeiltasten wählen ein Projekt, Enter öffnet es, Escape schließt." aria-describedby="cv-list"></canvas>
+    <canvas id="cv" tabindex="0" role="group" aria-roledescription="interaktive Grafik" aria-label="Meine Projekte als farbige Spuren aus einem Punkt, Form schematisch, Zahlen echt. Pfeiltasten wählen ein Projekt, Enter öffnet es, Escape schließt." aria-describedby="cv-list"></canvas>
     <div class="pick" id="pick"><b></b><span class="v"></span><a href="#projekte">Zum Projekt</a><span class="kh">Enter öffnet · Escape schließt</span></div>
     <p class="kbd-hint" aria-hidden="true">Pfeiltasten wählen ein Projekt · Tab verlässt die Grafik</p>
     <p class="sr-only" id="pick-live" aria-live="polite"></p>
@@ -340,7 +340,7 @@ footer .wrap > :last-child{margin-left:auto}
           <h3>Agent-Board</h3>
           <p>Eine Live-Ansicht in Pixel-Art für Claude-Code-Agents. Jeder Subagent ist eine kleine Figur, die in den Raum des Werkzeugs geht, das sie gerade benutzt. So sieht man auf einen Blick, wer arbeitet und wer auf eine Freigabe wartet.</p>
           <div class="stats">
-            <div><span class="num">74</span><span class="num-l">Tests</span></div>
+            <a class="stat-link" href="https://github.com/Stefan-Paun/agent-board/actions" target="_blank" rel="noopener"><span class="num">74</span><span class="num-l">Tests</span><span class="sr-only"> (CI-Läufe, neuer Tab)</span></a>
             <a class="stat-link" href="https://github.com/Stefan-Paun/agent-board/blob/main/package.json" target="_blank" rel="noopener"><span class="num">0</span><span class="num-l">Abhängigkeiten</span><span class="sr-only"> (package.json, neuer Tab)</span></a>
             <div><span class="num">3</span><span class="num-l">Sprachen</span></div>
           </div>
@@ -467,16 +467,16 @@ footer .wrap > :last-child{margin-left:auto}
 
 <dialog class="palette" id="palette" aria-label="Schnellsuche">
   <form method="dialog">
-    <input id="pq" type="text" placeholder="Wohin? z. B. Demo, Security, Kontakt" autocomplete="off" aria-label="Suchbegriff" aria-controls="pl">
+    <input id="pq" type="text" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-activedescendant="po0" placeholder="Wohin? z. B. Demo, Security, Kontakt" autocomplete="off" aria-label="Suchbegriff" aria-controls="pl">
     <ul id="pl" role="listbox" aria-label="Ziele">
-      <li role="option"><a href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Agent-Board Live-Demo <span>öffnet neuen Tab</span></a></li>
-      <li role="option"><a href="#p-agent-board">Projekte <span>Agent-Board, Jarvis, Security, Rallye, Werkzeuge</span></a></li>
-      <li role="option"><a href="agent-board-fallstudie.html">Fallstudie Agent-Board <span>Problem, Entscheidungen, Tests</span></a></li>
-      <li role="option"><a href="sicherheit-iphone.html">Security: iPhone-Check <span>Vorgehen, Ergebnis, Grenzen</span></a></li>
-      <li role="option"><a href="#arbeitsweise">Arbeitsweise <span>Plan, Agents, Tests, Security, Release</span></a></li>
-      <li role="option"><a href="#jetzt">Gerade <span>woran ich arbeite</span></a></li>
-      <li role="option"><a href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub <span>öffnet neuen Tab</span></a></li>
-      <li role="option"><a href="#kontakt">Kontakt</a></li>
+      <li role="option" id="po0"><a href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Agent-Board Live-Demo <span>öffnet neuen Tab</span></a></li>
+      <li role="option" id="po1"><a href="#p-agent-board">Projekte <span>Agent-Board, Jarvis, Security, Rallye, Werkzeuge</span></a></li>
+      <li role="option" id="po2"><a href="agent-board-fallstudie.html">Fallstudie Agent-Board <span>Problem, Entscheidungen, Tests</span></a></li>
+      <li role="option" id="po3"><a href="sicherheit-iphone.html">Security: iPhone-Check <span>Vorgehen, Ergebnis, Grenzen</span></a></li>
+      <li role="option" id="po4"><a href="#arbeitsweise">Arbeitsweise <span>Plan, Agents, Tests, Security, Release</span></a></li>
+      <li role="option" id="po5"><a href="#jetzt">Gerade <span>woran ich arbeite</span></a></li>
+      <li role="option" id="po6"><a href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub <span>öffnet neuen Tab</span></a></li>
+      <li role="option" id="po7"><a href="#kontakt">Kontakt</a></li>
     </ul>
   </form>
 </dialog>
