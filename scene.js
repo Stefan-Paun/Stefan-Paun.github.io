@@ -128,7 +128,7 @@
       prev = last;
     }
   }
-  function ease(x){ return x >= 1 ? 1 : 1 - Math.pow(2, -10*x); }
+  function ease(x){ return x >= 1 ? 1 : 1 - Math.pow(1 - x, 3); }
 
   function layout(){
     var r = cv.getBoundingClientRect();
@@ -246,9 +246,9 @@
 
     // tap and hint pulses: a ring that grows from the touched point and fades
     var now = performance.now();
-    pulses = pulses.filter(function(u){ return now - u.t < 420 + (u.d || 0); });
+    pulses = pulses.filter(function(u){ return now - u.t < 520 + (u.d || 0); });
     pulses.forEach(function(u){
-      var a = (now - u.t - (u.d || 0))/420; if(a < 0) return;
+      var a = (now - u.t - (u.d || 0))/520; if(a < 0) return;
       var e = 1 - Math.pow(1 - a, 3);
       ctx.globalAlpha = (1 - a)*.85; ctx.strokeStyle = u.c; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(u.x, u.y, 4 + 16*e, 0, Math.PI*2); ctx.stroke();
@@ -357,7 +357,7 @@
     if(reduce) return;
     if(!sceneOn){ target = sceneP(); return; }
     target = sceneP(); captions(target); legend.classList.toggle("on", target > .02);
-    if(focus >= 0 && Math.abs(target - pickAt) > .06) showPick(-1);
+    if(focus >= 0 && Math.abs(target - pickAt) > .12) showPick(-1);
     if(!hinted && focus < 0 && progress >= 1 && target > .05){
       var lp = labelPos(2);
       if(lp){ hinted = true; var tt = performance.now(); pulses.push({x:lp.x, y:lp.y, t:tt, c:"#f5f5f7"}, {x:lp.x, y:lp.y, t:tt, d:520, c:"#f5f5f7"}); }

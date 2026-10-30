@@ -73,7 +73,7 @@ p{text-wrap:pretty}
 /* hero */
 .hero{text-align:center;padding:clamp(48px,7vw,88px) 0 0}
 .hero h1{margin:0;font-weight:700;font-size:clamp(3.2rem,9vw,6rem);line-height:1.05;letter-spacing:-.035em}
-.hero .sub{margin:14px auto 0;max-width:24ch;text-wrap:balance;font-size:clamp(1.5rem,3.2vw,2.35rem);line-height:1.17;font-weight:600;letter-spacing:-.025em;color:var(--grey)}
+.hero .sub{margin:14px auto 0;max-width:24ch;text-wrap:balance;font-size:clamp(1.5rem,3.2vw,2.35rem);line-height:1.17;font-weight:600;letter-spacing:-.025em;color:var(--grey-2)}
 .hero .sub em{font-style:normal;color:var(--text)}
 .hero .intro{margin:22px auto 0;max-width:36ch;color:var(--grey-2);font-size:1.25rem;line-height:1.4;text-wrap:balance}
 .nb{white-space:nowrap}
@@ -102,12 +102,13 @@ p{text-wrap:pretty}
 .caps{position:absolute;left:0;right:0;bottom:clamp(60px,8vh,84px);text-align:center;pointer-events:none}
 .cap{position:absolute;left:50%;bottom:0;width:min(780px,100% - 2*var(--gutter));transform:translate(-50%,16px);opacity:0;margin:0;font-weight:600;font-size:clamp(1.5rem,3.4vw,2.5rem);line-height:1.12;letter-spacing:-.028em;transition:opacity .5s var(--ease),transform .7s var(--ease)}
 .cap span{color:var(--grey)}
-.cap.on{opacity:1;transform:translate(-50%,0)}
+.cap.on{opacity:1;transform:translate(-50%,0);transition:opacity .5s var(--ease) .08s,transform .7s var(--ease) .08s}
+.cap:not(.on){transition:opacity .25s ease-in,transform .25s ease-in}
 .legend{position:absolute;top:clamp(16px,3vh,28px);left:50%;transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px;width:calc(100% - 32px);margin:0;padding:0;list-style:none;color:#c7c7cc;font-size:.875rem;letter-spacing:-.005em}
 .legend{opacity:0;transition:opacity .5s var(--ease)}
 .legend.on{opacity:1}
 .legend li{display:inline-flex;align-items:center;gap:8px}
-.skip-scene{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;z-index:2;display:inline-flex;align-items:center;min-height:44px;color:var(--grey-2);font-size:.875rem}
+.skip-scene{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;z-index:2;display:inline-flex;align-items:center;min-height:44px;color:var(--text);font-size:.875rem}
 .skip-scene:hover{color:var(--text)}
 .legend li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
 .legend li.plain{color:var(--grey)}
@@ -162,11 +163,11 @@ a.shot:hover{transform:scale(1.012)}
 a.shot:focus-visible{outline-offset:-3px}
 .shot{border-radius:16px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06)}
 .t-jv,.t-sec{grid-column:span 3}
-.t-jv .num,.t-sec .num,.t-ry .num{margin-bottom:28px}
+.t-jv .num-l,.t-sec .num-l,.t-ry .num-l,.t-cc .num-l{margin-bottom:24px}
 .t-ry{grid-column:span 4}
 .t-ry .shot{margin-top:28px}
 .t-cc{grid-column:span 2}
-.t-cc .num{margin-bottom:28px}
+
 
 /* light band */
 .light{background:var(--light);color:var(--ink)}
@@ -259,7 +260,7 @@ footer .wrap > :last-child{margin-left:auto}
       <a href="#arbeitsweise">Arbeitsweise</a>
       <a href="#kontakt">Kontakt</a>
     </nav>
-    <a class="pill" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub<span class="sr-only"> (neuer Tab)</span></a>
+    <a class="pill" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Live-Demo<span class="sr-only"> (neuer Tab)</span></a>
   </div>
 </header>
 
@@ -330,25 +331,25 @@ footer .wrap > :last-child{margin-left:auto}
 
       <article class="tile t-jv rv" id="p-jarvis" style="--i:1">
         <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 70 94, 120 70, 154 30" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
-        <span class="num">3.619</span>
+        <span class="num">3.619</span><span class="num-l">automatische Tests</span>
         <h3>Jarvis</h3>
         <p>Mein Sprachassistent für Mac und Windows: Taste drücken oder „Hey Jarvis“ sagen, er erledigt Aufgaben mit seinen Werkzeugen und antwortet mit Stimme. Daten verschlüsselt, Schlüssel im macOS-Schlüsselbund, jede Nacht ein Testlauf in der Cloud.</p>
-        <span class="kind" style="--c:var(--yellow)">KI-Agent · 3.619 automatische Tests</span>
+        <span class="kind" style="--c:var(--yellow)">KI-Agent · privat, täglich im Einsatz</span>
         <span class="note">Kein öffentlicher Code, weil persönliche Daten im Spiel sind.</span>
       </article>
 
       <article class="tile t-sec rv" id="p-security" style="--i:2">
         <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 L154 6" stroke="#35D0FF" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="118" cy="30" r="2.2" fill="#35D0FF"/><circle cx="128" cy="24" r="2.2" fill="#35D0FF"/><circle cx="138" cy="18" r="2.2" fill="#35D0FF"/><circle cx="148" cy="12" r="2.2" fill="#35D0FF"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
-        <span class="num">6</span>
+        <span class="num">6</span><span class="num-l">TryHackMe-Räume</span>
         <h3>Security</h3>
         <p>Mein iPhone hab ich mit dem Mobile Verification Toolkit von Amnesty International gegen 6.630 öffentliche Spyware-Indikatoren abgeglichen: keine gefunden, aber das ist kein Beweis. Dazu 6 Räume im Lernpfad Pre Security auf TryHackMe und der Cisco-Kurs Introduction to Cybersecurity.</p>
-        <span class="kind" style="--c:var(--cyan)">Security · TryHackMe-Räume abgeschlossen · läuft gerade</span>
+        <span class="kind" style="--c:var(--cyan)">Security · läuft gerade</span>
         <span class="note">Ein Zertifikat habe ich noch nicht.</span>
       </article>
 
       <article class="tile t-ry rv" id="p-rallye" style="--i:3">
         <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 60 86, 110 52, 150 14" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 64 92, 116 64, 156 32" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 56 80, 100 40, 140 6" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
-        <span class="num">408</span>
+        <span class="num">408</span><span class="num-l">Fragen</span>
         <h3>Rallye-Engine</h3>
         <p>Ein Lernspiel im Pixel-Look mit Weltkarte, Bossen, Shop und Probetest. Einmal gebaut, zwei Spiele daraus: die GWB-Rallye mit 273 Fragen und die Cyber-Rallye mit 135 Fragen und Wiederholung nach dem Leitner-System.</p>
         <span class="kind" style="--c:var(--red)">Lernspiel · 408 Fragen in zwei Spielen · noch nicht öffentlich</span>
@@ -362,7 +363,7 @@ footer .wrap > :last-child{margin-left:auto}
 
       <article class="tile t-cc rv" id="p-werkzeuge" style="--i:4">
         <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 40 70, 90 30, 150 10" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
-        <span class="num">11</span>
+        <span class="num">11</span><span class="num-l">Prüfmuster</span>
         <h3>Claude-Code-Werkzeuge</h3>
         <p>Ein Wächter prüft jeden Commit und Push mit 11 Mustern, bevor er passiert, dazu ein Cockpit für offene Pull Requests und Skills für wiederkehrende Abläufe.</p>
         <span class="kind" style="--c:var(--yellow)">KI-Agent · 2 Mods, 2 Skills</span>
