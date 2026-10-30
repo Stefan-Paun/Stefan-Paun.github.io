@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Stefan Paun</title>
+<meta name="description" content="Stefan Paun baut KI-Agents und lernt Cybersecurity. Projekte: Agent-Board, Jarvis, Claude-Code-Werkzeuge, Lernspiele, Security.">
+<meta name="theme-color" content="#0B0F14">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefan-paun.github.io/">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Stefan Paun – KI-Agents und Cybersecurity">
+<meta property="og:description" content="17, Wien. Ich baue KI-Agents (Agent-Board, Jarvis) und lerne Cybersecurity. Jedes Projekt mit einer echten Zahl.">
+<meta property="og:url" content="https://stefan-paun.github.io/">
+<meta property="og:image" content="https://stefan-paun.github.io/img/agent-board.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="750">
+<meta property="og:locale" content="de_AT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stefan Paun – KI-Agents und Cybersecurity">
+<meta name="twitter:description" content="17, Wien. Ich baue KI-Agents und lerne Cybersecurity.">
+<meta name="twitter:image" content="https://stefan-paun.github.io/img/agent-board.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect width='28' height='28' fill='%230B0F14'/%3E%3Ccircle cx='14' cy='14' r='12' fill='none' stroke='%233A5A7A'/%3E%3Ccircle cx='14' cy='14' r='7' fill='none' stroke='%23223244'/%3E%3Cpath d='M14 14L25 4' stroke='%2335D0FF' stroke-width='1.6'/%3E%3Cpath d='M14 14C17 17 21 18 25 17' stroke='%23FFD23A' stroke-width='1.6' fill='none'/%3E%3Ccircle cx='14' cy='14' r='2' fill='%23E8ECF1'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Layout: collider event display. One vertex (Stefan), projects as tracks through detector rings; readouts pinned by 1px leaders. */
+@font-face{font-family:"Archivo";src:url("fonts/archivo-latin.woff2") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:"Martian Mono";src:url("fonts/martian-mono-latin.woff2") format("woff2");font-weight:100 800;font-stretch:75% 112.5%;font-display:swap}
+:root{
+  --vacuum:#0B0F14;
+  --vacuum-2:#0F151D;
+  --steel:#223244;
+  --ring:#3A5A7A;
+  --ring-hi:#5E88B3;
+  --text:#A7B3C2;
+  --dim:#7F93A8;
+  --bone:#E8ECF1;
+  --yellow:#FFD23A;
+  --cyan:#35D0FF;
+  --red:#FF4D4D;
+  --rule:rgba(58,90,122,.55);
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"Martian Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --max:1360px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--vacuum);scroll-behavior:smooth;scrollbar-color:var(--steel) var(--vacuum)}
+body{margin:0;background:var(--vacuum);color:var(--text);font-family:var(--display);font-stretch:100%;font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--yellow);color:var(--vacuum)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--vacuum)}
+::-webkit-scrollbar-thumb{background:var(--steel);border:2px solid var(--vacuum)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--max);margin-inline:auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.label{font-family:var(--display);font-stretch:125%;font-weight:600;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-stretch:87.5%}
+.skip{position:absolute;left:-999px;top:8px;background:var(--yellow);color:var(--vacuum);padding:8px 12px;z-index:20}
+.skip:focus{left:var(--gutter)}
+
+/* run header */
+.run{border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:20;background:rgba(11,15,20,.72);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+.run::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--yellow);transform-origin:left;transform:scaleX(var(--run,0))}
+.run nav a{position:relative}
+.run nav a[aria-current="true"]{color:var(--bone)}
+.run nav a::after{content:"";position:absolute;left:12px;right:12px;bottom:2px;height:1px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.run nav a[aria-current="true"]::after{transform:scaleX(1)}
+section[id]{scroll-margin-top:64px}
+.run .wrap{display:flex;align-items:center;gap:24px;min-height:64px;flex-wrap:wrap;padding-block:10px}
+.mark{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--bone)}
+.mark svg{flex:none}
+.mark b{font-stretch:125%;font-weight:700;letter-spacing:.28em;font-size:.82rem}
+.run nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.run nav a{padding:8px 12px;text-decoration:none;color:var(--dim);transition:color .2s}
+.run nav a:hover{color:var(--bone)}
+.clock{color:var(--dim);font-size:.75rem;white-space:nowrap}
+.clock .num{color:var(--text)}
+
+/* event */
+.event{position:relative}
+.event .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);padding-block:clamp(40px,7vw,96px) clamp(40px,5vw,72px);align-items:start}
+.id{min-width:0}
+h1{margin:0;color:var(--bone);font-stretch:125%;font-weight:800;font-size:clamp(2.8rem,5.6vw + .6rem,5.4rem);line-height:.9;letter-spacing:.01em;text-transform:uppercase}
+h1 span{display:block}
+h1 span + span{color:var(--ring-hi)}
+.thesis{margin:28px 0 0;color:var(--bone);font-size:clamp(1.35rem,2.1vw,1.75rem);line-height:1.3;font-weight:500;max-width:22ch;text-wrap:balance}
+.thesis .a{color:var(--yellow)}
+.thesis .s{color:var(--cyan)}
+.intro{margin:20px 0 0;max-width:46ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 26px;border-radius:980px;border:1px solid var(--ring);color:var(--bone);text-decoration:none;font-stretch:125%;font-weight:600;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;background:transparent;transition:background .25s cubic-bezier(.16,1,.3,1),color .25s,border-color .25s}
+.btn svg{flex:none}
+.btn:hover{border-color:var(--bone);background:rgba(232,236,241,.06)}
+.btn.primary{border-color:var(--yellow);color:var(--yellow)}
+.btn.primary:hover{background:var(--yellow);color:var(--vacuum)}
+
+/* readout panel */
+.readout{margin-top:44px;border:1px solid var(--rule);background:var(--vacuum-2);border-radius:18px;overflow:hidden}
+.readout header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;padding:14px 18px;border-bottom:1px solid var(--rule)}
+.readout header .evt{color:var(--yellow);font-size:.85rem;letter-spacing:.12em}
+.readout header .meta{color:var(--dim);font-size:.75rem}
+.readout header .meta + .meta{margin-left:auto}
+.tracks{list-style:none;margin:0;padding:6px 0}
+.tracks button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:14px;width:100%;padding:10px 18px;transition:background .2s}
+.tracks button:hover,.tracks button[aria-pressed="true"]{background:rgba(58,90,122,.16)}
+.tracks button:focus-visible{outline:2px solid var(--yellow);outline-offset:-2px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.tname{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline;min-width:0}
+.tname b{color:var(--bone);font-stretch:125%;font-weight:600;font-size:.76rem;letter-spacing:.14em}
+.tname i{font-style:normal;color:var(--dim);font-size:.82rem}
+.tval{color:var(--bone);font-size:.8rem;text-align:right}
+.detail{padding:18px}
+.detail[hidden]{display:none}
+.detail .back{all:unset;cursor:pointer;color:var(--dim);font-stretch:125%;font-weight:600;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;display:inline-flex;gap:8px;align-items:center}
+.detail .back:hover{color:var(--bone)}
+.detail .back:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+.detail h2{margin:14px 0 6px;color:var(--bone);font-stretch:125%;font-size:1.25rem;letter-spacing:.06em;font-weight:700}
+.detail p{margin:0 0 14px;max-width:52ch}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 20px;margin:0 0 16px;font-size:.78rem}
+.kv dt{color:var(--dim)}
+.kv dd{margin:0;color:var(--bone)}
+.detail a.more{color:var(--yellow);text-underline-offset:4px;font-weight:600}
+
+/* detector */
+.detector{position:relative;min-width:0}
+.stage{position:relative;width:100%;aspect-ratio:1.18/1}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation;cursor:crosshair}
+.xh{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .2s}
+.xh.on{opacity:1}
+.xh i{position:absolute;background:var(--ring);opacity:.45}
+.xh .xv{top:0;bottom:0;width:1px;left:0}
+.xh .xz{left:0;right:0;height:1px;top:0}
+.xh b{position:absolute;left:0;top:0;font:400 .72rem/1 var(--mono);font-stretch:87.5%;font-variant-numeric:tabular-nums;color:var(--dim);white-space:nowrap;padding:4px 6px;background:var(--vacuum);border:1px solid var(--rule)}
+.stage canvas.orbiting{cursor:grabbing}
+.tags{position:absolute;inset:0;pointer-events:none}
+.tag{all:unset;pointer-events:auto;cursor:pointer;position:absolute;right:0;transform:translateY(-50%);width:clamp(150px,24%,220px);padding:6px 0 6px 10px;display:grid;gap:3px;transition:opacity .35s}
+.tag b{font-stretch:125%;font-weight:700;font-size:.74rem;letter-spacing:.16em;color:var(--c)}
+.tag span{color:var(--text);font-size:.8rem;line-height:1.35}
+.tag em{font-style:normal;font-family:var(--mono);font-stretch:87.5%;font-variant-numeric:tabular-nums;color:var(--bone);font-size:.76rem}
+.tag:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+.tag.faded{opacity:.28}
+.note{margin:10px 0 0;color:var(--dim);font-size:.75rem;text-align:right}
+@media (hover:none){.orbit-hint{display:none}}
+
+/* sections */
+section.part{border-top:1px solid var(--rule)}
+section.part > .wrap{padding-block:clamp(56px,8vw,112px)}
+h2.sec{margin:0;color:var(--bone);font-stretch:125%;font-weight:700;font-size:clamp(1.9rem,3.6vw,3rem);line-height:1;letter-spacing:-.005em;text-wrap:balance}
+.lede{margin:18px 0 0;max-width:58ch}
+p{text-wrap:pretty}
+/* section heads: headline left, the lede set large beside it on the same baseline */
+.sec-head{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:last baseline;padding-bottom:clamp(28px,4vw,48px);border-bottom:1px solid var(--rule)}
+.sec-head h2.sec{font-size:clamp(2.2rem,4.6vw,3.9rem);font-weight:800;letter-spacing:-.01em}
+.sec-head .lede{margin:0;max-width:34ch;color:var(--text);font-size:clamp(1.15rem,1.6vw,1.45rem);line-height:1.4;text-wrap:balance}
+.sec-head + .log > .entry:first-child{border-top:0}
+/* contact closes the page in the same voice as the name */
+.contact h2.sec{font-size:clamp(2.8rem,5.6vw + .6rem,5.4rem);font-weight:800;line-height:.9;letter-spacing:.01em;text-transform:uppercase}
+.entry:hover:not(:target) .trk{color:var(--bone)}
+.trk{transition:color .25s}
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1)}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){ .js .rv{opacity:1;transform:none} }
+@media (max-width:760px){ .sec-head{grid-template-columns:minmax(0,1fr);gap:16px} .sec-head .lede{max-width:none} }
+
+/* log */
+.log{list-style:none;margin:clamp(36px,5vw,64px) 0 0;padding:0}
+.entry{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,5fr) minmax(0,4fr);grid-template-rows:auto 1fr;grid-template-areas:"meta h3 plate" "meta body plate";column-gap:clamp(20px,3vw,48px);row-gap:0;padding-block:clamp(36px,5vw,56px);border-top:1px solid var(--rule);scroll-margin-top:88px}
+.entry:target .trk{color:var(--yellow)}
+.meta-col{grid-area:meta;display:grid;gap:14px;align-content:start}
+@media (min-width:1101px){ .meta-col{position:sticky;top:104px;align-self:start} }
+.entry > h3{grid-area:h3;margin-bottom:16px}
+.entry > div:not(.meta-col){grid-area:body;min-width:0}
+.entry > figure{grid-area:plate}
+.trk{color:var(--dim);font-size:.78rem;letter-spacing:.1em}
+.kind{display:flex;align-items:center;gap:10px}
+.kind svg{flex:none}
+.state{display:flex;align-items:center;gap:10px;color:var(--text);font-size:.85rem}
+.state svg{flex:none}
+.entry h3{margin:0 0 14px;color:var(--bone);font-stretch:125%;font-weight:700;font-size:clamp(1.4rem,2.4vw,2rem);letter-spacing:.04em;line-height:1.05}
+.entry p{margin:0 0 14px;max-width:60ch}
+.figs{display:grid;grid-template-columns:auto minmax(0,1fr);margin:22px 0;max-width:460px;border-top:1px solid var(--rule);font-family:var(--mono);font-stretch:87.5%;font-variant-numeric:tabular-nums;font-size:.8rem}
+.figs dt,.figs dd{margin:0;padding:9px 0;border-bottom:1px solid var(--rule)}
+.figs dt{color:var(--dim);padding-right:28px}
+.figs dd{color:var(--bone);text-align:right}
+.links{display:flex;flex-wrap:wrap;gap:10px 22px}
+.links a{color:var(--yellow);font-weight:600;text-underline-offset:5px;text-decoration-thickness:1px;display:inline-flex;align-items:center;gap:8px}
+.links a:hover{text-decoration-thickness:2px}
+.links .na{color:var(--dim);font-size:.95rem}
+.plate{margin:0;border:1px solid var(--rule);background:var(--vacuum-2);padding:8px;align-self:start;border-radius:18px}
+.plate img{border-radius:11px}
+.plate img{width:100%;height:auto;filter:saturate(.92)}
+.plate figcaption{padding:10px 4px 2px;color:var(--dim);font-size:.75rem}
+.chain{margin:0;border:1px solid var(--rule);background:var(--vacuum-2);padding:22px 20px;align-self:start;border-radius:18px}
+.chain ol{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.chain li{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr);gap:14px;padding:0 0 18px}
+.chain li:last-child{padding-bottom:0}
+.chain li::before{content:"";position:absolute;left:10px;top:14px;bottom:-4px;width:1px;background:var(--c,var(--yellow))}
+.chain li:last-child::before{display:none}
+.chain li.dash::before{background:none;border-left:1px dashed var(--cyan)}
+.chain .hit{width:21px;height:21px;display:grid;place-items:center}
+.chain .hit i{width:9px;height:9px;border-radius:50%;background:var(--c,var(--yellow));box-shadow:0 0 0 4px var(--vacuum-2),0 0 0 5px var(--rule)}
+.chain .hit i.open{background:var(--vacuum-2);border:1px dashed var(--cyan)}
+.chain b{display:block;color:var(--bone);font-weight:600;font-size:.95rem;line-height:1.3}
+.chain span{display:block;color:var(--dim);font-size:.82rem;line-height:1.4}
+.chain figcaption{margin-top:16px;color:var(--dim);font-size:.75rem}
+.sub{display:grid;gap:18px;margin:6px 0 20px}
+.sub div{border-left:1px solid var(--red);padding-left:16px}
+.sub b{display:block;color:var(--bone);font-stretch:125%;font-weight:700;letter-spacing:.12em;font-size:.8rem;margin-bottom:4px}
+.sub p{margin:0}
+
+/* method */
+.layers-box{position:relative;margin-top:clamp(40px,5vw,64px)}
+.layers{position:relative;margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0}
+.layers li{position:relative;padding:52px 20px 0 0;border-left:1px solid var(--rule)}
+.layers li:first-child{border-left:0}
+.layers li::before{content:"";position:absolute;left:-1px;top:0;height:40px;width:1px;background:var(--ring)}
+.layers li:first-child::before{display:none}
+.layers .depth{position:absolute;top:0;left:14px;color:var(--dim);font-size:.75rem}
+.layers li:first-child .depth{left:0}
+.layers b{display:block;color:var(--bone);font-stretch:125%;font-weight:700;letter-spacing:.1em;font-size:.85rem;text-transform:uppercase;margin:0 0 10px 14px}
+.layers p{margin:0 0 0 14px;font-size:.95rem;max-width:30ch}
+.layers li:first-child b,.layers li:first-child p{margin-left:0}
+.beam{position:absolute;left:0;right:0;top:20px;height:1px;background:var(--yellow);transform-origin:left center}
+.beam::after{content:"";position:absolute;right:-1px;top:-4px;width:9px;height:9px;border-radius:50%;background:var(--yellow)}
+
+/* contact */
+.contact .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,64px);align-items:end}
+.channels{display:grid;gap:0;border-top:1px solid var(--rule)}
+.channel{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:20px 0;border-bottom:1px solid var(--rule);text-decoration:none}
+.channel b{color:var(--bone);font-stretch:125%;font-weight:700;letter-spacing:.14em;font-size:.85rem}
+.channel span{display:block;color:var(--dim);font-size:.85rem;margin-top:2px}
+a.channel:hover b{color:var(--yellow)}
+.channel.planned b{color:var(--dim)}
+footer{border-top:1px solid var(--rule)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 28px;padding-block:24px 32px;color:var(--dim);font-size:.75rem}
+footer .wrap span:last-child{margin-left:auto}
+
+@media (max-width:1100px){
+  .event .wrap{grid-template-columns:minmax(0,1fr)}
+  .thesis{max-width:28ch}
+  .detector{order:2}
+  .readout{order:3}
+  .entry{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto 1fr;grid-template-areas:"h3 h3" "meta meta" "body plate"}
+  .entry .meta-col{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center;margin-bottom:22px}
+  .contact .wrap{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:1100px){ .id{display:contents} .id > *{grid-column:1} .id h1{order:0}.id .thesis{order:0}.id .actions{order:1}.id .intro{order:3}.id .readout{order:4;margin-top:0} .event .wrap{row-gap:28px} .thesis,.intro,.actions{margin-top:0} }
+@media (max-width:760px){
+  .run nav{display:none}
+  .clock{margin-left:auto}
+  .stage{aspect-ratio:1/1}
+  .tags{display:none}
+  .note{text-align:left}
+  .entry{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"h3" "meta" "body" "plate";row-gap:0}
+  .entry > figure{margin-top:24px}
+  .layers{grid-template-columns:minmax(0,1fr)}
+  .layers li{border-left:0;padding:0 0 28px 40px}
+  .layers li::before{display:none}
+  .layers li:first-child .depth,.layers .depth{position:static;display:block;margin:0 0 6px}
+  .layers b,.layers p,.layers li:first-child b,.layers li:first-child p{margin-left:0}
+  .beam{left:14px;right:auto;top:6px;bottom:28px;width:1px;height:auto}
+  .beam::after{right:-4px;top:auto;bottom:-4px}
+  .layers li > i{position:absolute;left:10px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--vacuum);border:1px solid var(--yellow)}
+  footer .wrap span:last-child{margin-left:0}
+}
+@media (min-width:761px){ .layers li > i{display:none} }
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+</style>
+</head>
+<body>
+<a class="skip" href="#log">Zum Ereignis-Log springen</a>
+
+<header class="run">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Stefan Paun, zum Anfang">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="#3A5A7A"/><circle cx="14" cy="14" r="7.5" fill="none" stroke="#223244"/><path d="M14 14 L25 4" stroke="#35D0FF" stroke-width="1.4"/><path d="M14 14 C17 17 21 18 25 17" stroke="#FFD23A" stroke-width="1.4" fill="none"/><circle cx="14" cy="14" r="1.8" fill="#E8ECF1"/></svg>
+      <b>STEFAN PAUN</b>
+    </a>
+    <nav aria-label="Seitenbereiche">
+      <a class="label" href="#spuren">Spuren</a>
+      <a class="label" href="#log">Log</a>
+      <a class="label" href="#arbeitsweise">Arbeitsweise</a>
+      <a class="label" href="#kontakt">Kontakt</a>
+    </nav>
+    <div class="clock label">Wien · <span class="num" id="clock">--:--</span></div>
+  </div>
+</header>
+
+<main id="top">
+<section class="event" id="spuren" aria-label="Übersicht">
+  <div class="wrap">
+    <div class="id">
+      <h1><span>Stefan</span><span>Paun</span></h1>
+      <p class="thesis">Ich baue <span class="a">KI-Agents</span> und lerne <span class="s">Cybersecurity</span>.</p>
+      <p class="intro">17, Schüler in Wien, Matura 2027. Jedes Projekt ist hier eine Spur aus demselben Punkt. Tipp eine an, dann siehst du, was es ist und wie weit es gekommen ist.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor"/><circle cx="8" cy="8" r="2.2" fill="currentColor"/></svg>
+          Agent-Board live
+        </a>
+        <a class="btn" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </div>
+
+      <div class="readout" id="readout">
+        <header>
+          <span class="evt num">EVT-2026-1024</span>
+          <span class="meta label">6 Spuren</span>
+          <span class="meta label">1 Vertex</span>
+        </header>
+        <ul class="tracks" id="trackList"></ul>
+        <div class="detail" id="detail" hidden></div>
+      </div>
+    </div>
+
+    <div class="detector">
+      <div class="stage" id="stage">
+        <canvas id="cv" aria-hidden="true"></canvas>
+        <div class="xh" id="xh" aria-hidden="true"><i class="xv"></i><i class="xz"></i><b></b></div>
+        <div class="tags" id="tags"></div>
+      </div>
+      <p class="note">Spurenbild schematisch. Die Zahlen sind echt, Turmhöhe auf Log-Skala. <span class="orbit-hint">Ziehen dreht das Ereignis, Doppelklick stellt es zurück.</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="log" aria-labelledby="log-h">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2 class="sec" id="log-h">Ereignis-Log</h2>
+      <p class="lede">Jede Spur im Detail: was sie ist, womit sie gebaut ist und was sie misst.</p>
+    </div>
+    <ol class="log">
+      <li class="entry rv" id="agent-board">
+        <h3>Agent-Board</h3>
+        <div class="meta-col">
+          <span class="trk num">TRK-01</span>
+          <span class="kind label" style="color:var(--yellow)"><svg width="28" height="10" aria-hidden="true"><path d="M1 9 C9 9 18 6 27 1" stroke="#FFD23A" fill="none" stroke-width="1.5"/></svg>KI-Agent</span>
+          <span class="state"><svg width="28" height="6" aria-hidden="true"><path d="M0 3H28" stroke="#E8ECF1" stroke-width="1.5"/></svg>Öffentlich, Release v1.4.0</span>
+        </div>
+        <div>
+          
+          <p>Eine Live-Ansicht in Pixel-Art für Claude-Code-Agents. Claude sitzt am Schreibtisch, jeder Subagent ist eine kleine Figur, die in den Raum des Werkzeugs geht, das sie gerade benutzt: Archiv zum Lesen, Werkstatt zum Schreiben, Terminal für Befehle.</p>
+          <p>So sieht man auf einen Blick, wer arbeitet, wer fertig ist und wer auf eine Freigabe wartet. Ohne Abhängigkeiten, nur Node, Canvas und WebAudio. Alles bleibt auf dem eigenen Rechner.</p>
+          <dl class="figs"><dt>Abhängigkeiten</dt><dd>0</dd><dt>Tests</dt><dd>70</dd><dt>Sprachen</dt><dd>3</dd><dt>Betriebssysteme in CI</dt><dd>3</dd></dl>
+          <div class="links">
+            <a href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Live-Demo öffnen</a>
+            <a href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Code auf GitHub</a>
+          </div>
+        </div>
+        <figure class="plate">
+          <picture>
+            <source type="image/webp" srcset="img/agent-board-720.webp">
+            <img src="img/agent-board.jpg" width="1200" height="750" loading="lazy" alt="Agent-Board bei Nacht: eine Pixel-Wohnung mit Räumen für Archiv, Werkstatt und Terminal, darin kleine Agenten-Figuren, rechts die Liste der aktiven Agents.">
+          </picture>
+          <figcaption>Demo-Sitzung, Nachtmodus</figcaption>
+        </figure>
+      </li>
+
+      <li class="entry rv" id="jarvis">
+        <h3>Jarvis</h3>
+        <div class="meta-col">
+          <span class="trk num">TRK-02</span>
+          <span class="kind label" style="color:var(--yellow)"><svg width="28" height="10" aria-hidden="true"><path d="M1 1 C9 1 18 4 27 9" stroke="#FFD23A" fill="none" stroke-width="1.5"/></svg>KI-Agent</span>
+          <span class="state"><svg width="28" height="6" aria-hidden="true"><path d="M0 3H28" stroke="#E8ECF1" stroke-width="1.5"/></svg>Im Alltag im Einsatz, privat</span>
+        </div>
+        <div>
+          
+          <p>Mein Sprachassistent für den Mac, inzwischen auch als Windows-Version mit derselben Codebasis. Ich drücke eine Taste oder sage „Hey Jarvis“, er hört zu, versteht mich, erledigt Aufgaben mit seinen Werkzeugen und antwortet mit Stimme. Am iPhone gibt es eine Web-Version dazu.</p>
+          <p>Weil er mit meinen eigenen Daten arbeitet, ist Sicherheit eingebaut: verschlüsselte Daten mit dem Schlüssel im macOS-Schlüsselbund, Entsperren per Touch ID, und jede Nacht testet eine Cloud-Routine den Code auf Linux und meldet Fehler. Dreimal pro Woche baut eine zweite Routine über Nacht eine Aufgabe aus meiner Liste und legt mir morgens einen Pull Request zur Prüfung hin. Der Code bleibt privat.</p>
+          <dl class="figs"><dt>Automatische Tests</dt><dd>3.619</dd><dt>Betriebssysteme</dt><dd>macOS, Windows</dd><dt>Testlauf in der Cloud</dt><dd>jede Nacht, Linux</dd></dl>
+          <div class="links"><span class="na">Kein öffentlicher Code, weil persönliche Daten im Spiel sind.</span></div>
+        </div>
+        <figure class="chain">
+          <ol>
+            <li><span class="hit"><i></i></span><div><b>Taste oder „Hey Jarvis“</b><span>Aufnahme startet</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Whisper</b><span>Sprache wird zu Text</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Claude mit Werkzeugen</b><span>versteht und handelt</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>ElevenLabs</b><span>Antwort als Stimme</span></div></li>
+          </ol>
+          <figcaption>Signalweg einer Anfrage</figcaption>
+        </figure>
+      </li>
+
+      <li class="entry rv" id="rallye">
+        <h3>Rallye-Engine</h3>
+        <div class="meta-col">
+          <span class="trk num">TRK-03</span>
+          <span class="kind label" style="color:var(--red)"><svg width="28" height="10" aria-hidden="true"><path d="M1 5 L27 1 M1 5 L27 5 M1 5 L27 9" stroke="#FF4D4D" fill="none" stroke-width="1.2"/></svg>Lernspiel</span>
+          <span class="state"><svg width="28" height="6" aria-hidden="true"><path d="M0 3H28" stroke="#E8ECF1" stroke-width="1.5"/></svg>Spielbar, noch nicht öffentlich</span>
+        </div>
+        <div>
+          
+          <p>Ein Lernspiel im Pixel-Look mit Weltkarte, Bossen, Shop und Probetest. Ich habe die Engine einmal gebaut und daraus zwei Spiele für zwei verschiedene Fächer gemacht.</p>
+          <div class="sub">
+            <div id="gwb-rallye"><b>GWB-Rallye</b><p>Geografie und Wirtschaft für die Schule, 273 Fragen.</p></div>
+            <div id="cyber-rallye"><b>Cyber-Rallye</b><p>TryHackMe Pre Security in 5 Welten, 135 Fragen, mit Wiederholung nach dem Leitner-System: Was man falsch hat, kommt früher wieder.</p></div>
+          </div>
+          <dl class="figs"><dt>GWB-Rallye</dt><dd>273 Fragen</dd><dt>Cyber-Rallye</dt><dd>135 Fragen</dd><dt>Gesamt</dt><dd>408 Fragen</dd></dl>
+        </div>
+        <figure class="plate">
+          <picture>
+            <source type="image/webp" srcset="img/cyber-rallye-720.webp">
+            <img src="img/cyber-rallye.jpg" width="1200" height="844" loading="lazy" alt="Cyber-Rallye: Weltkarte mit den Welten Careers in Cyber und Cold Boot, links das Panel „Heute fällig“ mit den Leitner-Boxen.">
+          </picture>
+          <figcaption>Cyber-Rallye, Weltkarte und Wiederholung</figcaption>
+        </figure>
+      </li>
+
+      <li class="entry rv" id="tryhackme">
+        <h3>Security</h3>
+        <div class="meta-col">
+          <span class="trk num">TRK-04</span>
+          <span class="kind label" style="color:var(--cyan)"><svg width="28" height="10" aria-hidden="true"><path d="M1 9 L27 1" stroke="#35D0FF" fill="none" stroke-width="1.5"/></svg>Security</span>
+          <span class="state"><svg width="28" height="6" aria-hidden="true"><path d="M0 3H28" stroke="#35D0FF" stroke-width="1.5" stroke-dasharray="4 4"/></svg>Läuft gerade</span>
+        </div>
+        <div>
+
+          <p>Ich lerne Cybersecurity mit dem Lernpfad Pre Security auf TryHackMe. Dort arbeitet man in echten Übungsumgebungen statt nur mit Theorie. Dazu kommt der Kurs Introduction to Cybersecurity der Cisco Networking Academy. Ein Zertifikat habe ich noch nicht, beides läuft.</p>
+          <p>Praxis an meinem eigenen iPhone: Ich habe es per USB vom Mac aus auf Spyware geprüft, mit dem Mobile Verification Toolkit von Amnesty International. Absturzberichte, ein Diagnosepaket und ein Netzwerk-Mitschnitt liefen gegen die öffentlichen Indikatoren für Spyware wie Pegasus und Predator, dazu kamen Profile, App-Signaturen und der Entwicklermodus. Ergebnis: keine bekannten Indikatoren gefunden. Das ist ein Abgleich mit bekannten Mustern, kein Beweis.</p>
+          <p>Was ich lerne, fließt zurück in meine Projekte: Bei Agent-Board und Jarvis prüfe ich vor dem Veröffentlichen, welche Angriffswege es gibt.</p>
+          <dl class="figs"><dt>Räume abgeschlossen</dt><dd>6</dd><dt>Spyware-Indikatoren geprüft</dt><dd>6.630</dd><dt>Zertifikat</dt><dd>noch keins</dd></dl>
+        </div>
+        <figure class="chain" style="--c:var(--cyan)">
+          <ol>
+            <li><span class="hit"><i></i></span><div><b>Careers in Cyber</b><span>Berufe und Rollen</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Cold Boot</b><span>Bauteile eines Computers</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Computer Types</b><span>Server, Embedded, IoT</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Client-Server Basics</b><span>wie Client und Server reden</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Virtualisation Basics</b><span>VMs, Hypervisor, Container</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Cloud Computing Fundamentals</b><span>IaaS, PaaS, SaaS</span></div></li>
+          </ol>
+          <figcaption>Lernpfad Pre Security</figcaption>
+        </figure>
+      </li>
+
+      <li class="entry rv" id="werkzeuge">
+        <h3>Claude-Code-Werkzeuge</h3>
+        <div class="meta-col">
+          <span class="trk num">TRK-05</span>
+          <span class="kind label" style="color:var(--yellow)"><svg width="28" height="10" aria-hidden="true"><path d="M1 5 C9 3 18 3 27 5" stroke="#FFD23A" fill="none" stroke-width="1.5"/></svg>KI-Agent</span>
+          <span class="state"><svg width="28" height="6" aria-hidden="true"><path d="M0 3H28" stroke="#E8ECF1" stroke-width="1.5"/></svg>Im Einsatz, privat</span>
+        </div>
+        <div>
+
+          <p>Eigene Erweiterungen für Claude Code, mit denen ich meinen KI-Agents Regeln und Überblick gebe. Der Wächter prüft jeden Commit und Push, bevor er passiert: Er blockiert API-Schlüssel und private E-Mail-Adressen in öffentlichen Repos, verhindert, dass alte Branches hochgeladen werden, und fragt nach, bevor Jarvis Cloud-Testminuten verbraucht.</p>
+          <p>Das Cockpit ist ein Panel neben dem Chat mit allen Pull Requests, die auf mich warten, der Aufgabenliste der Nacht-Routinen und den nächsten Fristen. Dazu kommen Skills für wiederkehrende Abläufe: ein kompletter Jarvis-Testlauf mit Prüfung auf Datenlecks und ein Sicherheits-Check für mein iPhone.</p>
+          <dl class="figs"><dt>Mods</dt><dd>2</dd><dt>Skills</dt><dd>2</dd><dt>Prüfmuster vor jedem Commit</dt><dd>11</dd></dl>
+          <div class="links"><span class="na">Noch nicht veröffentlicht.</span></div>
+        </div>
+        <figure class="chain">
+          <ol>
+            <li><span class="hit"><i></i></span><div><b>Agent will committen</b><span>git commit oder push</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Wächter liest die Änderung</b><span>bevor sie passiert</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Schlüssel, private Mail, alter Branch?</b><span>Muster und Regeln je Repo</span></div></li>
+            <li><span class="hit"><i></i></span><div><b>Blockieren oder nachfragen</b><span>öffentlich blockiert, privat gefragt</span></div></li>
+          </ol>
+          <figcaption>Was der Wächter vor jedem Commit prüft</figcaption>
+        </figure>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="part" id="arbeitsweise" aria-labelledby="arb-h">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2 class="sec" id="arb-h">So baue ich</h2>
+      <p class="lede">Jedes Projekt geht durch dieselben Schichten, von innen nach außen. Was eine Schicht nicht schafft, kommt nicht weiter.</p>
+    </div>
+    <div class="layers-box">
+    <span class="beam" id="beam" aria-hidden="true"></span>
+    <ol class="layers">
+      <li><i aria-hidden="true"></i><b>Plan</b><p>Ich schreibe auf, was gebaut wird, und teile es in Phasen.</p></li>
+      <li><i aria-hidden="true"></i><b>Agents</b><p>Claude-Code-Agents bauen parallel an getrennten Teilen, nachts arbeiten Cloud-Routinen weiter. Ich prüfe und führe zusammen.</p></li>
+      <li><i aria-hidden="true"></i><b>Tests</b><p>Jede Änderung läuft durch die Tests, bevor sie bleibt.</p></li>
+      <li><i aria-hidden="true"></i><b>Security</b><p>Keine Schlüssel im Code, keine privaten Daten, Angriffswege geprüft.</p></li>
+      <li><i aria-hidden="true"></i><b>Release</b><p>Öffentlich wird nur, was fertig ist: mit Anleitung, Lizenz und Demo.</p></li>
+    </ol>
+    </div>
+  </div>
+</section>
+
+<section class="part contact" id="kontakt" aria-labelledby="kon-h">
+  <div class="wrap">
+    <div>
+      <h2 class="sec" id="kon-h">Kontakt</h2>
+      <p class="lede">Am schnellsten erreichst du mich über GitHub. LinkedIn kommt Anfang November dazu.</p>
+    </div>
+    <div class="channels">
+      <a class="channel" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">
+        <div><b>GITHUB</b><span>github.com/Stefan-Paun</span></div>
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 14 L14 4 M6 4 H14 V12" stroke="#FFD23A" stroke-width="1.5" fill="none"/></svg>
+      </a>
+      <div class="channel planned">
+        <div><b>LINKEDIN</b><span>folgt Anfang November</span></div>
+        <svg width="28" height="6" aria-hidden="true"><path d="M0 3H28" stroke="#7F93A8" stroke-width="1.5" stroke-dasharray="2 4"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Stefan Paun</span>
+    <span>Gebaut mit Claude Code</span>
+    <span>Keine Cookies, kein Tracking</span> <a href="index.html">Zur Hauptseite</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var C = {y:"#FFD23A", c:"#35D0FF", r:"#FF4D4D", steel:"#223244", ring:"#3A5A7A", text:"#A7B3C2", bone:"#E8ECF1", vac:"#0B0F14"};
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Real facts only. Geometry (phi, k) is schematic.
+  var TRACKS = [
+    {id:"tryhackme", name:"SECURITY", kind:"Security", col:C.c, line:"TryHackMe, Cisco, iPhone-Check", val:"6 Räume", phi:-64, k:0, end:1.0, muon:true,
+      title:"Security", text:"TryHackMe Pre Security und der Cisco-Kurs laufen. Praxis: mein iPhone mit dem Amnesty-Toolkit gegen bekannte Spyware-Indikatoren abgeglichen, keine gefunden.",
+      dep:6, kv:[["Typ","Security"],["Stand","läuft"],["Räume","6 abgeschlossen"],["iPhone-Check","keine Treffer"]], log:"#tryhackme"},
+    {id:"werkzeuge", name:"CC-WERKZEUGE", kind:"KI-Agent", col:C.y, line:"Mods und Skills für Claude Code", val:"2 Mods", phi:-8, k:.4, end:.66,
+      title:"Claude-Code-Werkzeuge", text:"Wächter für Commits und Pushes, ein Cockpit für offene Pull Requests und Skills für wiederkehrende Abläufe.",
+      dep:4, kv:[["Typ","KI-Agent"],["Stand","im Einsatz, privat"],["Mods","2"],["Skills","2"]], log:"#werkzeuge"},
+    {id:"agent-board", name:"AGENT-BOARD", kind:"KI-Agent", col:C.y, line:"Live-Ansicht für Claude-Code-Agents, v1.4.0", val:"70 Tests", phi:-36, k:.75, end:.66,
+      title:"Agent-Board", text:"Pixel-Art-Ansicht, in der jeder Claude-Code-Agent als Figur in den Raum seines Werkzeugs geht.",
+      dep:70, kv:[["Typ","KI-Agent"],["Stand","öffentlich, v1.4.0"],["Tests","70"],["Sprachen","Englisch, Deutsch, Spanisch"]], log:"#agent-board", href:"https://stefan-paun.github.io/agent-board/?demo=1", hrefText:"Live-Demo öffnen"},
+    {id:"jarvis", name:"JARVIS", kind:"KI-Agent", col:C.y, line:"Sprachassistent für Mac und Windows", val:"3.619 Tests", phi:22, k:-.45, end:.66,
+      title:"Jarvis", text:"Sprachassistent mit Stimme, Werkzeugen, verschlüsselten Daten und nächtlichen Tests in der Cloud.",
+      dep:3619, kv:[["Typ","KI-Agent"],["Stand","im Einsatz, privat"],["Tests","3.619"],["Systeme","macOS, Windows"]], log:"#jarvis"},
+    {id:"gwb-rallye", name:"GWB-RALLYE", kind:"Lernspiel", col:C.r, line:"Lernspiel Geografie und Wirtschaft", val:"273 Fragen", phi:34, k:.3, end:.84, jet:true,
+      title:"GWB-Rallye", text:"Pixel-Lernspiel mit Weltkarte, Bossen, Shop und Probetest für Geografie und Wirtschaft.",
+      dep:273, kv:[["Typ","Lernspiel"],["Stand","spielbar"],["Fragen","273"]], log:"#rallye"},
+    {id:"cyber-rallye", name:"CYBER-RALLYE", kind:"Lernspiel", col:C.r, line:"Lernspiel zu TryHackMe", val:"135 Fragen", phi:76, k:-.2, end:.84, jet:true,
+      title:"Cyber-Rallye", text:"Dieselbe Engine für TryHackMe Pre Security: 5 Welten und Wiederholung nach dem Leitner-System.",
+      dep:135, kv:[["Typ","Lernspiel"],["Stand","spielbar"],["Fragen","135"]], log:"#rallye"}
+  ];
+  var byId = {}; TRACKS.forEach(function(t){ byId[t.id] = t; });
+
+  // --- readout list ---
+  var list = document.getElementById("trackList");
+  var detail = document.getElementById("detail");
+  TRACKS.forEach(function(t){
+    var li = document.createElement("li");
+    var b = document.createElement("button");
+    b.type = "button"; b.dataset.id = t.id; b.setAttribute("aria-pressed","false");
+    b.innerHTML = '<span class="dot" style="--c:'+t.col+'"></span><span class="tname"><b></b><i></i></span><span class="tval num"></span>';
+    b.querySelector("b").textContent = t.name;
+    b.querySelector("i").textContent = t.kind;
+    b.querySelector(".tval").textContent = t.val;
+    b.addEventListener("click", function(){ select(t.id, true); });
+    b.addEventListener("mouseenter", function(){ hover(t.id); });
+    b.addEventListener("mouseleave", function(){ hover(null); });
+    li.appendChild(b); list.appendChild(li);
+  });
+
+  // --- tags beside the detector ---
+  var tagBox = document.getElementById("tags");
+  TRACKS.forEach(function(t){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "tag"; b.dataset.id = t.id; b.style.setProperty("--c", t.col);
+    b.innerHTML = "<b></b><span></span><em></em>";
+    b.querySelector("b").textContent = t.name;
+    b.querySelector("span").textContent = t.line;
+    b.querySelector("em").textContent = t.val;
+    b.setAttribute("aria-label", t.name + ", " + t.line + ", " + t.val + ". Spur auswählen");
+    b.addEventListener("click", function(){ select(sel === t.id ? null : t.id, true); });
+    b.addEventListener("mouseenter", function(){ hover(t.id); });
+    b.addEventListener("mouseleave", function(){ hover(null); });
+    tagBox.appendChild(b);
+  });
+
+  var sel = null, hov = null;
+  function focusId(){ return hov || sel; }
+
+  function renderDetail(){
+    var t = sel && byId[sel];
+    list.hidden = !!t; detail.hidden = !t;
+    list.querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.id === sel)); });
+    tagBox.querySelectorAll(".tag").forEach(function(b){
+      var f = focusId();
+      b.classList.toggle("faded", !!f && b.dataset.id !== f);
+    });
+    if(!t){ detail.innerHTML = ""; return; }
+    var h = '<button class="back" type="button"><svg width="14" height="10" viewBox="0 0 14 10" aria-hidden="true"><path d="M5 1 L1 5 L5 9 M1 5 H13" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>Alle Spuren</button>';
+    h += '<h2></h2><p class="txt"></p><dl class="kv num"></dl><a class="more"></a>';
+    detail.innerHTML = h;
+    detail.querySelector("h2").textContent = t.title;
+    detail.querySelector("h2").style.color = t.col;
+    detail.querySelector(".txt").textContent = t.text;
+    var dl = detail.querySelector("dl");
+    t.kv.forEach(function(p){ var dt=document.createElement("dt"); dt.textContent=p[0]; var dd=document.createElement("dd"); dd.textContent=p[1]; dl.appendChild(dt); dl.appendChild(dd); });
+    var a = detail.querySelector("a.more");
+    if(t.href){ a.href = t.href; a.target = "_blank"; a.rel = "noopener"; a.textContent = t.hrefText; }
+    else { a.href = t.log; a.textContent = "Im Ereignis-Log ansehen"; }
+    detail.querySelector(".back").addEventListener("click", function(){ select(null, true); var f = list.querySelector('button[data-id="'+t.id+'"]'); if(f) f.focus(); });
+  }
+
+  function select(id, fromUser){
+    sel = id;
+    renderDetail(); draw();
+    if(fromUser){
+      try { history.replaceState(null, "", id ? "#t-" + id : location.pathname + location.search); } catch(e){}
+      if(id){ var back = detail.querySelector(".back"); if(back) back.focus({preventScroll:true}); }
+    }
+  }
+  function hover(id){ if(hov === id) return; hov = id; renderDetail(); draw(); }
+
+  // --- canvas: the event in 3D ---
+  // The beam runs along z. At rest the camera looks down the beam (the classic end view);
+  // scrolling tilts it toward a side view so the helices open up along the beam axis,
+  // and a mouse drag orbits freely. Depth is shown with opacity only.
+  var stage = document.getElementById("stage");
+  var cv = document.getElementById("cv");
+  var ctx = cv.getContext("2d");
+  var W = 0, H = 0, dpr = 1, cx = 0, cy = 0, R = 0, wide = true;
+  var progress = reduce ? 1 : 0, t0 = 0;
+
+  // camera: scroll tilt (0..1) plus drag offsets, eased toward their targets
+  var cam = {tilt:0, dy:0, dp:0}, goal = {tilt:0, dy:0, dp:0};
+  var MAXP = 1.08, MAXY = .42;
+  var pitch = 0, yaw = 0, persp = 0, zoom = 1, sp = 0, cpch = 1, syw = 0, cyw = 1;
+
+  function camera(){
+    pitch = Math.max(-1.45, Math.min(1.45, cam.tilt*MAXP + cam.dp));
+    yaw = cam.tilt*MAXY + cam.dy;
+    sp = Math.sin(pitch); cpch = Math.cos(pitch); syw = Math.sin(yaw); cyw = Math.cos(yaw);
+    // perspective fades in with the tilt so the end view stays a true cross-section
+    persp = Math.min(1, Math.abs(sp)*1.6 + Math.abs(syw)*1.6) * .16;
+    // keep the whole barrel (half-length 1.05) inside the stage
+    var ext = Math.max(Math.abs(cpch) + Math.abs(sp)*1.05, Math.abs(cyw) + Math.abs(syw)*1.05);
+    zoom = 1/Math.max(1, ext*(1 + persp*1.1));
+  }
+  // world (x right, y down, z toward the viewer at rest) -> [sx, sy, depth -1..1]
+  function P(x, y, z){
+    var x1 = x*cyw - z*syw, z1 = x*syw + z*cyw;
+    var y2 = y*cpch - z1*sp, z2 = y*sp + z1*cpch;
+    var k = zoom/(1 - z2*persp);
+    return [cx + x1*R*k, cy + y2*R*k, z2];
+  }
+  function depthA(z){ return .5 + .5*Math.max(0, Math.min(1, (z + 1.1)/2.2)); }
+  function moved(){ return persp > 0; }
+
+  // deterministic soft tracks (decoration)
+  var seed = 1024;
+  function rnd(){ seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+  var SOFT = [];
+  for(var i=0;i<34;i++){ SOFT.push({phi:rnd()*360, k:(rnd()<.5?-1:1)*(2.2+rnd()*5), end:.18+rnd()*.3, col: rnd()<.55 ? C.y : (rnd()<.5 ? C.c : C.ring), tl:(rnd()-.5)*2.4}); }
+  var EMC = [], HC = [];
+  for(i=0;i<64;i++) EMC.push(.25 + rnd()*.5);
+  for(i=0;i<32;i++) HC.push(rnd());
+  // dip of each real track along the beam (schematic, like phi and k)
+  var DIP = {"tryhackme":.55, "werkzeuge":-.7, "agent-board":.35, "jarvis":-.3, "gwb-rallye":.8, "cyber-rallye":-.5};
+  TRACKS.forEach(function(t){ t.tl = DIP[t.id] || 0; });
+
+  // helix: transverse circle through the vertex, z grows linearly with path length
+  function pt(t, s){
+    var a = t.phi * Math.PI/180, k = t.k;
+    if(Math.abs(k) < 1e-4) return [Math.cos(a)*s, Math.sin(a)*s];
+    return [(Math.sin(a + k*s) - Math.sin(a))/k, -(Math.cos(a + k*s) - Math.cos(a))/k];
+  }
+  function pt3(t, s){ var q = pt(t, s); return P(q[0], q[1], s*(t.tl || 0)); }
+  // path length until transverse radius r
+  function lenTo(t, r){
+    var lo = 0, hi = 4;
+    for(var j=0;j<40;j++){ var m=(lo+hi)/2, p=pt(t,m); if(Math.hypot(p[0],p[1]) < r) lo=m; else hi=m; }
+    return lo;
+  }
+  TRACKS.forEach(function(t){ t.len = lenTo(t, t.end); });
+  SOFT.forEach(function(t){
+    var maxR = 0, s = 0, best = 0;
+    for(s=0;s<Math.PI*2/Math.abs(t.k);s+=.01){ var p=pt(t,s), r=Math.hypot(p[0],p[1]); if(r>maxR){maxR=r;best=s;} if(r>t.end) break; }
+    t.len = Math.min(s, best + (Math.PI/Math.abs(t.k))*.6);
+  });
+
+  function layout(){
+    var rect = stage.getBoundingClientRect();
+    W = rect.width; H = rect.height; dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+    wide = window.innerWidth > 760;
+    if(wide){
+      var tagW = Math.min(220, Math.max(150, W*.24));
+      R = Math.min((W - tagW - 36)/2, H/2 - 8);
+      cx = R + 4; cy = H/2;
+    } else {
+      R = Math.min(W, H)/2 - 6; cx = W/2; cy = H/2;
+    }
+    placeTags();
+    draw();
+  }
+
+  function endPoint(t){ return pt3(t, t.len); }
+
+  function placeTags(){
+    if(!wide) return;
+    var tags = tagBox.querySelectorAll(".tag");
+    var n = tags.length, top = H*.1, bottom = H*.9;
+    tags.forEach(function(el, i){
+      var y = top + (bottom - top) * (i/(n-1));
+      el.style.top = y + "px";
+      TRACKS[i].tagY = y;
+      TRACKS[i].tagX = W - el.offsetWidth;
+    });
+  }
+
+  function ease(x){ return x >= 1 ? 1 : 1 - Math.pow(2, -10*x); }
+
+  // polyline helpers in world space
+  function arcPath(r, a0, a1, z, first){
+    var n = Math.max(2, Math.ceil(Math.abs(a1 - a0)/.09));
+    for(var j=0;j<=n;j++){
+      var a = a0 + (a1 - a0)*j/n, q = P(Math.cos(a)*r, Math.sin(a)*r, z);
+      if(first && j === 0) ctx.moveTo(q[0], q[1]); else ctx.lineTo(q[0], q[1]);
+    }
+  }
+  function ring(r, z){ ctx.beginPath(); arcPath(r, 0, Math.PI*2, z, true); ctx.closePath(); }
+  function ringCells(r0, r1, n, gapDeg, stroke, fillFn, z){
+    z = z || 0;
+    var g = gapDeg*Math.PI/180;
+    for(var j=0;j<n;j++){
+      var a0 = j/n*Math.PI*2 + g/2, a1 = (j+1)/n*Math.PI*2 - g/2;
+      ctx.beginPath(); arcPath(r1, a0, a1, z, true); arcPath(r0, a1, a0, z, false); ctx.closePath();
+      var f = fillFn && fillFn(j);
+      if(f){ ctx.fillStyle = f; ctx.fill(); }
+      ctx.strokeStyle = stroke; ctx.stroke();
+    }
+  }
+  // a barrel seen from outside: both end rings plus the two silhouette lines
+  function barrel(r, L, stroke, alpha){
+    ctx.strokeStyle = stroke;
+    ctx.globalAlpha = alpha * .9; ring(r, L); ctx.stroke();
+    ctx.globalAlpha = alpha * .55; ring(r, -L); ctx.stroke();
+    // silhouette: where the surface normal is perpendicular to the view direction
+    var best = [0, 0], bv = [-1, -1];
+    for(var a=0;a<Math.PI*2;a+=.02){
+      var p1 = P(Math.cos(a)*r, Math.sin(a)*r, L), p2 = P(Math.cos(a)*r, Math.sin(a)*r, -L);
+      var d = Math.hypot(p1[0]-cx, p1[1]-cy) + Math.hypot(p2[0]-cx, p2[1]-cy);
+      var side = ((p1[0]-cx)*(p2[1]-p1[1]) - (p1[1]-cy)*(p2[0]-p1[0])) > 0 ? 0 : 1;
+      if(d > bv[side]){ bv[side] = d; best[side] = a; }
+    }
+    ctx.globalAlpha = alpha * .7;
+    best.forEach(function(a){
+      var p1 = P(Math.cos(a)*r, Math.sin(a)*r, L), p2 = P(Math.cos(a)*r, Math.sin(a)*r, -L);
+      ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke();
+    });
+  }
+
+  function draw(){
+    if(!W) return;
+    camera();
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,W,H);
+    var f = focusId();
+    var p = ease(progress);
+    var tiltA = Math.min(1, persp/.16);
+    ctx.lineWidth = 1;
+
+    // barrels along the beam fade in as the camera leaves the end view
+    if(tiltA > 0){
+      barrel(.99, 1.05, "rgba(58,90,122,.55)", tiltA*.8);
+      barrel(.86, .9, "rgba(58,90,122,.5)", tiltA*.6);
+      barrel(.53, .72, "rgba(58,90,122,.5)", tiltA*.55);
+      // beam line
+      var b0 = P(0,0,-1.3), b1 = P(0,0,1.3);
+      ctx.globalAlpha = tiltA*.7; ctx.strokeStyle = C.ring; ctx.setLineDash([2,5]);
+      ctx.beginPath(); ctx.moveTo(b0[0], b0[1]); ctx.lineTo(b1[0], b1[1]); ctx.stroke(); ctx.setLineDash([]);
+    }
+
+    // the cross-section through the vertex
+    ctx.globalAlpha = 1 - tiltA*.35;
+    ringCells(.9, .99, 12, 9, "rgba(58,90,122,.55)", function(){ return "rgba(34,50,68,.35)"; });
+    ringCells(.925, .955, 12, 9, "rgba(58,90,122,.35)");
+    ringCells(.7, .86, 32, 1.2, "rgba(34,50,68,1)", function(j){ return "rgba(34,50,68," + (.2 + HC[j]*.25).toFixed(2) + ")"; });
+    ringCells(.56, .68, 64, .6, "rgba(34,50,68,.9)", function(j){ return "rgba(58,90,122," + (EMC[j]*.22).toFixed(2) + ")"; });
+    for(var b=1;b<=6;b++){
+      ring(.08 + b*.068, 0);
+      ctx.strokeStyle = b % 2 ? "rgba(58,90,122,.5)" : "rgba(34,50,68,.9)"; ctx.stroke();
+    }
+    ringCells(.505, .53, 40, 3, "rgba(58,90,122,.6)", function(){ return "rgba(58,90,122,.25)"; });
+    ctx.globalAlpha = 1;
+    ring(.035, 0); ctx.strokeStyle = C.ring; ctx.stroke();
+
+    // soft tracks
+    ctx.lineWidth = 1;
+    SOFT.forEach(function(t){
+      ctx.globalAlpha = (f ? .08 : .32) * Math.min(1, p*1.4);
+      strokeTrack(t, t.len * p, t.col);
+    });
+
+    // calorimeter deposits, at the depth where each track arrives
+    var dep = reduce ? 1 : Math.max(0, Math.min(1, (progress - .55)/.45));
+    TRACKS.forEach(function(t){
+      var e2 = pt(t, t.len), ang = Math.atan2(e2[1], e2[0]), z = t.len*t.tl;
+      var on = !f || f === t.id;
+      var blocks = Math.max(1, Math.round(Math.log10(t.dep + 1) * 2));
+      for(var q=0;q<blocks;q++){
+        var r0 = .70 + q*.04, r1 = r0 + .034;
+        var shown = dep*blocks - q; if(shown <= 0) continue;
+        var spread = (4.6 - q*.22) * Math.PI/180 * Math.min(1, shown);
+        var zq = z * (r0/t.end);
+        ctx.globalAlpha = (on ? 1 : .15) * depthA(P(Math.cos(ang)*r0, Math.sin(ang)*r0, zq)[2]);
+        ctx.beginPath(); arcPath(r1, ang - spread, ang + spread, zq, true); arcPath(r0, ang + spread, ang - spread, zq, false); ctx.closePath();
+        ctx.fillStyle = C.r; ctx.fill();
+        ctx.strokeStyle = C.vac; ctx.lineWidth = 1; ctx.stroke();
+      }
+    });
+
+    // main tracks
+    TRACKS.forEach(function(t, idx){
+      var on = !f || f === t.id;
+      var local = reduce ? 1 : ease(Math.max(0, Math.min(1, (progress - idx*.06)/(.75))));
+      var base = on ? 1 : .16;
+      ctx.globalAlpha = base;
+      ctx.lineWidth = f === t.id ? 2.4 : 1.6;
+      strokeTrack(t, t.len*local, t.col, base);
+      if(t.jet){
+        ctx.lineWidth = 1;
+        [-.06,.05,.1].forEach(function(dk, m){
+          var c = {phi:t.phi + (m-1)*3.2, k:t.k + dk*6, end:t.end, tl:t.tl + (m-1)*.08};
+          strokeTrack(c, lenTo(c, t.end*.98)*local, t.col, base);
+        });
+      }
+      // hits on the tracker barrels
+      ctx.fillStyle = t.col;
+      for(var b=1;b<=6;b++){
+        var rr = .08 + b*.068; if(rr > t.end) break;
+        var s = lenTo(t, rr); if(s > t.len*local) break;
+        var q = pt3(t, s);
+        ctx.globalAlpha = base * depthA(q[2]);
+        ctx.beginPath(); ctx.arc(q[0], q[1], f === t.id ? 2.6 : 1.9, 0, Math.PI*2); ctx.fill();
+      }
+      // muon: 5 hits in the chambers = 5 rooms done
+      if(t.muon && local >= 1){
+        var a = t.phi*Math.PI/180;
+        for(var h=0;h<5;h++){
+          var r = .9 + h*.02, m3 = P(Math.cos(a)*r, Math.sin(a)*r, r*t.tl);
+          ctx.globalAlpha = base * depthA(m3[2]);
+          ctx.beginPath(); ctx.arc(m3[0], m3[1], 2.2, 0, Math.PI*2); ctx.fill();
+        }
+      }
+      // cache the projected path for picking
+      t.proj = [];
+      for(var j=0;j<=40;j++){ var pp = pt3(t, t.len*j/40); t.proj.push(pp); }
+      // leader line to its tag
+      if(wide && t.tagY != null && local >= 1){
+        var e = endPoint(t);
+        var lx = t.tagX - 6;
+        ctx.globalAlpha = on ? (f === t.id ? .95 : .55) : .12;
+        ctx.strokeStyle = f === t.id ? t.col : C.ring;
+        ctx.lineWidth = 1;
+        ctx.setLineDash(t.muon ? [4,4] : []);
+        var elbowX = Math.max(e[0] + 14, cx + R*zoom*1.05 + 10);
+        ctx.beginPath(); ctx.moveTo(e[0], e[1]); ctx.lineTo(elbowX, t.tagY); ctx.lineTo(lx, t.tagY); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = f === t.id ? t.col : C.ring;
+        ctx.beginPath(); ctx.arc(lx, t.tagY, 2.2, 0, Math.PI*2); ctx.fill();
+      }
+    });
+
+    // vertex
+    ctx.globalAlpha = 1;
+    var v = P(0,0,0);
+    ctx.beginPath(); ctx.arc(v[0], v[1], 3.2, 0, Math.PI*2); ctx.fillStyle = C.bone; ctx.fill();
+  }
+
+  // strokes in short runs so the far part of a helix fades back
+  function strokeTrack(t, len, col, base){
+    if(len <= 0) return;
+    var a0 = base == null ? ctx.globalAlpha : base;
+    var steps = Math.max(8, Math.ceil(len*60));
+    var prev = P(0,0,0);
+    ctx.strokeStyle = col;
+    if(!moved()){
+      ctx.beginPath(); ctx.moveTo(prev[0], prev[1]);
+      for(var j=1;j<=steps;j++){ var q = pt3(t, len*j/steps); ctx.lineTo(q[0], q[1]); }
+      ctx.stroke(); return;
+    }
+    var run = 6;
+    for(var s0=0;s0<steps;s0+=run){
+      ctx.beginPath(); ctx.moveTo(prev[0], prev[1]);
+      var last = prev;
+      for(var j2=s0+1;j2<=Math.min(steps, s0+run);j2++){ last = pt3(t, len*j2/steps); ctx.lineTo(last[0], last[1]); }
+      ctx.globalAlpha = a0 * depthA((prev[2] + last[2])/2);
+      ctx.stroke();
+      prev = last;
+    }
+    ctx.globalAlpha = a0;
+  }
+
+  // pointer picking on the projected tracks
+  function pick(ev){
+    var rect = cv.getBoundingClientRect(), x = ev.clientX - rect.left, y = ev.clientY - rect.top;
+    var best = null, bd = 16;
+    TRACKS.forEach(function(t){
+      (t.proj || []).forEach(function(q){ var d = Math.hypot(q[0] - x, q[1] - y); if(d < bd){ bd = d; best = t.id; } });
+    });
+    return best;
+  }
+
+  // camera easing: runs only while the camera is catching up, then stops
+  var camRaf = 0;
+  function camStep(){
+    var done = true;
+    ["tilt","dy","dp"].forEach(function(k){
+      var d = goal[k] - cam[k];
+      if(Math.abs(d) > .0008){ cam[k] += d*.16; done = false; } else cam[k] = goal[k];
+    });
+    draw();
+    camRaf = done ? 0 : requestAnimationFrame(camStep);
+  }
+  function nudge(){ if(!camRaf) camRaf = requestAnimationFrame(camStep); }
+
+  // scroll tilts from end view to side view while the hero leaves the screen
+  function onScroll(){
+    if(reduce) return;
+    var span = Math.max(240, stage.getBoundingClientRect().height*.85);
+    var t = Math.max(0, Math.min(1, window.scrollY / span));
+    goal.tilt = t; nudge();
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+
+  // drag to orbit (mouse and pen; touch keeps scrolling the page)
+  var drag = null, dragged = false;
+  cv.addEventListener("pointerdown", function(ev){
+    if(ev.pointerType === "touch") return;
+    drag = {x:ev.clientX, y:ev.clientY, dy:goal.dy, dp:goal.dp}; dragged = false;
+    cv.setPointerCapture(ev.pointerId);
+  });
+  cv.addEventListener("pointermove", function(ev){
+    if(drag){
+      var mx = ev.clientX - drag.x, my = ev.clientY - drag.y;
+      if(!dragged && Math.hypot(mx, my) > 4){ dragged = true; cv.classList.add("orbiting"); hover(null); xh.classList.remove("on"); }
+      if(dragged){
+        goal.dy = drag.dy + mx*.008;
+        goal.dp = Math.max(-1.4, Math.min(1.4, drag.dp + my*.008));
+        if(reduce){ cam.dy = goal.dy; cam.dp = goal.dp; draw(); } else nudge();
+        return;
+      }
+    }
+    if(ev.pointerType === "mouse"){ var id = pick(ev); cv.style.cursor = id ? "pointer" : ""; hover(id); aim(ev); }
+  });
+  // crosshair with a cursor readout in detector coordinates (azimuth and transverse radius)
+  var xh = document.getElementById("xh"), xv = xh.querySelector(".xv"), xz = xh.querySelector(".xz"), xb = xh.querySelector("b");
+  function aim(ev){
+    var rect = cv.getBoundingClientRect(), x = ev.clientX - rect.left, y = ev.clientY - rect.top;
+    var v = P(0,0,0), dx = (x - v[0])/(R*zoom), dy = (y - v[1])/(R*zoom), r = Math.hypot(dx, dy);
+    if(r > 1.08 || drag){ xh.classList.remove("on"); return; }
+    var phi = (Math.atan2(-dy, dx)*180/Math.PI + 360) % 360;
+    xv.style.transform = "translateX(" + x + "px)"; xz.style.transform = "translateY(" + y + "px)";
+    xb.textContent = "\u03c6 " + ("00" + phi.toFixed(1)).slice(-5) + "\u00b0  r " + r.toFixed(2);
+    var bx = x + 14, by = y + 14;
+    if(bx + xb.offsetWidth > W) bx = x - 14 - xb.offsetWidth;
+    if(by + xb.offsetHeight > H) by = y - 14 - xb.offsetHeight;
+    xb.style.transform = "translate(" + bx + "px," + by + "px)";
+    xh.classList.add("on");
+  }
+  cv.addEventListener("mouseleave", function(){ xh.classList.remove("on"); });
+  function endDrag(){ drag = null; cv.classList.remove("orbiting"); }
+  cv.addEventListener("pointerup", endDrag);
+  cv.addEventListener("pointercancel", endDrag);
+  cv.addEventListener("pointerleave", function(){ if(!drag) hover(null); });
+  cv.addEventListener("dblclick", function(){ goal.dy = 0; goal.dp = 0; if(reduce){ cam.dy = 0; cam.dp = 0; draw(); } else nudge(); });
+  cv.addEventListener("click", function(ev){
+    if(dragged){ dragged = false; return; }
+    var id = pick(ev);
+    select(id && id !== sel ? id : null, true);
+    if(!wide && id){ document.getElementById("readout").scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"nearest"}); }
+  });
+  document.addEventListener("keydown", function(ev){ if(ev.key === "Escape" && sel){ select(null, true); } });
+
+  // replay once on load
+  function run(ts){
+    if(!t0) t0 = ts;
+    progress = Math.min(1.6, (ts - t0)/1400);
+    draw();
+    if(progress < 1.6) requestAnimationFrame(run); else { progress = 1.6; draw(); }
+  }
+
+  if(window.ResizeObserver){ new ResizeObserver(layout).observe(stage); } else { window.addEventListener("resize", layout); }
+  layout();
+  var start = function(){ if(!reduce) requestAnimationFrame(run); else draw(); onScroll(); };
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ placeTags(); start(); }); } else start();
+
+  var m = /^#t-([a-z-]+)$/.exec(location.hash);
+  if(m && byId[m[1]]) select(m[1], false);
+
+  // beam through the method layers
+  var beam = document.getElementById("beam");
+  if(beam && !reduce && "IntersectionObserver" in window){
+    beam.style.transform = "scaleX(.04)";
+    var vert = window.innerWidth <= 760;
+    if(vert){ beam.style.transform = "scaleY(.04)"; beam.style.transformOrigin = "center top"; }
+    beam.style.transition = "transform 1.2s cubic-bezier(.16,1,.3,1)";
+    new IntersectionObserver(function(es, ob){ es.forEach(function(e){ if(e.isIntersecting){ beam.style.transform = "none"; ob.disconnect(); } }); }, {threshold:.4}).observe(beam.parentNode);
+  }
+
+  // run header: a yellow beam along its bottom rule follows the scroll, and the nav marks the section in view
+  var runBar = document.querySelector(".run"), runRaf = 0;
+  function runBeam(){
+    runRaf = 0;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    runBar.style.setProperty("--run", max > 0 ? Math.min(1, window.scrollY/max).toFixed(4) : 0);
+  }
+  window.addEventListener("scroll", function(){ if(!runRaf) runRaf = requestAnimationFrame(runBeam); }, {passive:true});
+  runBeam();
+  var navLinks = document.querySelectorAll(".run nav a");
+  if("IntersectionObserver" in window){
+    var seen = {};
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){ seen[e.target.id] = e.isIntersecting; });
+      var cur = null;
+      navLinks.forEach(function(a){ var id = a.getAttribute("href").slice(1); if(seen[id] && !cur) cur = id; });
+      navLinks.forEach(function(a){ if(a.getAttribute("href") === "#" + cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+    }, {rootMargin:"-45% 0px -50% 0px"});
+    navLinks.forEach(function(a){ var el = document.getElementById(a.getAttribute("href").slice(1)); if(el) spy.observe(el); });
+  }
+
+  // sections rise in once as they enter (visible by default without JS)
+  document.documentElement.classList.add("js");
+  var rvs = document.querySelectorAll(".rv");
+  if(!reduce && "IntersectionObserver" in window){
+    var rio = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); rio.unobserve(e.target); } }); }, {rootMargin:"0px 0px -10% 0px"});
+    rvs.forEach(function(el){ if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add("in"); else rio.observe(el); });
+  } else rvs.forEach(function(el){ el.classList.add("in"); });
+
+  // Vienna clock
+  var clock = document.getElementById("clock");
+  function tick(){ try { clock.textContent = new Intl.DateTimeFormat("de-AT",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Vienna"}).format(new Date()); } catch(e){} }
+  tick(); setInterval(tick, 20000);
+})();
+</script>
+</body>
+</html>
