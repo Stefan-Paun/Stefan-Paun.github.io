@@ -86,7 +86,7 @@
   // Same schematic geometry as the detector view on the main page; only the figures are data.
   var TRACKS = [
     {name:"Security", val:"6 TryHackMe-Räume, iPhone-Check", valEn:"6 TryHackMe rooms, iPhone check", href:"#p-security", col:C.c, phi:-64, k:0, end:1.0, muon:true, dep:6, tl:.55},
-    {name:"CC-Werkzeuge", nameEn:"CC tools", val:"11 Prüfmuster vor jedem Commit", valEn:"11 checks before every commit", href:"#p-werkzeuge", col:C.y, phi:-8, k:.4, end:.66, dep:4, tl:-.7},
+    {name:"CC-Werkzeuge", nameEn:"CC tools", val:"10 Prüfmuster vor jedem Commit", valEn:"10 checks before every commit", href:"#p-werkzeuge", col:C.y, phi:-8, k:.4, end:.66, dep:4, tl:-.7},
     {name:"Agent-Board", val:"74 Tests, Open Source", valEn:"74 tests, open source", href:"https://stefan-paun.github.io/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:74, tl:.35},
     {name:"Jarvis", val:"3.619 automatische Tests", valEn:"3,619 automated tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3619, tl:-.3},
     {name:"GWB-Rallye", nameEn:"GWB Rally", val:"273 Fragen", valEn:"273 questions", href:"#p-rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
