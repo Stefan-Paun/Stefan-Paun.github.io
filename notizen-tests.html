@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Was mir Tests beigebracht haben · Stefan Paun</title>
+<meta name="description" content="Lehren aus Jarvis und Agent-Board: Warum Tests echte Daten schützen müssen, was wackelnde Tests bedeuten und warum rote Tests nicht gepusht werden.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefanpaun.page/notizen-tests.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Was mir Tests beigebracht haben">
+<meta property="og:description" content="Lehren aus Jarvis und Agent-Board: Warum Tests echte Daten schützen müssen, was wackelnde Tests bedeuten und warum rote Tests nicht gepusht werden.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <a href="index.html"><svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="3.2" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="3.4" fill="#f5f5f7"/></svg>Stefan Paun</a>
+  <a class="back" href="index.html#notizen">Zurück zu den Notizen</a>
+</div></header>
+
+<main>
+  <article>
+    <h1>Was mir Tests beigebracht haben. <span>Lehren aus zwei Projekten.</span></h1>
+    <p class="meta">Notiz · Stand <time datetime="2026-10-30">30. Oktober 2026</time></p>
+    <p class="lede">Tests zu schreiben fand ich zuerst nebensächlich. Dann haben Tests bei mir echten Schaden angerichtet, und ich habe verstanden, warum sie selbst Regeln brauchen.</p>
+
+    <ul class="take" aria-label="Das Wichtigste in drei Sätzen" style="--c:var(--cyan)">
+      <li><b>Datenschutz:</b> Tests dürfen nie an echte Daten. Ein Schutz im Code und ein Prüfschritt nach jedem Lauf sichern das ab.</li>
+      <li><b>Wackler:</b> Ein Test, der mal rot und mal grün ist, zeigt oft ein echtes Problem.</li>
+      <li><b>Regel:</b> Rote Tests pushe ich nicht, und ich schaue mir den Exit-Code an, nicht nur die Ausgabe.</li>
+    </ul>
+
+    <div class="figs">
+      <div><b>3.619</b><span>Tests bei Jarvis (28.10.2026), Lauf rund 5 Minuten</span></div>
+      <div><b>74</b><span>Unit-Tests bei Agent-Board, dazu Browser-Tests</span></div>
+      <div><b>0</b><span>erlaubte neue Dateien im Datenordner nach einem Lauf</span></div>
+    </div>
+
+    <h2>Ein Testlauf hat echte Daten verändert</h2>
+    <p>Bei Jarvis haben Tests mehrmals Dateien im echten Datenordner geschrieben. Einmal wurde sogar eine Datei überschrieben, die der Assistent im Alltag braucht. Beim zweiten Mal hatte ein Agent die Tests über ein eigenes Skript gestartet. Vermutlich gingen dabei auch echte Testbenachrichtigungen an mein Handy.</p>
+    <p>Die Ursache war einfach: Mein Schutz erkennt einen Testlauf an den Startargumenten. Ein eigenes Skript hat ihn umgangen. Das war meine Lücke, nicht nur die des Agents.</p>
+
+    <h2>Was ich seitdem mache</h2>
+    <ul>
+      <li>Ein Schutzmodul erkennt Testläufe, leitet die Datenpfade um und sperrt den Datenordner für andere Nutzer.</li>
+      <li>Tests laufen nur noch über den normalen Aufruf. Eigene Runner-Skripte sind tabu und stehen als Regel in der Projektanleitung.</li>
+      <li>Vor jedem Lauf lege ich eine Marker-Datei an. Danach darf es im Datenordner keine neueren Dateien geben. Wenn doch, ist ein Test undicht.</li>
+      <li>Das Benachrichtigungswerkzeug verweigert unter Tests echte Push-Nachrichten.</li>
+      <li>Neue Datenquellen müssen in Tests ersetzt werden.</li>
+    </ul>
+
+    <h2>Wackelnde Tests sind Hinweise</h2>
+    <p>Einige Tests bei Jarvis schlagen unter Last oder wegen der Uhrzeit fehl. Früher habe ich sie neu gestartet und weitergemacht. Ein Fall hat sich als zeitabhängig herausgestellt. Ich habe dafür ein Issue geschrieben, die Korrektur kam als PR. Ein anderer Fund der nächtlichen Testläufe war ein Schreibvorgang, der bei zwei gleichzeitigen Prozessen kollidieren konnte. Ich habe ihn auf atomares Speichern umgestellt.</p>
+    <p>Nicht jeder Wackler hat eine Ursache. Einige bleiben bei mir ungeklärt, und ich schreibe sie dann als „bekannt wacklig“ auf, statt so zu tun, als wüsste ich es. Live-Tests mit Netz und Tests mit echter Hardware sind von Natur aus unzuverlässig.</p>
+
+    <h2>Rote Tests pushe ich nicht</h2>
+    <p>Bei Agent-Board habe ich einmal gepusht, obwohl zwei Tests rot waren. Ich hatte nur die Ausgabe nach einem Stichwort durchsucht und nicht den Exit-Code geprüft. Seitdem schaue ich auf den Exit-Code. Bei Jarvis fragt mein Wächter vor einem Push außerdem nach, wenn der aktuelle Stand keinen grünen Testlauf hat. Auch ein grüner Lauf auf dem Mac reicht nicht immer: Windows testet die CI, und manche Mac-Tests sieht die Nacht-Cloud nicht.</p>
+
+    <h2>Ein Test, der nicht echte Daten braucht, ist besser</h2>
+    <p>Wo es geht, ersetze ich echte Dinge durch Attrappen. Das macht Tests schneller und sicherer. Es hat Grenzen: Eine Attrappe kann von der Wirklichkeit abweichen, und dann bleibt der Test grün, obwohl die Funktion kaputt ist.</p>
+
+    <h2>Was ich mitnehme</h2>
+    <p>Mehr Tests heißen nicht automatisch mehr Sicherheit. Wichtiger ist, dass ich ihnen vertrauen kann. Dazu gehören ein Schutz vor Nebenwirkungen, ein Blick auf Wackler und eine klare Regel, wann gepusht wird.</p>
+
+    <p class="note">Gebaut und getestet mit Claude Code. Zu Jarvis nenne ich bewusst keine Details zu den persönlichen Daten.</p>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="index.html">Zur Startseite</a></div></footer>
+<style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style>
+</body>
+</html>

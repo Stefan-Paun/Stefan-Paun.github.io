@@ -6,6 +6,9 @@
 <title>Stefan Paun</title>
 <meta name="description" content="Stefan Paun baut KI-Agents und lernt Cybersecurity. Projekte: Agent-Board, Jarvis, Claude-Code-Werkzeuge, Lernspiele, Security.">
 <link rel="canonical" href="https://stefanpaun.page/">
+<link rel="alternate" hreflang="de" href="https://stefanpaun.page/">
+<link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/">
+<link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Stefan Paun – KI-Agents und Cybersecurity">
 <meta property="og:description" content="17, Wien. Ich baue KI-Agents (Agent-Board, Jarvis) und lerne Cybersecurity. Jedes Projekt mit einer echten Zahl.">
@@ -151,6 +154,8 @@ p{text-wrap:pretty}
 .links{display:flex;align-items:center;gap:10px 22px;flex-wrap:wrap;margin-top:22px;font-size:1.0625rem}
 .links a{display:inline-flex;align-items:center;min-height:44px}
 .links a.btn:hover{text-decoration:none}
+.tile .live{display:flex;align-items:center;gap:8px;margin:10px 0 0;color:var(--grey-2);font-size:.875rem;line-height:1.4;max-width:none}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#30d158;box-shadow:0 0 0 3px rgba(48,209,88,.18)}
 a.stat-link{color:inherit;border-radius:8px}
 a.stat-link:hover{text-decoration:none}
 a.stat-link:hover .num-l{color:var(--text)}
@@ -194,6 +199,13 @@ a.shot:focus-visible{outline-offset:-3px}
 .rules li::before{content:counter(r);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--hair);display:grid;place-items:center;font-size:.875rem;color:var(--grey-2);font-variant-numeric:tabular-nums}
 .now b,.rules b{color:var(--text);font-weight:600}
 .avatar{display:block;margin:0 auto 26px;width:96px;height:96px;border-radius:24px;image-rendering:pixelated;box-shadow:0 0 0 1px var(--hair)}
+.lang{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:8px;color:var(--grey-2);font-size:.875rem;text-decoration:none}
+.lang:hover{color:var(--text);text-decoration:none}
+.notes{margin-top:44px}
+.notes h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.02em}
+.notes ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.notes a{display:inline-flex;align-items:center;min-height:44px;font-size:1.0625rem}
+.notes small{display:block;color:var(--grey-2);font-size:.875rem;margin-top:-6px}
 /* quick search */
 .kbtn{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:8px;border:1px solid var(--hair);background:transparent;color:var(--grey-2);font:inherit;font-size:.875rem;cursor:pointer}
 .kbtn:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
@@ -295,6 +307,7 @@ footer .wrap > :last-child{margin-left:auto}
       <a href="#arbeitsweise">Arbeitsweise</a>
       <a href="#kontakt">Kontakt</a>
     </nav>
+    <a class="lang" href="en/" hreflang="en" lang="en" aria-label="English version">EN</a>
     <button class="kbtn" type="button" id="kbtn" aria-label="Schnellsuche öffnen (Cmd oder Strg und K)"><kbd>⌘K</kbd></button>
     <a class="pill" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Live-Demo<span class="sr-only"> (neuer Tab)</span></a>
   </div>
@@ -354,6 +367,7 @@ footer .wrap > :last-child{margin-left:auto}
             <a class="more" href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Code auf GitHub<span class="sr-only"> (neuer Tab)</span></a>
           </div>
           <span class="kind" style="--c:var(--yellow)">KI-Agent · öffentlich, Release v1.4.0</span>
+          <p class="live" id="ab-live" hidden><span class="live-dot" aria-hidden="true"></span><span class="live-t"></span></p>
         </div>
         <a class="shot" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener" aria-label="Live-Demo von Agent-Board öffnen (neuer Tab)">
           <picture>
@@ -370,6 +384,7 @@ footer .wrap > :last-child{margin-left:auto}
         <h3>Jarvis</h3>
         <p>Mein Sprachassistent für Mac und Windows: Taste drücken oder „Hey Jarvis“ sagen, er erledigt Aufgaben mit seinen Werkzeugen und antwortet mit Stimme. Daten verschlüsselt, Schlüssel im macOS-Schlüsselbund, jede Nacht ein Testlauf in der Cloud.</p>
         <span class="kind" style="--c:var(--yellow)">KI-Agent · privat, täglich im Einsatz</span>
+        <div class="links"><a class="more" href="jarvis.html">Wie Jarvis aufgebaut ist</a></div>
         <span class="note">Kein öffentlicher Code, weil persönliche Daten im Spiel sind.</span>
       </article>
 
@@ -433,6 +448,13 @@ footer .wrap > :last-child{margin-left:auto}
         <li style="--c:var(--cyan)"><b>Security:</b> Lernpfad Pre Security auf TryHackMe und der Cisco-Kurs laufen.</li>
         <li style="--c:var(--red)"><b>Schule:</b> Matura-Vorbereitung, auch mit eigenen Lernspielen.</li>
       </ul>
+      <div class="notes" id="notizen">
+        <h3>Notizen</h3>
+        <ul>
+          <li><a class="more" href="notizen-agents.html">Wie ich mit Claude-Code-Agents baue</a><small>Arbeitsweise und was schiefging</small></li>
+          <li><a class="more" href="notizen-tests.html">Was mir Tests beigebracht haben</a><small>Lehren aus Jarvis und Agent-Board</small></li>
+        </ul>
+      </div>
     </div>
     <div class="rv" style="--i:1">
       <h2>Woran ich mich halte.</h2>
@@ -478,6 +500,8 @@ footer .wrap > :last-child{margin-left:auto}
       <li role="option" id="po1"><a href="#p-agent-board">Projekte <span>Agent-Board, Jarvis, Security, Rallye, Werkzeuge</span></a></li>
       <li role="option" id="po2"><a href="agent-board-fallstudie.html">Fallstudie Agent-Board <span>Problem, Entscheidungen, Tests</span></a></li>
       <li role="option" id="po3"><a href="sicherheit-iphone.html">Security: iPhone-Check <span>Vorgehen, Ergebnis, Grenzen</span></a></li>
+      <li role="option" id="po8"><a href="jarvis.html">Jarvis <span>wie mein Sprachassistent aufgebaut ist</span></a></li>
+      <li role="option" id="po9"><a href="#notizen">Notizen <span>Agents, Tests</span></a></li>
       <li role="option" id="po4"><a href="#arbeitsweise">Arbeitsweise <span>Plan, Agents, Tests, Security, Release</span></a></li>
       <li role="option" id="po5"><a href="#jetzt">Gerade <span>woran ich arbeite</span></a></li>
       <li role="option" id="po6"><a href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub <span>öffnet neuen Tab</span></a></li>

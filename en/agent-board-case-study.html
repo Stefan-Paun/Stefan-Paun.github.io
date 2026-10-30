@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agent-Board case study · Stefan Paun</title>
+<meta name="description" content="How Agent-Board stopped losing events when trimming its event file: problem, decisions, trade-offs and tests.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefanpaun.page/en/agent-board-case-study.html">
+<link rel="alternate" hreflang="de" href="https://stefanpaun.page/agent-board-fallstudie.html">
+<link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/agent-board-case-study.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Case study: Agent-Board no longer loses events">
+<meta property="og:description" content="Problem, decisions and trade-offs behind a fix in my open-source project.">
+<meta property="og:image" content="https://stefanpaun.page/img/agent-board.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <a href="./"><svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="3.2" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="3.4" fill="#f5f5f7"/></svg>Stefan Paun</a>
+  <a class="back" href="../agent-board-fallstudie.html" hreflang="de" lang="de">Deutsch</a>
+  <a class="back" style="margin-left:18px" href="./#p-agent-board">Back to projects</a>
+</div></header>
+
+<main>
+  <article>
+    <h1>Agent-Board no longer loses events. <span>A case study.</span></h1>
+    <p class="meta">Bug found on <time datetime="2026-10-10">10 October 2026</time> · fix merged on <time datetime="2026-10-29">29 October 2026</time> · built with Claude Code</p>
+    <p class="lede">Agent-Board shows live what my Claude Code agents are doing. Every step of an agent lands as one line in a file, and the board reads that file as it grows. When it gets too big, I trim it. That is exactly where events got lost.</p>
+
+    <ul class="take" aria-label="The gist in three sentences">
+      <li><b>Problem:</b> trimming the file dropped events or left half-written lines.</li>
+      <li><b>Cause:</b> several agents write at the same time, and trimming ran in between without coordination.</li>
+      <li><b>Fix:</b> a lock without a library, trimming via a temp file, and a server that resumes reading at the right place after a trim.</li>
+    </ul>
+
+    <h2>The problem</h2>
+    <p>Every Claude Code hook appends one line of JSON to <code>events.jsonl</code>. Above 5 MB the board keeps only the newest lines. Two things went wrong: concurrent hooks wrote into a file that was just being rewritten, which produced half JSON lines. And the server that streams the file to the browser lost the event right after a trim, for example an <q>agent finished</q>.</p>
+
+    <h2>Decision 1: a lock, but no dependency</h2>
+    <p>Agent-Board has zero dependencies, and I want to keep it that way. Instead of a lock library I use the fact that creating a directory is atomic: whoever succeeds with <code>mkdir</code> first may trim and write. Everyone else waits briefly.</p>
+
+    <h2>Decision 2: better to write without the lock than to block the agent</h2>
+    <p>A hook must never hold Claude Code up. So it waits at most 2 seconds for the lock and then writes anyway. A lock left behind by a crashed process is removed as stale after 10 seconds. That is a deliberate trade-off: in a very rare case a line can break again, but an agent never hangs.</p>
+
+    <h2>Decision 3: temp file first, then rename</h2>
+    <p>The trimmed file is written to a temp file first and then renamed in one step. That way the server never reads a half-written file. On Windows the rename fails while the server has the file open; then the trim simply happens next time instead of throwing an error. Also, only the current user may read and write the file, because it shows what you are working on.</p>
+
+    <h2>How I know it holds</h2>
+    <p>Three new tests: the server resumes at the right place after a trim, 30 concurrent hooks right at the 5 MB limit produce no half line, and a real live stream to the browser loses no event. While merging I noticed a test that sometimes failed for no reason because it waited a fixed 400 ms. Now it waits until the server is actually ready.</p>
+
+    <div class="figs">
+      <div><b>74</b><span>tests green after the merge</span></div>
+      <div><b>3</b><span>new tests for trimming</span></div>
+      <div><b>0</b><span>new dependencies</span></div>
+    </div>
+
+    <h2>What I take away</h2>
+    <p>Concurrency is where bugs hide, because they only show up sometimes. A test that fails only sometimes is not bad luck, it is a hint. And a good fix writes down its trade-off, so nobody mistakes it for a bug later.</p>
+
+    <p class="note">The code, the tests and the pull request are public. Feel free to check.</p>
+    <div class="links">
+      <a href="https://github.com/Stefan-Paun/agent-board/pull/29" target="_blank" rel="noopener">See pull request #29<span class="sr-only"> (new tab)</span></a>
+      <a href="https://github.com/Stefan-Paun/agent-board/blob/main/collector.mjs" target="_blank" rel="noopener">Read collector.mjs<span class="sr-only"> (new tab)</span></a>
+      <a href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Open the live demo<span class="sr-only"> (new tab)</span></a>
+    </div>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="./">Home</a></div></footer>
+<style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style>
+</body>
+</html>

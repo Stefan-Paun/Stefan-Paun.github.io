@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://stefanpaun.page/</loc>
-    <lastmod>2026-10-30</lastmod>
-  </url>
-  <url>
-    <loc>https://stefanpaun.page/agent-board-fallstudie.html</loc>
-    <lastmod>2026-10-30</lastmod>
-  </url>
-  <url>
-    <loc>https://stefanpaun.page/sicherheit-iphone.html</loc>
-    <lastmod>2026-10-30</lastmod>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://stefanpaun.page/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/"/></url>
+  <url><loc>https://stefanpaun.page/en/</loc><lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://stefanpaun.page/"/></url>
+  <url><loc>https://stefanpaun.page/agent-board-fallstudie.html</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://stefanpaun.page/en/agent-board-case-study.html</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://stefanpaun.page/sicherheit-iphone.html</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://stefanpaun.page/jarvis.html</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://stefanpaun.page/notizen-agents.html</loc><lastmod>2026-10-30</lastmod></url>
+  <url><loc>https://stefanpaun.page/notizen-tests.html</loc><lastmod>2026-10-30</lastmod></url>
 </urlset>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wie ich mit Claude-Code-Agents baue · Stefan Paun</title>
+<meta name="description" content="Meine Arbeitsweise mit Claude-Code-Agents: Plan, parallele Worktrees, lokale Tests, Nachtschicht mit Draft-PRs, eigene Prüfung und was schiefging.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefanpaun.page/notizen-agents.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wie ich mit Claude-Code-Agents baue">
+<meta property="og:description" content="Meine Arbeitsweise mit Claude-Code-Agents: Plan, parallele Worktrees, lokale Tests, Nachtschicht mit Draft-PRs, eigene Prüfung und was schiefging.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <a href="index.html"><svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="3.2" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="3.4" fill="#f5f5f7"/></svg>Stefan Paun</a>
+  <a class="back" href="index.html#notizen">Zurück zu den Notizen</a>
+</div></header>
+
+<main>
+  <article>
+    <h1>Wie ich mit Claude-Code-Agents baue. <span>Arbeitsweise und Fehler.</span></h1>
+    <p class="meta">Notiz · Stand <time datetime="2026-10-30">30. Oktober 2026</time></p>
+    <p class="lede">Ich schreibe meinen Code nicht mehr allein. Claude-Code-Agents bauen mit, ich plane und prüfe. Hier steht, wie das bei mir abläuft und wo es schiefging.</p>
+
+    <ul class="take" aria-label="Das Wichtigste in drei Sätzen" style="--c:var(--yellow)">
+      <li><b>Ablauf:</b> erst ein Plan, dann Agents parallel in getrennten Arbeitskopien, Tests lokal.</li>
+      <li><b>Regel:</b> Ich prüfe und merge selbst. Auch die nächtliche Routine öffnet nur Draft-PRs.</li>
+      <li><b>Lehre:</b> Agents machen sich gegenseitig Ärger, wenn sie dieselben Dateien anfassen. Klare Zuständigkeiten helfen.</li>
+    </ul>
+
+    <h2>Der Ablauf</h2>
+    <p>Für größere Funktionen nutze ich vier Phasen. Zuerst sammeln parallel zwei Agents Ideen aus verschiedenen Blickwinkeln, und zwei prüfen, was technisch geht. Dann wähle ich aus: keine neuen Konten, keine neuen Kosten, jede Funktion in einer eigenen neuen Datei. Danach bauen Agents, und nur ich ändere die gemeinsamen Dateien. Am Ende testen und reparieren weitere Agents, jeder nur in seinen Dateien. Fehler in fremden Dateien melden sie, sie reparieren sie nicht.</p>
+
+    <h2>Parallel, aber getrennt</h2>
+    <p>Jeder Agent arbeitet in einem eigenen Git-Worktree. Das ist eine zweite Arbeitskopie desselben Projekts auf einem eigenen Branch. So stören sich Agents nicht gegenseitig. Vorher mache ich eine Sicherung des Projekts. Und ich füge nie alles pauschal hinzu, sondern Dateien einzeln.</p>
+
+    <h2>Tests laufen lokal</h2>
+    <p>Bei Jarvis ist das Repo privat, und die Cloud-Minuten sind begrenzt. Deshalb laufen die Tests bei mir lokal. Nach jedem Lauf prüfe ich, ob Tests echte Daten verändert haben. Warum, steht in der <a href="notizen-tests.html">Notiz über Tests</a>.</p>
+
+    <h2>Nachtschicht</h2>
+    <p>Drei Routinen laufen nachts um 03:30, sonntags nicht: eine für Jarvis, eine für Agent-Board und eine für ein privates Lernspiel. Jede nimmt das älteste offene Issue mit einem bestimmten Label, baut auf einem eigenen Branch, testet, lässt einen zweiten Agent prüfen und öffnet einen Draft-PR. Gibt es kein Issue, passiert nichts. Die Routine darf pushen und Drafts öffnen. Mergen darf sie nicht.</p>
+
+    <div class="figs">
+      <div><b>3</b><span>Nachtschicht-Routinen, 03:30 Uhr, Sonntag frei</span></div>
+      <div><b>0</b><span>Merges durch Agents, die mache ich</span></div>
+      <div><b>3.619</b><span>Tests bei Jarvis (28.10.2026)</span></div>
+    </div>
+
+    <h2>Ich prüfe und merge selbst</h2>
+    <p>Jeder PR geht durch meine Hände. Ich schaue nach, ob die Tests grün sind und ob der Diff zur Aufgabe passt. Das klingt langsam, ist aber der Teil, bei dem ich am meisten lerne.</p>
+
+    <h2>Wächter-Hooks vor Commit und Push</h2>
+    <p>Ich habe mir ein eigenes Claude-Code-Plugin gebaut. Vor jedem Commit durchsucht es den Diff nach Schlüsseln, privaten Mail-Adressen und Telefonnummern. Bei öffentlichen Repos blockiert es dann, bei privaten fragt es nach. Vor einem Push blockiert es bestimmte Branches in öffentlichen Repos und fragt bei Jarvis immer nach. Das habe ich mit Fake-Daten live getestet. Es ersetzt kein Nachdenken, fängt aber Flüchtigkeitsfehler.</p>
+
+    <h2>Was schiefging</h2>
+    <ul>
+      <li><b>Test-Runner umgangen:</b> Ein Agent hat die Tests über ein eigenes Skript gestartet. Dabei galt mein Datenschutz nicht, und echte Dateien wurden überschrieben. Das ist zweimal passiert. Seitdem steht die Regel in der Projektanleitung.</li>
+      <li><b>Parallele Sitzungen:</b> Eine zweite Claude-Sitzung hat bei Agent-Board mitten in der Arbeit den Branch des Hauptordners gewechselt. Seitdem prüfe ich direkt vor dem Commit, auf welchem Branch ich bin.</li>
+      <li><b>Falsche Autor-Adresse:</b> In einer frühen Fassung von Agent-Board steckte eine private Mail-Adresse in der Git-Historie. Ich habe die Historie neu aufgesetzt, bevor das Repo öffentlich wurde. Ein Web-Merge hat sie später noch einmal eingeschleppt, deshalb habe ich das Repo neu angelegt. Seitdem gilt eine feste Noreply-Adresse, und der Wächter prüft sie.</li>
+      <li><b>Zu viel Automatik:</b> Ein Sicherheits-Plugin hat in drei Tagen 222 Prüfungen gemacht und nie etwas gefunden. Ich habe es abgeschaltet.</li>
+    </ul>
+
+    <h2>Was ich daraus mitnehme</h2>
+    <p>Agents sparen Zeit, aber sie sparen keine Verantwortung. Gute Regeln stehen in der Projektanleitung und in Hooks, nicht in meinem Kopf. Und jedes Mal, wenn etwas schiefgeht, baue ich eine Sperre dafür.</p>
+
+    <p class="note">Gebaut mit Claude Code, und das schreibe ich bewusst dazu. Von Jarvis nenne ich keine Details zu persönlichen Daten.</p>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="index.html">Zur Startseite</a></div></footer>
+<style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style>
+</body>
+</html>

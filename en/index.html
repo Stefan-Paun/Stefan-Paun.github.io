@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stefan Paun</title>
+<meta name="description" content="Stefan Paun builds AI agents and is learning cybersecurity. Projects: Agent-Board, Jarvis, Claude Code tools, learning games, security.">
+<link rel="canonical" href="https://stefanpaun.page/en/">
+<link rel="alternate" hreflang="de" href="https://stefanpaun.page/">
+<link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/">
+<link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Stefan Paun – AI agents and cybersecurity">
+<meta property="og:description" content="17, Wien. Ich baue KI-Agents (Agent-Board, Jarvis) und lerne Cybersecurity. Jedes Projekt mit einer echten Zahl.">
+<meta property="og:url" content="https://stefanpaun.page/en/">
+<meta property="og:image" content="https://stefanpaun.page/img/agent-board.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="750">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stefan Paun – AI agents and cybersecurity">
+<meta name="twitter:description" content="17, Wien. Ich baue KI-Agents und lerne Cybersecurity.">
+<meta name="twitter:image" content="https://stefanpaun.page/img/agent-board.jpg">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="preload" href="../fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@view-transition{navigation:auto}
+@font-face{font-family:"Archivo";src:url("../fonts/archivo-latin.woff2") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+:root{
+  --black:#000;--card:#1d1d1f;--light:#f5f5f7;--ink:#1d1d1f;
+  --text:#f5f5f7;--grey:#86868b;--grey-2:#a1a1a6;--hair:rgba(255,255,255,.12);
+  --blue:#2997ff;--blue-btn:#0071e3;--blue-btn-hi:#0077ed;--blue-ink:#0066cc;
+  --yellow:#FFD23A;--cyan:#35D0FF;--red:#FF4D4D;
+  --sf:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Archivo","Helvetica Neue",Arial,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gutter:max(22px,env(safe-area-inset-left));
+}
+*{box-sizing:border-box}
+html{background:var(--black);scroll-behavior:smooth;scrollbar-color:#3a3a3c var(--black);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--black);color:var(--text);font:400 17px/1.47 var(--sf);letter-spacing:-.011em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--blue-btn);color:#fff}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:#3a3a3c;border:2px solid var(--black);border-radius:10px}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+img{display:block;max-width:100%;height:auto}
+p{text-wrap:pretty}
+.wrap{width:min(1068px,100% - 2*var(--gutter));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:8px;z-index:50;background:var(--blue-btn);color:#fff;padding:8px 14px;border-radius:980px}
+.skip:focus{left:12px}
+[id]{scroll-margin-top:64px}
+
+/* nav: Apple's translucent bar */
+.nav{position:sticky;top:0;z-index:30;height:52px;background:rgba(22,22,23,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--hair)}
+.nav .wrap{height:100%;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:600;font-size:1.3rem;letter-spacing:-.02em}
+.brand:hover{text-decoration:none}
+.brand-t{white-space:nowrap}
+.mark{flex:none}
+.nav nav{margin-left:auto;display:flex;gap:26px}
+.nav nav a{color:var(--grey-2);font-size:.875rem;letter-spacing:-.01em;padding:12px 0}
+.nav nav a:hover{color:var(--text);text-decoration:none}
+.nav{transition:background .35s,border-color .35s}
+.nav.on-light{background:rgba(245,245,247,.8);border-bottom-color:rgba(0,0,0,.08)}
+.nav.on-light .brand{color:var(--ink)}
+.nav.on-light nav a{color:#424245}
+.nav.on-light nav a:hover{color:var(--ink)}
+.light :focus-visible{outline-color:var(--blue-ink)}
+.pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 16px;border-radius:980px;background:var(--blue-btn);color:#fff;font-size:.875rem;font-weight:400;letter-spacing:-.01em;transition:background .2s}
+.pill:hover{background:var(--blue-btn-hi);text-decoration:none}
+.pill.big{height:44px;padding:0 22px;font-size:1.0625rem}
+
+/* hero */
+.hero{text-align:center;padding:clamp(48px,7vw,88px) 0 0}
+.hero h1{margin:0;font-weight:700;font-size:clamp(3.2rem,9vw,6rem);line-height:1.05;letter-spacing:-.035em}
+.hero .sub{margin:14px auto 0;max-width:24ch;text-wrap:balance;font-size:clamp(1.5rem,3.2vw,2.35rem);line-height:1.17;font-weight:600;letter-spacing:-.025em;color:var(--grey-2)}
+.hero .sub em{font-style:normal;color:var(--text)}
+.hero .intro{margin:22px auto 0;max-width:36ch;color:var(--grey-2);font-size:1.25rem;line-height:1.4;text-wrap:balance}
+.nb{white-space:nowrap}
+.hero .facts{margin:14px 0 0;color:var(--grey-2);font-size:.875rem;letter-spacing:.01em}
+.cta{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:980px;font-size:1.0625rem;font-weight:500;letter-spacing:-.01em;transition:background .2s,color .2s,border-color .2s}
+.btn:hover{text-decoration:none}
+.btn-p{background:var(--blue-btn);color:#fff}
+.btn-p:hover{background:var(--blue-btn-hi)}
+.btn-s{border:1px solid rgba(255,255,255,.28);color:var(--text)}
+.btn-s:hover{border-color:var(--text);background:rgba(255,255,255,.06)}
+.btn-sm{min-height:44px;padding:0 20px;font-size:1rem}
+.proof{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 24px;margin:22px auto 0;padding:0;list-style:none}
+.proof a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0;color:#c7c7cc;font-size:.875rem;letter-spacing:-.005em;transition:color .2s,border-color .2s}
+.proof a:hover{color:var(--text);text-decoration:none}
+.proof .ext{opacity:.7;transition:transform .25s var(--ease)}
+.proof a:hover .ext{transform:translate(1px,-1px);opacity:1}
+.more::after{content:"";display:inline-block;width:.42em;height:.42em;margin-left:.32em;border-right:1.6px solid currentColor;border-top:1.6px solid currentColor;transform:translateY(-.08em) rotate(45deg)}
+
+/* pinned product scene */
+.scene{position:relative;height:270vh}
+.sticky{position:sticky;top:52px;height:calc(100vh - 52px);height:calc(100svh - 52px);overflow:hidden;display:grid;place-items:start center;padding-top:clamp(52px,7vh,76px)}
+.sticky::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 55% at 50% 48%,#17191d 0%,#000 70%);pointer-events:none}
+#cv{position:relative;width:min(92vw,calc(100vh - 290px),820px);aspect-ratio:1;display:block;border-radius:50%}
+#cv:focus-visible{outline:3px solid var(--blue);outline-offset:-6px;box-shadow:0 0 0 2px #000 inset}
+.caps{position:absolute;left:0;right:0;bottom:clamp(60px,8vh,84px);text-align:center;pointer-events:none}
+.cap{position:absolute;left:50%;bottom:0;width:min(780px,100% - 2*var(--gutter));transform:translate(-50%,16px);opacity:0;margin:0;font-weight:600;font-size:clamp(1.5rem,3.4vw,2.5rem);line-height:1.12;letter-spacing:-.028em;transition:opacity .5s var(--ease),transform .7s var(--ease)}
+.cap span{color:var(--grey)}
+.cap.on{opacity:1;transform:translate(-50%,0);transition:opacity .5s var(--ease) .08s,transform .7s var(--ease) .08s}
+.cap:not(.on){transition:opacity .25s ease-in,transform .25s ease-in}
+.legend{position:absolute;top:clamp(16px,3vh,28px);left:50%;transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px;width:calc(100% - 32px);margin:0;padding:0;list-style:none;color:#c7c7cc;font-size:.875rem;letter-spacing:-.005em}
+.legend{opacity:0;transition:opacity .5s var(--ease)}
+.legend.on{opacity:1}
+.legend li{display:inline-flex;align-items:center;gap:8px}
+.skip-scene{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;z-index:2;display:inline-flex;align-items:center;min-height:44px;color:var(--text);font-size:.875rem}
+.skip-scene:hover{color:var(--text)}
+.legend li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.legend li.plain{color:var(--grey)}
+.legend li.plain::before{display:none}
+.pick{position:absolute;z-index:2;width:min(280px,calc(100% - 32px));padding:16px 18px;border-radius:18px;background:rgba(29,29,31,.92);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border:1px solid var(--hair);opacity:0;visibility:hidden;transform:translateY(8px) scale(.97);transform-origin:50% 0;transition:opacity .22s var(--ease),transform .35s cubic-bezier(.34,1.4,.64,1),visibility 0s linear .35s;pointer-events:none}
+.pick.on{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition:opacity .22s var(--ease),transform .35s cubic-bezier(.34,1.4,.64,1),visibility 0s}
+.pick:not(.on){transition:opacity .15s ease-in,transform .2s ease-in,visibility 0s linear .2s}
+.kbd-hint{position:absolute;bottom:52px;left:0;right:0;margin:0;text-align:center;color:var(--grey-2);font-size:.875rem;opacity:0;transition:opacity .2s;pointer-events:none}
+#cv:focus-visible ~ .kbd-hint{opacity:1}
+.pick b{display:flex;align-items:center;gap:8px;font-size:1.0625rem;font-weight:700;letter-spacing:-.02em}
+.pick b::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.pick .v{display:block;margin-top:4px;color:var(--grey-2);font-size:.875rem}
+.pick a{display:inline-flex;align-items:center;min-height:44px;margin-top:2px;font-size:.875rem}
+.pick .kh{display:none;color:var(--grey);font-size:.875rem}
+.pick.kbd .kh{display:block}
+#cv.hot{cursor:pointer}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* section heads */
+.sec{padding:clamp(96px,12vw,160px) 0}
+.head{max-width:860px;margin:0 0 clamp(40px,6vw,64px)}
+.head h2{margin:0;font-weight:700;font-size:clamp(1.9rem,4vw,2.75rem);line-height:1.08;letter-spacing:-.03em;text-wrap:balance}
+.head h2 span{color:var(--grey-2)}
+.light .head{max-width:900px}
+.light .head h2{font-size:clamp(1.9rem,4vw,2.75rem);line-height:1.1}
+
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px}
+.tile{position:relative;background:var(--card);border-radius:28px;padding:clamp(28px,3.4vw,44px);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.tile > :not(.trk-art){position:relative}
+.trk-art{position:absolute;top:22px;right:22px;width:clamp(96px,12vw,150px);height:auto;aspect-ratio:1.6;opacity:.9;pointer-events:none}
+.t-ab .trk-art{top:12px;right:28px;width:96px}
+.tile h3{margin:0;font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:700;letter-spacing:-.025em;line-height:1.1}
+.tile p{margin:12px 0 0;color:#c7c7cc;font-size:1.0625rem;line-height:1.5;max-width:44ch}
+.tile .kind{display:inline-flex;align-items:center;gap:8px;margin-top:18px;color:var(--grey-2);font-size:.875rem;letter-spacing:-.005em}
+.tile .kind::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.num{display:block;font-weight:700;font-size:clamp(3.4rem,7vw,5.6rem);line-height:1;letter-spacing:-.045em;font-variant-numeric:tabular-nums;color:var(--text)}
+.num-l{display:block;margin-top:8px;color:var(--grey-2);font-size:1.0625rem;font-weight:600;letter-spacing:-.015em}
+.links{display:flex;align-items:center;gap:10px 22px;flex-wrap:wrap;margin-top:22px;font-size:1.0625rem}
+.links a{display:inline-flex;align-items:center;min-height:44px}
+.links a.btn:hover{text-decoration:none}
+.tile .live{display:flex;align-items:center;gap:8px;margin:10px 0 0;color:var(--grey-2);font-size:.875rem;line-height:1.4;max-width:none}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#30d158;box-shadow:0 0 0 3px rgba(48,209,88,.18)}
+a.stat-link{color:inherit;border-radius:8px}
+a.stat-link:hover{text-decoration:none}
+a.stat-link:hover .num-l{color:var(--text)}
+a.stat-link .num-l{text-decoration:underline;text-decoration-color:rgba(161,161,166,.35);text-underline-offset:4px}
+.note{margin-top:auto;padding-top:22px;color:var(--grey-2);font-size:.875rem}
+.t-ab{grid-column:span 6;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,56px);align-items:center}
+.t-ab .stats{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:clamp(20px,3.5vw,44px);margin-top:32px}
+.t-ab .stats .num{font-size:clamp(2.8rem,5vw,4.2rem)}
+a.shot{display:block;transition:transform .5s var(--ease)}
+a.shot:hover{transform:scale(1.012)}
+a.shot:focus-visible{outline-offset:-3px}
+.shot{position:relative}
+.shot-cap{position:absolute;left:12px;bottom:12px;padding:6px 12px;border-radius:980px;background:rgba(0,0,0,.72);color:#f5f5f7;font-size:.875rem;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.shot{border-radius:16px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06)}
+.t-jv,.t-sec{grid-column:span 3}
+.t-jv .num-l,.t-sec .num-l,.t-ry .num-l,.t-cc .num-l{margin-bottom:24px}
+.t-ry{grid-column:span 4}
+.t-ry .shot{margin-top:28px}
+.t-cc{grid-column:span 2}
+
+
+/* light band */
+.light{background:var(--light);color:var(--ink)}
+.light .head h2 span{color:#515154}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
+.steps li{background:#fff;border-radius:22px;padding:28px 24px 30px;display:flex;flex-direction:column;gap:12px}
+.steps svg{width:36px;height:36px;color:var(--ink)}
+.steps h3{margin:0;font-size:1.25rem;font-weight:700;letter-spacing:-.02em}
+.steps p{margin:0;color:#515154;font-size:.875rem;line-height:1.5}
+.steps li:last-child svg{color:var(--blue-ink)}
+
+/* now + principles */
+.now-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,96px)}
+.now h2{margin:0 0 28px;font-weight:700;font-size:clamp(1.9rem,4vw,2.75rem);line-height:1.08;letter-spacing:-.03em}
+.now h2 span{color:var(--grey-2)}
+.now-list,.rules{margin:0;padding:0;list-style:none;display:grid;gap:18px}
+.now-list li{position:relative;padding-left:22px;color:#c7c7cc;font-size:1.0625rem}
+.now-list li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--c)}
+.rules{counter-reset:r}
+.rules li{counter-increment:r;position:relative;padding-left:40px;color:#c7c7cc;font-size:1.0625rem}
+.rules li::before{content:counter(r);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--hair);display:grid;place-items:center;font-size:.875rem;color:var(--grey-2);font-variant-numeric:tabular-nums}
+.now b,.rules b{color:var(--text);font-weight:600}
+.avatar{display:block;margin:0 auto 26px;width:96px;height:96px;border-radius:24px;image-rendering:pixelated;box-shadow:0 0 0 1px var(--hair)}
+.lang{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:8px;color:var(--grey-2);font-size:.875rem;text-decoration:none}
+.lang:hover{color:var(--text);text-decoration:none}
+.notes{margin-top:44px}
+.notes h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.02em}
+.notes ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.notes a{display:inline-flex;align-items:center;min-height:44px;font-size:1.0625rem}
+.notes small{display:block;color:var(--grey-2);font-size:.875rem;margin-top:-6px}
+/* quick search */
+.kbtn{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:8px;border:1px solid var(--hair);background:transparent;color:var(--grey-2);font:inherit;font-size:.875rem;cursor:pointer}
+.kbtn:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
+.kbtn kbd{font:inherit}
+.palette{width:min(560px,calc(100% - 32px));margin:14vh auto auto;padding:0;border:1px solid var(--hair);border-radius:18px;background:#1d1d1f;color:var(--text);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.palette[open]{animation:palIn .22s var(--ease)}
+@keyframes palIn{from{opacity:0;transform:translateY(-8px) scale(.98)}}
+.palette li a{transition:background .12s}
+.palette::backdrop{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.palette input{width:100%;padding:18px 20px;border:0;border-bottom:1px solid var(--hair);background:transparent;color:var(--text);font:inherit;font-size:1.0625rem;outline:none}
+.palette ul{list-style:none;margin:0;padding:8px;max-height:min(60vh,420px);overflow:auto}
+.palette a{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border-radius:12px;color:var(--text);text-decoration:none}
+.palette a span{color:var(--grey-2);font-size:.875rem}
+.palette li[aria-selected="true"] a,.palette a:hover{background:rgba(255,255,255,.08)}
+.palette li[hidden]{display:none}
+
+/* contact */
+.contact{text-align:center}
+.contact h2{margin:0;font-weight:700;font-size:clamp(3rem,8vw,5.6rem);letter-spacing:-.04em;line-height:1.04}
+.contact p{margin:16px auto 0;max-width:40ch;color:var(--grey-2);font-size:1.25rem}
+.contact .row{display:flex;justify-content:center;align-items:center;gap:26px;flex-wrap:wrap;margin-top:34px}
+.contact .hint{margin-top:22px;font-size:1.0625rem;color:var(--grey-2)}
+
+footer{border-top:1px solid var(--hair);padding:22px 0 calc(22px + env(safe-area-inset-bottom));color:var(--grey-2);font-size:.875rem}
+footer .wrap{display:flex;gap:20px;flex-wrap:wrap}
+footer a{color:var(--grey-2);display:inline-block;padding:10px 0;margin:-10px 0}
+footer .wrap > :last-child{margin-left:auto}
+
+/* reveal: visible by default, hidden only once JS is known to run */
+.js .rv{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:calc(var(--i,0)*60ms)}
+.js .rv.in{opacity:1;transform:none}
+
+@media (max-width:1068px){
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps li:last-child{grid-column:span 2}
+}
+@media (max-width:834px){
+  .now-grid{grid-template-columns:minmax(0,1fr)}
+  .kbtn{display:none}
+  .nav nav{display:none}
+  .nav .pill{margin-left:auto}
+  .t-ab{grid-template-columns:minmax(0,1fr)}
+  .t-jv,.t-sec,.t-ry,.t-cc{grid-column:span 6}
+}
+@media (max-width:760px){
+  .scene{height:140vh}
+  .sticky{place-items:start center;padding-top:56px}
+  .legend{gap:6px 16px;font-size:.875rem;flex-wrap:wrap;justify-content:center;white-space:normal;width:calc(100% - 32px)}
+  .nav{background:#161617;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .nav.on-light{background:#f5f5f7}
+  .pick{background:#1d1d1f;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .caps{bottom:60px}
+  .nav .pill{height:36px;padding:0 18px}
+  .hero{padding-top:56px}
+}
+@media (max-width:560px){
+  .cta .btn{flex:1 1 100%}
+  .links .btn{flex:1 1 auto}
+  .nav nav{display:flex;margin-left:auto;gap:16px}
+  .nav nav a{font-size:.875rem;padding:14px 0}
+  .nav nav a[href="#arbeitsweise"]{display:none}
+  .nav .pill{display:inline-flex;margin-left:0;height:36px;padding:0 14px}
+  .brand{font-size:1.1rem}
+  .steps{grid-template-columns:minmax(0,1fr)}
+  .steps li:last-child{grid-column:auto}
+  .t-ab .stats{gap:14px}
+  .t-ab .stats .num-l{font-size:.875rem}
+  .t-ab .trk-art{right:22px}
+  .cap-more{display:none}
+  .shot-cap{left:10px;bottom:10px;font-size:.8125rem;padding:5px 10px}
+  footer .wrap > :last-child{margin-left:0}
+}
+@media (max-width:430px){
+  .brand-t{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .legend{opacity:1}
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+  .js .rv{opacity:1;transform:none}
+  .scene{height:auto}
+  .sticky{position:relative;top:0;height:auto;padding:24px 0 48px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .caps{position:static;display:grid;gap:18px}
+  .cap{position:static;transform:none;opacity:1;width:auto;margin-inline:var(--gutter)}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","name":"Stefan Paun","url":"https://stefanpaun.page/","sameAs":["https://github.com/Stefan-Paun"]},{"@type":"WebSite","url":"https://stefanpaun.page/","name":"Stefan Paun","inLanguage":"en"},{"@type":"SoftwareSourceCode","name":"Agent-Board","codeRepository":"https://github.com/Stefan-Paun/agent-board","programmingLanguage":"JavaScript","license":"https://opensource.org/licenses/MIT","author":{"@type":"Person","name":"Stefan Paun"}}]}</script>
+</head>
+<body>
+<a class="skip" href="#projekte">Skip to projects</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Stefan Paun, back to top">
+      <svg class="mark" width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="3.2" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="3.4" fill="#f5f5f7"/></svg>
+      <span class="brand-t">Stefan Paun</span>
+    </a>
+    <nav aria-label="Sections">
+      <a href="#projekte">Projects</a>
+      <a href="#arbeitsweise">How I work</a>
+      <a href="#kontakt">Contact</a>
+    </nav>
+    <a class="lang" href="../" hreflang="de" lang="de" aria-label="Deutsche Version">DE</a>
+    <button class="kbtn" type="button" id="kbtn" aria-label="Open quick search (Cmd or Ctrl and K)"><kbd>⌘K</kbd></button>
+    <a class="pill" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Live-Demo<span class="sr-only"> (new tab)</span></a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <h1>Stefan Paun</h1>
+    <p class="sub">I build <em>AI agents</em> and I’m learning <em>cybersecurity</em>.</p>
+    <p class="intro"><span class="nb">Agent-Board</span> shows live which of my Claude Code agents is working and which one is waiting for my approval. Open source, built by me.</p>
+    <p class="facts">17 · high school student in Vienna · graduating 2027, then computer science</p>
+    <div class="cta">
+      <a class="btn btn-p" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">See Agent-Board live<span class="sr-only"> (new tab)</span></a>
+      <a class="btn btn-s" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub<span class="sr-only"> (new tab)</span></a>
+    </div>
+    <p class="proof"><a class="more" href="agent-board-case-study.html">How I fixed a bug in Agent-Board</a></p>
+  </div>
+</section>
+
+<section class="scene" id="scene" aria-label="All projects as one particle event">
+  <div class="sticky">
+    <ul class="legend" aria-hidden="true"><li style="--c:var(--yellow)">AI agents</li><li style="--c:var(--cyan)">Security</li><li style="--c:var(--red)">Learning games</li><li class="plain">Shape schematic, numbers real</li></ul>
+    <canvas id="cv" tabindex="0" role="group" aria-roledescription="interactive graphic" aria-label="My projects as coloured tracks from one point, shape schematic, numbers real. Arrow keys pick a project, Enter opens it, Escape closes." aria-describedby="cv-list"></canvas>
+    <div class="pick" id="pick"><b></b><span class="v"></span><a href="#projekte">Go to project</a><span class="kh">Enter opens · Escape closes</span></div>
+    <p class="kbd-hint" aria-hidden="true">Arrow keys pick a project · Tab leaves the graphic</p>
+    <p class="sr-only" id="pick-live" aria-live="polite"></p>
+    <a class="skip-scene more" href="#projekte">Skip to projects</a>
+    <ul class="sr-only" id="cv-list"></ul>
+    <div class="caps">
+      <p class="cap">Every coloured line is a project. <span>Tap one.</span></p>
+      <p class="cap">Yellow is AI agents, cyan is security. <span>Red is learning games.</span></p>
+      <p class="cap">3,619 tests. <span>Automated tests for Jarvis, every night in the cloud.</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="projekte" aria-labelledby="pj-h">
+  <div class="wrap">
+    <div class="head rv">
+      <h2 id="pj-h">What I’ve built.<br><span>Every project with a real number.</span></h2>
+    </div>
+    <div class="bento">
+      <article class="tile t-ab rv" id="p-agent-board" style="--i:0">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 52 88, 104 60, 154 8" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <div>
+          <h3>Agent-Board</h3>
+          <p>A live pixel-art view for Claude Code agents. Every subagent is a small figure that walks into the room of the tool it is using. At a glance you see who is working and who is waiting for approval.</p>
+          <div class="stats">
+            <a class="stat-link" href="https://github.com/Stefan-Paun/agent-board/actions" target="_blank" rel="noopener"><span class="num">74</span><span class="num-l">tests</span><span class="sr-only"> (CI runs, new tab)</span></a>
+            <a class="stat-link" href="https://github.com/Stefan-Paun/agent-board/blob/main/package.json" target="_blank" rel="noopener"><span class="num">0</span><span class="num-l">dependencies</span><span class="sr-only"> (package.json, new tab)</span></a>
+            <div><span class="num">3</span><span class="num-l">languages</span></div>
+          </div>
+          <div class="links">
+            <a class="btn btn-p btn-sm" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Open live demo<span class="sr-only"> (new tab)</span></a>
+            <a class="more" href="agent-board-case-study.html">Read the case study</a>
+            <a class="more" href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Code on GitHub<span class="sr-only"> (new tab)</span></a>
+          </div>
+          <span class="kind" style="--c:var(--yellow)">AI agent · public, release v1.4.0</span>
+          <p class="live" id="ab-live" hidden><span class="live-dot" aria-hidden="true"></span><span class="live-t"></span></p>
+        </div>
+        <a class="shot" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener" aria-label="Open the Agent-Board live demo (new tab)">
+          <picture>
+            <source type="image/webp" srcset="../img/agent-board-720.webp">
+            <img src="../img/agent-board.jpg" width="1200" height="750" loading="lazy" alt="Agent-Board in the new city view: an isometric pixel town with archive, workshop, terminal, radio tower, control room and break room, with small agent figures; one agent holds up a sign because it is waiting for approval. On the right the list of active agents.">
+          </picture>
+          <span class="shot-cap">New: the city view<span class="cap-more">. Coming to the live demo with the next release.</span></span>
+        </a>
+      </article>
+
+      <article class="tile t-jv rv" id="p-jarvis" style="--i:1">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 70 94, 120 70, 154 30" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <span class="num">3,619</span><span class="num-l">automated tests</span>
+        <h3>Jarvis</h3>
+        <p>My voice assistant for Mac and Windows: press a key or say “Hey Jarvis”, it gets things done with its tools and answers by voice. Data encrypted, key in the macOS keychain, a test run in the cloud every night.</p>
+        <span class="kind" style="--c:var(--yellow)">AI agent · private, used every day</span>
+        <div class="links"><a class="more" href="../jarvis.html" hreflang="de">How Jarvis is built (German)</a></div>
+        <span class="note">No public code, because personal data is involved.</span>
+      </article>
+
+      <article class="tile t-sec rv" id="p-security" style="--i:2">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 L154 6" stroke="#35D0FF" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="118" cy="30" r="2.2" fill="#35D0FF"/><circle cx="128" cy="24" r="2.2" fill="#35D0FF"/><circle cx="138" cy="18" r="2.2" fill="#35D0FF"/><circle cx="148" cy="12" r="2.2" fill="#35D0FF"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <span class="num">6</span><span class="num-l">TryHackMe rooms</span>
+        <h3>Security</h3>
+        <p>I checked my iPhone against 6,630 public spyware indicators with Amnesty International’s Mobile Verification Toolkit: none found, but that is not proof. Plus 6 rooms of the Pre Security path on TryHackMe and Cisco’s Introduction to Cybersecurity course.</p>
+        <span class="kind" style="--c:var(--cyan)">Security · in progress</span>
+        <div class="links"><a class="more" href="../sicherheit-iphone.html" hreflang="de">How I did it (German)</a></div>
+        <span class="note">I don’t have a certificate yet.</span>
+      </article>
+
+      <article class="tile t-ry rv" id="p-rallye" style="--i:3">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 60 86, 110 52, 150 14" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 64 92, 116 64, 156 32" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 56 80, 100 40, 140 6" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <span class="num">408</span><span class="num-l">questions</span>
+        <h3>Rally engine</h3>
+        <p>A pixel-style learning game with a world map, bosses, a shop and a mock exam. Built once, turned into two games: the GWB Rally (geography and economics) with 273 questions and the Cyber Rally with 135 questions and Leitner-style spaced repetition.</p>
+        <span class="kind" style="--c:var(--red)">Learning game · 408 questions in two games · not public yet</span>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="../img/cyber-rallye-720.webp">
+            <img src="../img/cyber-rallye.jpg" width="1200" height="844" loading="lazy" alt="Cyber Rally: world map with the worlds Careers in Cyber and Cold Boot, on the left the “due today” panel with the Leitner boxes.">
+          </picture>
+        </div>
+      </article>
+
+      <article class="tile t-cc rv" id="p-werkzeuge" style="--i:4">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 40 70, 90 30, 150 10" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <span class="num">11</span><span class="num-l">checks</span>
+        <h3>Claude Code tools</h3>
+        <p>A guard checks every commit and push against 11 patterns before it happens, plus a cockpit for open pull requests and skills for recurring workflows.</p>
+        <span class="kind" style="--c:var(--yellow)">AI agent · 2 mods, 2 skills</span>
+        <span class="note">Not published yet.</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec light" id="arbeitsweise" aria-labelledby="arb-h">
+  <div class="wrap">
+    <div class="head rv">
+      <h2 id="arb-h">How I build. <span>Every project goes through the same layers. Whatever fails a layer doesn’t move on.</span></h2>
+    </div>
+    <ol class="steps">
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="5" width="20" height="26" rx="3"/><path d="M13 12h10M13 17h10M13 22h6"/></svg><h3>Plan</h3><p>I write down what gets built and split it into phases.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="11" r="4"/><circle cx="8" cy="25" r="3.5"/><circle cx="28" cy="25" r="3.5"/><path d="M15.5 14.5 10 22M20.5 14.5 26 22M11.5 25h13"/></svg><h3>Agents</h3><p>Claude Code agents build separate parts in parallel, cloud routines keep working at night. I review and merge.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="12"/><path d="m12.5 18.5 4 4 7.5-8.5"/></svg><h3>Tests</h3><p>Every change runs through the tests before it stays.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 4.5 28 8.5v8.5c0 6.5-4.3 11.5-10 14-5.7-2.5-10-7.5-10-14V8.5z"/><rect x="13.5" y="16" width="9" height="7" rx="1.5"/><path d="M15.5 16v-2a2.5 2.5 0 0 1 5 0v2"/></svg><h3>Security</h3><p>No keys in the code, no private data. Before publishing I check which attack paths exist.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 26V8M11 15l7-7 7 7"/><path d="M8 26v3h20v-3"/></svg><h3>Release</h3><p>Only finished things go public: with docs, a license and a demo.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec now" id="jetzt" aria-labelledby="now-h">
+  <div class="wrap now-grid">
+    <div class="rv">
+      <h2 id="now-h">Now. <span>As of <time datetime="2026-10">October 2026</time>.</span></h2>
+      <ul class="now-list">
+        <li style="--c:var(--yellow)"><b>Agent-Board</b> is getting a city view where every agent walks through a small pixel town. In progress.</li>
+        <li style="--c:var(--cyan)"><b>Security:</b> the Pre Security path on TryHackMe and the Cisco course are in progress.</li>
+        <li style="--c:var(--red)"><b>School:</b> preparing for my final exams (Matura), partly with my own learning games.</li>
+      </ul>
+      <div class="notes" id="notizen">
+        <h3>Notes <span style="color:var(--grey-2);font-weight:400">(German)</span></h3>
+        <ul>
+          <li><a class="more" href="../notizen-agents.html" hreflang="de">How I build with Claude Code agents</a><small>workflow and what went wrong</small></li>
+          <li><a class="more" href="../notizen-tests.html" hreflang="de">What tests taught me</a><small>lessons from Jarvis and Agent-Board</small></li>
+        </ul>
+      </div>
+    </div>
+    <div class="rv" style="--i:1">
+      <h2>What I stick to.</h2>
+      <ol class="rules">
+        <li><b>Proof over adjectives.</b> Every project shows what it does and one real number.</li>
+        <li><b>Honest about my level.</b> I’m 17 and learning in public. Not a senior, but I ship.</li>
+        <li><b>Privacy first.</b> Even this page reveals nothing personal that doesn’t belong here.</li>
+        <li><b>Fast and light.</b> A page without a framework that also runs in LinkedIn’s browser on a phone.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="sec contact" id="kontakt" aria-labelledby="kon-h">
+  <div class="wrap rv">
+    <img class="avatar" src="../img/avatar.png" width="96" height="96" alt="My pixel avatar">
+    <h2 id="kon-h">Contact.</h2>
+    <p>Questions about my projects, feedback or working together: GitHub is the fastest way.</p>
+    <div class="row">
+      <a class="pill big" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">Go to GitHub<span class="sr-only"> (new tab)</span></a>
+    </div>
+    <p class="hint">Issues and feedback on Agent-Board are welcome on GitHub.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Stefan Paun</span>
+    <span>Built with Claude Code</span>
+    <span>Numbers as of <time datetime="2026-10">October 2026</time></span>
+    <span>The mark: three tracks from one point, for AI agents, security and learning games</span>
+    <span>No cookies, no tracking</span>
+    <a href="../detektor.html" hreflang="de">Another view of this page (German)</a>
+  </div>
+</footer>
+
+<dialog class="palette" id="palette" aria-label="Quick search">
+  <form method="dialog">
+    <input id="pq" type="text" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-activedescendant="po0" placeholder="Where to? e.g. demo, security, contact" autocomplete="off" aria-label="Search term" aria-controls="pl">
+    <ul id="pl" role="listbox" aria-label="Destinations">
+      <li role="option" id="po0"><a href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Agent-Board live demo <span>opens a new tab</span></a></li>
+      <li role="option" id="po1"><a href="#p-agent-board">Projects <span>Agent-Board, Jarvis, security, rally, tools</span></a></li>
+      <li role="option" id="po2"><a href="agent-board-case-study.html">Agent-Board case study <span>problem, decisions, tests</span></a></li>
+      <li role="option" id="po3"><a href="../sicherheit-iphone.html">Security: iPhone check <span>German · method, result, limits</span></a></li>
+      <li role="option" id="po8"><a href="../jarvis.html">Jarvis <span>German · how my voice assistant is built</span></a></li>
+      <li role="option" id="po9"><a href="#notizen">Notes <span>German · agents, tests</span></a></li>
+      <li role="option" id="po4"><a href="#arbeitsweise">How I work <span>plan, agents, tests, security, release</span></a></li>
+      <li role="option" id="po5"><a href="#jetzt">Now <span>what I’m working on</span></a></li>
+      <li role="option" id="po6"><a href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub <span>opens a new tab</span></a></li>
+      <li role="option" id="po7"><a href="#kontakt">Contact</a></li>
+    </ul>
+  </form>
+</dialog>
+<script src="../scene.js" defer></script>
+</body>
+</html>

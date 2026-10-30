@@ -38,9 +38,40 @@
     pal.addEventListener("click", function(ev){ if(ev.target === pal) pal.close(); if(ev.target.closest("a")) pal.close(); });
   }
 
+
+  // live facts from GitHub for the public project (no token, cached for 10 minutes, silent on failure)
+  (function(){
+    var box = document.getElementById("ab-live"); if(!box || !window.fetch) return;
+    var en = document.documentElement.lang === "en", KEY = "ab-live-v1";
+    function ago(iso){
+      var m = Math.max(1, Math.round((Date.now() - new Date(iso).getTime())/60000));
+      if(m < 60) return en ? m + (m === 1 ? " minute ago" : " minutes ago") : "vor " + m + " Min.";
+      var h = Math.round(m/60); if(h < 48) return en ? h + (h === 1 ? " hour ago" : " hours ago") : "vor " + h + " Std.";
+      var d = Math.round(h/24); return en ? d + " days ago" : "vor " + d + " Tagen";
+    }
+    function show(x){
+      var parts = [(en ? "Last updated " : "Zuletzt aktualisiert ") + ago(x.pushed)];
+      if(x.tag) parts.push((en ? "latest release " : "neuestes Release ") + x.tag);
+      if(x.open) parts.push(x.open + (en ? " open issues and PRs" : " offene Issues und PRs"));
+      box.querySelector(".live-t").textContent = parts.join(" · ");
+      box.title = en ? "Live from the GitHub API" : "Live von der GitHub-API";
+      box.hidden = false;
+    }
+    try { var c = JSON.parse(sessionStorage.getItem(KEY) || "null"); if(c && Date.now() - c.t < 600000){ show(c); return; } } catch(e){}
+    var api = "https://api.github.com/repos/Stefan-Paun/agent-board";
+    Promise.all([fetch(api).then(function(r){ return r.ok ? r.json() : Promise.reject(); }),
+                 fetch(api + "/releases/latest").then(function(r){ return r.ok ? r.json() : {}; }).catch(function(){ return {}; })])
+      .then(function(res){
+        var x = {t: Date.now(), pushed: res[0].pushed_at, open: res[0].open_issues_count, tag: res[1].tag_name || ""};
+        if(!x.pushed) return;
+        try { sessionStorage.setItem(KEY, JSON.stringify(x)); } catch(e){}
+        show(x);
+      }).catch(function(){});
+  })();
+
   // for the people who open the console
   try {
-    console.log("%cHallo!%c Diese Seite hat kein Framework und keine Abhängigkeiten. Der Code liegt offen: view-source oder scene.js. Agent-Board: https://github.com/Stefan-Paun/agent-board",
+    console.log(document.documentElement.lang === "en" ? "%cHi!%c No framework, no dependencies. The code is open: view-source or scene.js. Agent-Board: https://github.com/Stefan-Paun/agent-board" : "%cHallo!%c Diese Seite hat kein Framework und keine Abhängigkeiten. Der Code liegt offen: view-source oder scene.js. Agent-Board: https://github.com/Stefan-Paun/agent-board",
       "font:700 16px -apple-system,sans-serif;color:#FFD23A", "font:13px -apple-system,sans-serif;color:#a1a1a6");
   } catch(e){}
 
@@ -54,14 +85,16 @@
   // --- the product: the event in 3D, turned by the scroll position through the scene ---
   // Same schematic geometry as the detector view on the main page; only the figures are data.
   var TRACKS = [
-    {name:"Security", val:"6 TryHackMe-Räume, iPhone-Check", href:"#p-security", col:C.c, phi:-64, k:0, end:1.0, muon:true, dep:6, tl:.55},
-    {name:"CC-Werkzeuge", val:"11 Prüfmuster vor jedem Commit", href:"#p-werkzeuge", col:C.y, phi:-8, k:.4, end:.66, dep:4, tl:-.7},
-    {name:"Agent-Board", val:"74 Tests, Open Source", href:"https://stefan-paun.github.io/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:74, tl:.35},
-    {name:"Jarvis", val:"3.619 automatische Tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3619, tl:-.3},
-    {name:"GWB-Rallye", val:"273 Fragen", href:"#p-rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
-    {name:"Cyber-Rallye", val:"135 Fragen", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5}
+    {name:"Security", val:"6 TryHackMe-Räume, iPhone-Check", valEn:"6 TryHackMe rooms, iPhone check", href:"#p-security", col:C.c, phi:-64, k:0, end:1.0, muon:true, dep:6, tl:.55},
+    {name:"CC-Werkzeuge", nameEn:"CC tools", val:"11 Prüfmuster vor jedem Commit", valEn:"11 checks before every commit", href:"#p-werkzeuge", col:C.y, phi:-8, k:.4, end:.66, dep:4, tl:-.7},
+    {name:"Agent-Board", val:"74 Tests, Open Source", valEn:"74 tests, open source", href:"https://stefan-paun.github.io/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:74, tl:.35},
+    {name:"Jarvis", val:"3.619 automatische Tests", valEn:"3,619 automated tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3619, tl:-.3},
+    {name:"GWB-Rallye", nameEn:"GWB Rally", val:"273 Fragen", valEn:"273 questions", href:"#p-rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
+    {name:"Cyber-Rallye", nameEn:"Cyber Rally", val:"135 Fragen", valEn:"135 questions", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5}
   ];
   document.getElementById("cv-list").innerHTML = "";
+  var EN = document.documentElement.lang === "en";
+  if(EN) TRACKS.forEach(function(t){ if(t.nameEn) t.name = t.nameEn; if(t.valEn) t.val = t.valEn; });
   TRACKS.forEach(function(t){ var li = document.createElement("li"); li.textContent = t.name + ": " + t.val; document.getElementById("cv-list").appendChild(li); });
   var cv = document.getElementById("cv"), ctx = cv.getContext("2d");
   var scene = document.getElementById("scene"), caps = document.querySelectorAll(".cap");
@@ -309,7 +342,7 @@
     pick.style.setProperty("--c", t.col);
     pick.querySelector("b").textContent = t.name;
     pick.querySelector(".v").textContent = t.val;
-    a.href = t.href; a.textContent = t.ext ? "Live-Demo ansehen" : "Zum Projekt";
+    a.href = t.href; a.textContent = t.ext ? (EN ? "Open live demo" : "Live-Demo ansehen") : (EN ? "Go to project" : "Zum Projekt");
     if(t.ext){ a.target = "_blank"; a.rel = "noopener"; } else { a.removeAttribute("target"); a.removeAttribute("rel"); }
     var host = pick.parentNode.getBoundingClientRect(), r = cv.getBoundingClientRect();
     var lb = labels.filter(function(l){ return l.i === i; })[0] || {x0:W/2, x1:W/2, y:H/2};
