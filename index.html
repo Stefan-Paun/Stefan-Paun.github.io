@@ -20,7 +20,7 @@
 <meta name="twitter:image" content="https://stefan-paun.github.io/img/agent-board.jpg">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect width='28' height='28' rx='7' fill='%23000'/%3E%3Ccircle cx='14' cy='14' r='10' fill='none' stroke='%2386868b'/%3E%3Cpath d='M14 14L23 6' stroke='%2335D0FF' stroke-width='1.8'/%3E%3Cpath d='M14 14C17 17 20 18 24 17' stroke='%23FFD23A' stroke-width='1.8' fill='none'/%3E%3Ccircle cx='14' cy='14' r='2' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{font-family:"Archivo";src:url("fonts/archivo-latin.woff2") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
@@ -35,7 +35,7 @@
 }
 *{box-sizing:border-box}
 html{background:var(--black);scroll-behavior:smooth;scrollbar-color:#3a3a3c var(--black);-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--black);color:var(--text);font:400 17px/1.47 var(--sf);letter-spacing:-.022em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:var(--black);color:var(--text);font:400 17px/1.47 var(--sf);letter-spacing:-.011em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 ::selection{background:var(--blue-btn);color:#fff}
 ::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-track{background:var(--black)}
@@ -48,6 +48,7 @@ p{text-wrap:pretty}
 .wrap{width:min(1068px,100% - 2*var(--gutter));margin-inline:auto}
 .skip{position:absolute;left:-9999px;top:8px;z-index:50;background:var(--blue-btn);color:#fff;padding:8px 14px;border-radius:980px}
 .skip:focus{left:12px}
+[id]{scroll-margin-top:64px}
 
 /* nav: Apple's translucent bar */
 .nav{position:sticky;top:0;z-index:30;height:52px;background:rgba(22,22,23,.72);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hair)}
@@ -55,6 +56,7 @@ p{text-wrap:pretty}
 .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:600;font-size:1.3rem;letter-spacing:-.02em}
 .brand:hover{text-decoration:none}
 .brand-t{white-space:nowrap}
+.mark{flex:none}
 .nav nav{margin-left:auto;display:flex;gap:26px}
 .nav nav a{color:var(--grey-2);font-size:.8rem;letter-spacing:-.01em;padding:12px 0}
 .nav nav a:hover{color:var(--text);text-decoration:none}
@@ -64,16 +66,16 @@ p{text-wrap:pretty}
 .nav.on-light nav a{color:#424245}
 .nav.on-light nav a:hover{color:var(--ink)}
 .light :focus-visible{outline-color:var(--blue-ink)}
-.pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 16px;border-radius:980px;background:var(--blue-btn);color:#fff;font-size:.76rem;font-weight:400;letter-spacing:-.01em;transition:background .2s}
+.pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 16px;border-radius:980px;background:var(--blue-btn);color:#fff;font-size:.8rem;font-weight:400;letter-spacing:-.01em;transition:background .2s}
 .pill:hover{background:var(--blue-btn-hi);text-decoration:none}
 .pill.big{height:44px;padding:0 22px;font-size:1.06rem}
 
 /* hero */
-.hero{text-align:center;padding:clamp(72px,11vw,128px) 0 0}
+.hero{text-align:center;padding:clamp(48px,7vw,88px) 0 0}
 .hero h1{margin:0;font-weight:700;font-size:clamp(3.2rem,9vw,6rem);line-height:1.05;letter-spacing:-.035em}
 .hero .sub{margin:14px auto 0;max-width:22ch;font-size:clamp(1.5rem,3.2vw,2.35rem);line-height:1.17;font-weight:600;letter-spacing:-.025em;color:var(--grey)}
 .hero .sub em{font-style:normal;color:var(--text)}
-.hero .intro{margin:22px auto 0;max-width:44ch;color:var(--grey-2);font-size:1.1rem}
+.hero .intro{margin:22px auto 0;max-width:44ch;color:var(--grey-2);font-size:1.2rem}
 .cta{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:30px}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:980px;font-size:1.06rem;font-weight:500;letter-spacing:-.01em;transition:background .2s,color .2s,border-color .2s}
 .btn:hover{text-decoration:none}
@@ -81,16 +83,19 @@ p{text-wrap:pretty}
 .btn-p:hover{background:var(--blue-btn-hi)}
 .btn-s{border:1px solid rgba(255,255,255,.28);color:var(--text)}
 .btn-s:hover{border-color:var(--text);background:rgba(255,255,255,.06)}
-.proof{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:36px auto 0;padding:0;list-style:none}
-.proof a{display:inline-flex;align-items:center;min-height:32px;padding:0 14px;border-radius:980px;border:1px solid var(--hair);color:var(--grey-2);font-size:.8rem;letter-spacing:-.005em;transition:color .2s,border-color .2s}
+.proof{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:28px auto 0;padding:0;list-style:none}
+.proof a{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:980px;border:1px solid var(--hair);color:var(--grey-2);font-size:.8rem;letter-spacing:-.005em;transition:color .2s,border-color .2s}
 .proof a:hover{color:var(--text);border-color:rgba(255,255,255,.3);text-decoration:none}
+.proof .ext{opacity:.7;transition:transform .25s var(--ease)}
+.proof a:hover .ext{transform:translate(1px,-1px);opacity:1}
 .more::after{content:"";display:inline-block;width:.42em;height:.42em;margin-left:.32em;border-right:1.6px solid currentColor;border-top:1.6px solid currentColor;transform:translateY(-.08em) rotate(45deg)}
 
 /* pinned product scene */
 .scene{position:relative;height:270vh}
-.sticky{position:sticky;top:52px;height:calc(100vh - 52px);height:calc(100svh - 52px);overflow:hidden;display:grid;place-items:center}
+.sticky{position:sticky;top:52px;height:calc(100vh - 52px);height:calc(100svh - 52px);overflow:hidden;display:grid;place-items:start center;padding-top:clamp(52px,7vh,76px)}
 .sticky::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 55% at 50% 48%,#17191d 0%,#000 70%);pointer-events:none}
-#cv{position:relative;width:min(92vw,calc(100vh - 220px),860px);aspect-ratio:1;display:block}
+#cv{position:relative;width:min(92vw,calc(100vh - 290px),820px);aspect-ratio:1;display:block;border-radius:50%}
+#cv:focus-visible{outline-offset:-6px}
 .caps{position:absolute;left:0;right:0;bottom:clamp(28px,6vh,64px);text-align:center;pointer-events:none}
 .cap{position:absolute;left:50%;bottom:0;width:min(780px,100% - 2*var(--gutter));transform:translate(-50%,16px);opacity:0;margin:0;font-weight:600;font-size:clamp(1.5rem,3.4vw,2.5rem);line-height:1.12;letter-spacing:-.028em;transition:opacity .5s var(--ease),transform .7s var(--ease)}
 .cap span{color:var(--grey)}
@@ -99,20 +104,22 @@ p{text-wrap:pretty}
 .legend{opacity:0;transition:opacity .5s var(--ease)}
 .legend.on{opacity:1}
 .legend li{display:inline-flex;align-items:center;gap:8px}
+.skip-scene{position:absolute;right:var(--gutter);bottom:14px;z-index:2;color:var(--grey-2);font-size:.9rem}
+.skip-scene:hover{color:var(--text)}
 .legend li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
 .legend li.plain{color:var(--grey)}
 .legend li.plain::before{display:none}
-.pick{position:absolute;z-index:2;width:min(280px,calc(100% - 32px));padding:16px 18px;border-radius:18px;background:rgba(29,29,31,.92);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border:1px solid var(--hair);opacity:0;transform:translateY(6px);transition:opacity .25s var(--ease),transform .35s var(--ease);pointer-events:none}
-.pick.on{opacity:1;transform:none;pointer-events:auto}
+.pick{position:absolute;z-index:2;width:min(280px,calc(100% - 32px));padding:16px 18px;border-radius:18px;background:rgba(29,29,31,.92);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border:1px solid var(--hair);opacity:0;visibility:hidden;transform:translateY(8px) scale(.97);transform-origin:50% 0;transition:opacity .22s var(--ease),transform .35s cubic-bezier(.34,1.4,.64,1),visibility 0s linear .35s;pointer-events:none}
+.pick.on{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition-delay:0s}
 .pick b{display:flex;align-items:center;gap:8px;font-size:1.06rem;font-weight:700;letter-spacing:-.02em}
 .pick b::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
 .pick .v{display:block;margin-top:4px;color:var(--grey-2);font-size:.9rem}
-.pick a{display:inline-block;margin-top:10px;font-size:.95rem}
+.pick a{display:inline-flex;align-items:center;min-height:36px;margin-top:6px;font-size:.9rem}
 #cv.hot{cursor:pointer}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 /* section heads */
-.sec{padding:clamp(88px,12vw,150px) 0}
+.sec{padding:clamp(96px,12vw,160px) 0}
 .head{max-width:860px;margin:0 0 clamp(40px,6vw,64px)}
 .head h2{margin:0;font-weight:700;font-size:clamp(2.4rem,5.6vw,4rem);line-height:1.06;letter-spacing:-.032em}
 .head h2 span{color:var(--grey)}
@@ -122,14 +129,18 @@ p{text-wrap:pretty}
 /* bento */
 .bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px}
 .tile{position:relative;background:var(--card);border-radius:28px;padding:clamp(28px,3.4vw,44px);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.tile > :not(.trk-art){position:relative}
+.trk-art{position:absolute;top:22px;right:22px;width:clamp(96px,12vw,150px);height:auto;aspect-ratio:1.6;opacity:.9;pointer-events:none}
+.t-ab .trk-art{top:18px;right:44px}
 .tile h3{margin:0;font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:700;letter-spacing:-.025em;line-height:1.1}
 .tile p{margin:12px 0 0;color:#c7c7cc;font-size:1.06rem;line-height:1.5;max-width:44ch}
-.tile .kind{display:inline-flex;align-items:center;gap:8px;margin-top:18px;color:var(--grey-2);font-size:.875rem;letter-spacing:-.005em}
+.tile .kind{display:inline-flex;align-items:center;gap:8px;margin-top:18px;color:var(--grey-2);font-size:.9rem;letter-spacing:-.005em}
 .tile .kind::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
 .num{display:block;font-weight:700;font-size:clamp(3.4rem,7vw,5.6rem);line-height:1;letter-spacing:-.045em;font-variant-numeric:tabular-nums;color:var(--text)}
-.num-l{display:block;margin-top:6px;color:var(--grey-2);font-size:1.02rem;font-weight:600;letter-spacing:-.015em}
-.links{display:flex;gap:12px 26px;flex-wrap:wrap;margin-top:22px;font-size:1.02rem}
-.note{margin-top:auto;padding-top:22px;color:var(--grey-2);font-size:.875rem}
+.num-l{display:block;margin-top:8px;color:var(--grey-2);font-size:1.06rem;font-weight:600;letter-spacing:-.015em}
+.links{display:flex;gap:4px 26px;flex-wrap:wrap;margin-top:18px;font-size:1.06rem}
+.links a{display:inline-flex;align-items:center;min-height:44px}
+.note{margin-top:auto;padding-top:22px;color:var(--grey-2);font-size:.9rem}
 .t-ab{grid-column:span 6;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,56px);align-items:center}
 .t-ab .stats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr) minmax(0,1fr);gap:clamp(14px,3vw,32px);margin-top:32px;max-width:480px}
 .t-ab .stats .num{font-size:clamp(2.8rem,5vw,4.2rem)}
@@ -150,8 +161,8 @@ a.shot:focus-visible{outline-offset:-3px}
 .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
 .steps li{background:#fff;border-radius:22px;padding:28px 24px 30px;display:flex;flex-direction:column;gap:12px}
 .steps svg{width:36px;height:36px;color:var(--ink)}
-.steps h3{margin:0;font-size:1.14rem;font-weight:700;letter-spacing:-.02em}
-.steps p{margin:0;color:#6e6e73;font-size:.95rem;line-height:1.45}
+.steps h3{margin:0;font-size:1.2rem;font-weight:700;letter-spacing:-.02em}
+.steps p{margin:0;color:#6e6e73;font-size:.9rem;line-height:1.5}
 .steps li:last-child svg{color:var(--blue-ink)}
 
 /* contact */
@@ -159,16 +170,15 @@ a.shot:focus-visible{outline-offset:-3px}
 .contact h2{margin:0;font-weight:700;font-size:clamp(3rem,8vw,5.6rem);letter-spacing:-.04em;line-height:1.04}
 .contact p{margin:16px auto 0;max-width:40ch;color:var(--grey-2);font-size:1.2rem}
 .contact .row{display:flex;justify-content:center;align-items:center;gap:26px;flex-wrap:wrap;margin-top:34px}
-.contact .soon{color:var(--grey-2);font-size:1rem}
-.contact .hint{margin-top:22px;font-size:1rem;color:var(--grey-2)}
+.contact .hint{margin-top:22px;font-size:1.06rem;color:var(--grey-2)}
 
-footer{border-top:1px solid var(--hair);padding:22px 0 calc(22px + env(safe-area-inset-bottom));color:var(--grey-2);font-size:.76rem}
+footer{border-top:1px solid var(--hair);padding:22px 0 calc(22px + env(safe-area-inset-bottom));color:var(--grey-2);font-size:.8rem}
 footer .wrap{display:flex;gap:20px;flex-wrap:wrap}
 footer a{color:var(--grey-2);display:inline-block;padding:10px 0;margin:-10px 0}
 footer .wrap > :last-child{margin-left:auto}
 
 /* reveal: visible by default, hidden only once JS is known to run */
-.js .rv{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform 1.1s var(--ease)}
+.js .rv{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:calc(var(--i,0)*60ms)}
 .js .rv.in{opacity:1;transform:none}
 
 @media (max-width:1068px){
@@ -184,26 +194,30 @@ footer .wrap > :last-child{margin-left:auto}
 @media (max-width:760px){
   .scene{height:180vh}
   .sticky{place-items:start center;padding-top:56px}
-  .legend{gap:6px 16px;font-size:.78rem;flex-wrap:wrap;justify-content:center;white-space:normal;width:calc(100% - 32px)}
-  .nav{background:rgba(22,22,23,.95);-webkit-backdrop-filter:none;backdrop-filter:none}
-  .nav.on-light{background:rgba(245,245,247,.96)}
+  .legend{gap:6px 16px;font-size:.8rem;flex-wrap:wrap;justify-content:center;white-space:normal;width:calc(100% - 32px)}
+  .nav{background:#161617;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .nav.on-light{background:#f5f5f7}
+  .pick{background:#1d1d1f;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .caps{bottom:52px}
+  .skip-scene{right:auto;left:50%;transform:translateX(-50%);bottom:12px}
   .nav .pill{height:36px;padding:0 18px}
   .hero{padding-top:56px}
 }
 @media (max-width:560px){
   .cta .btn{flex:1 1 100%}
   .nav nav{display:flex;margin-left:auto;gap:16px}
-  .nav nav a{font-size:.82rem;padding:14px 0}
+  .nav nav a{font-size:.8rem;padding:14px 0}
   .nav .pill{display:none}
   .brand{font-size:1.1rem}
-}
-@media (max-width:430px){
-  .brand-t{display:none}
   .steps{grid-template-columns:minmax(0,1fr)}
   .steps li:last-child{grid-column:auto}
   .t-ab .stats{gap:14px}
   .t-ab .stats .num-l{font-size:.8rem}
+  .t-ab .trk-art{right:22px}
   footer .wrap > :last-child{margin-left:0}
+}
+@media (max-width:430px){
+  .brand-t{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   .legend{opacity:1}
@@ -222,7 +236,7 @@ footer .wrap > :last-child{margin-left:auto}
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Stefan Paun, zum Anfang">
-      <svg width="22" height="22" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="none" stroke="#86868b" stroke-width="1.4"/><path d="M14 14L23 6" stroke="#35D0FF" stroke-width="1.8"/><path d="M14 14C17 17 20 18 24 17" stroke="#FFD23A" stroke-width="1.8" fill="none"/><circle cx="14" cy="14" r="2.2" fill="#f5f5f7"/></svg>
+      <svg class="mark" width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="2.4" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="2.4" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="2.8" fill="#f5f5f7"/></svg>
       <span class="brand-t">Stefan Paun</span>
     </a>
     <nav aria-label="Seitenbereiche">
@@ -237,6 +251,7 @@ footer .wrap > :last-child{margin-left:auto}
 <main id="top">
 <section class="hero">
   <div class="wrap">
+    <svg class="mark" style="margin:0 auto 22px;display:block" width="56" height="56" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="2.4" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="2.4" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="2.8" fill="#f5f5f7"/></svg>
     <h1>Stefan Paun</h1>
     <p class="sub">Ich baue <em>KI-Agents</em> und lerne <em>Cybersecurity</em>.</p>
     <p class="intro">17, Schüler in Wien, Matura 2027.</p>
@@ -245,9 +260,9 @@ footer .wrap > :last-child{margin-left:auto}
       <a class="btn btn-s" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub<span class="sr-only"> (neuer Tab)</span></a>
     </div>
     <ul class="proof" aria-label="Agent-Board nachprüfen">
-      <li><a href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Agent-Board ist Open Source<span class="sr-only"> (neuer Tab)</span></a></li>
-      <li><a href="https://github.com/Stefan-Paun/agent-board/releases/tag/v1.4.0" target="_blank" rel="noopener">Release v1.4.0<span class="sr-only"> (neuer Tab)</span></a></li>
-      <li><a href="https://github.com/Stefan-Paun/agent-board/actions" target="_blank" rel="noopener">70 Tests in CI auf 3 Systemen<span class="sr-only"> (neuer Tab)</span></a></li>
+      <li><a href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Agent-Board ist Open Source<svg class="ext" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 7.5 7.5 2.5M3.5 2.5h4v4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg><span class="sr-only"> (neuer Tab)</span></a></li>
+      <li><a href="https://github.com/Stefan-Paun/agent-board/releases/tag/v1.4.0" target="_blank" rel="noopener">Release v1.4.0<svg class="ext" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 7.5 7.5 2.5M3.5 2.5h4v4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg><span class="sr-only"> (neuer Tab)</span></a></li>
+      <li><a href="https://github.com/Stefan-Paun/agent-board/actions" target="_blank" rel="noopener">74 Tests in CI<svg class="ext" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 7.5 7.5 2.5M3.5 2.5h4v4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg><span class="sr-only"> (neuer Tab)</span></a></li>
     </ul>
   </div>
 </section>
@@ -255,12 +270,14 @@ footer .wrap > :last-child{margin-left:auto}
 <section class="scene" id="scene" aria-label="Alle Projekte als ein Teilchen-Ereignis">
   <div class="sticky">
     <ul class="legend" aria-hidden="true"><li style="--c:var(--yellow)">KI-Agents</li><li style="--c:var(--cyan)">Security</li><li style="--c:var(--red)">Lernspiele</li><li class="plain">Form schematisch, Zahlen echt</li></ul>
-    <div class="pick" id="pick" aria-live="polite"><b></b><span class="v"></span><a></a></div>
-    <canvas id="cv" role="img" aria-label="Teilchen-Ereignis in 3D: jedes Projekt ist eine farbige Spur aus demselben Punkt." aria-describedby="cv-list"></canvas>
-    <ul class="sr-only" id="cv-list"><li>Agent-Board, KI-Agent, 70 Tests</li><li>Jarvis, KI-Agent, 3.619 Tests</li><li>Claude-Code-Werkzeuge, KI-Agent, 11 Prüfmuster</li><li>Security, 6 TryHackMe-Räume</li><li>GWB-Rallye, Lernspiel, 273 Fragen</li><li>Cyber-Rallye, Lernspiel, 135 Fragen</li></ul>
+    <canvas id="cv" tabindex="0" aria-roledescription="interaktive Grafik" aria-label="Meine Projekte als farbige Spuren aus einem Punkt. Pfeiltasten wählen ein Projekt, Enter öffnet es, Escape schließt." aria-describedby="cv-list"></canvas>
+    <div class="pick" id="pick"><b></b><span class="v"></span><a></a></div>
+    <p class="sr-only" id="pick-live" aria-live="polite"></p>
+    <a class="skip-scene more" href="#projekte">Zu den Projekten</a>
+    <ul class="sr-only" id="cv-list"><li>Agent-Board, KI-Agent, 74 Tests</li><li>Jarvis, KI-Agent, 3.619 Tests</li><li>Claude-Code-Werkzeuge, KI-Agent, 11 Prüfmuster</li><li>Security, 6 TryHackMe-Räume</li><li>GWB-Rallye, Lernspiel, 273 Fragen</li><li>Cyber-Rallye, Lernspiel, 135 Fragen</li></ul>
     <div class="caps">
-      <p class="cap">Alles beginnt an einem Punkt. <span>Jede farbige Linie ist ein Projekt.</span></p>
-      <p class="cap">Tipp auf eine Linie. <span>Dann siehst du, was dahintersteckt.</span></p>
+      <p class="cap">Jede farbige Linie ist ein Projekt. <span>Tipp eine an.</span></p>
+      <p class="cap">Gelb sind KI-Agents, Cyan ist Security. <span>Rot sind Lernspiele.</span></p>
       <p class="cap">3.619 Tests. <span>Automatische Tests für Jarvis, jede Nacht in der Cloud.</span></p>
     </div>
   </div>
@@ -272,12 +289,13 @@ footer .wrap > :last-child{margin-left:auto}
       <h2 id="pj-h">Was ich gebaut habe. <span>Jedes Projekt mit einer echten Zahl.</span></h2>
     </div>
     <div class="bento">
-      <article class="tile t-ab rv" id="p-agent-board">
+      <article class="tile t-ab rv" id="p-agent-board" style="--i:0">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 52 88, 104 60, 154 8" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
         <div>
           <h3>Agent-Board</h3>
           <p>Eine Live-Ansicht in Pixel-Art für Claude-Code-Agents. Jeder Subagent ist eine kleine Figur, die in den Raum des Werkzeugs geht, das sie gerade benutzt. So sieht man auf einen Blick, wer arbeitet und wer auf eine Freigabe wartet.</p>
           <div class="stats">
-            <div><span class="num">70</span><span class="num-l">Tests</span></div>
+            <div><span class="num">74</span><span class="num-l">Tests</span></div>
             <div><span class="num">0</span><span class="num-l">Abhängigkeiten</span></div>
             <div><span class="num">3</span><span class="num-l">Sprachen</span></div>
           </div>
@@ -295,15 +313,17 @@ footer .wrap > :last-child{margin-left:auto}
         </a>
       </article>
 
-      <article class="tile t-jv rv" id="p-jarvis">
+      <article class="tile t-jv rv" id="p-jarvis" style="--i:1">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 70 94, 120 70, 154 30" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
         <span class="num">3.619</span>
         <h3>Jarvis</h3>
-        <p>Mein Sprachassistent für Mac und Windows. Ich drücke eine Taste oder sage „Hey Jarvis“, er hört zu, erledigt Aufgaben mit seinen Werkzeugen und antwortet mit Stimme. Daten verschlüsselt, Entsperren per Touch ID, jede Nacht ein Testlauf in der Cloud.</p>
+        <p>Mein Sprachassistent für Mac und Windows. Ich drücke eine Taste oder sage „Hey Jarvis“, er hört zu, erledigt Aufgaben mit seinen Werkzeugen und antwortet mit Stimme. Daten verschlüsselt mit dem Schlüssel im macOS-Schlüsselbund, Entsperren per Touch ID, jede Nacht ein Testlauf in der Cloud.</p>
         <span class="kind" style="--c:var(--yellow)">KI-Agent · 3.619 automatische Tests</span>
         <span class="note">Kein öffentlicher Code, weil persönliche Daten im Spiel sind.</span>
       </article>
 
-      <article class="tile t-sec rv" id="p-security">
+      <article class="tile t-sec rv" id="p-security" style="--i:2">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 L154 6" stroke="#35D0FF" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="118" cy="30" r="2.2" fill="#35D0FF"/><circle cx="128" cy="24" r="2.2" fill="#35D0FF"/><circle cx="138" cy="18" r="2.2" fill="#35D0FF"/><circle cx="148" cy="12" r="2.2" fill="#35D0FF"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
         <span class="num">6</span>
         <h3>Security</h3>
         <p>6 Räume im Lernpfad Pre Security auf TryHackMe, dazu der Cisco-Kurs Introduction to Cybersecurity. Praxis am eigenen iPhone: per USB mit dem Mobile Verification Toolkit von Amnesty International gegen 6.630 öffentliche Spyware-Indikatoren abgeglichen, keine gefunden. Das ist ein Abgleich mit bekannten Mustern, kein Beweis.</p>
@@ -311,7 +331,8 @@ footer .wrap > :last-child{margin-left:auto}
         <span class="note">Ein Zertifikat habe ich noch nicht.</span>
       </article>
 
-      <article class="tile t-ry rv" id="p-rallye">
+      <article class="tile t-ry rv" id="p-rallye" style="--i:3">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 60 86, 110 52, 150 14" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 64 92, 116 64, 156 32" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 56 80, 100 40, 140 6" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
         <h3>Rallye-Engine</h3>
         <p>Ein Lernspiel im Pixel-Look mit Weltkarte, Bossen, Shop und Probetest. Einmal gebaut, zwei Spiele daraus: die GWB-Rallye mit 273 Fragen und die Cyber-Rallye mit 135 Fragen und Wiederholung nach dem Leitner-System.</p>
         <span class="kind" style="--c:var(--red)">Lernspiel · 408 Fragen · noch nicht öffentlich</span>
@@ -323,7 +344,8 @@ footer .wrap > :last-child{margin-left:auto}
         </div>
       </article>
 
-      <article class="tile t-cc rv" id="p-werkzeuge">
+      <article class="tile t-cc rv" id="p-werkzeuge" style="--i:4">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 40 70, 90 30, 150 10" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
         <span class="num">11</span>
         <h3>Claude-Code-Werkzeuge</h3>
         <p>Ein Wächter prüft jeden Commit und Push mit 11 Mustern, bevor er passiert, dazu ein Cockpit für offene Pull Requests und Skills für wiederkehrende Abläufe.</p>
@@ -343,7 +365,7 @@ footer .wrap > :last-child{margin-left:auto}
       <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="5" width="20" height="26" rx="3"/><path d="M13 12h10M13 17h10M13 22h6"/></svg><h3>Plan</h3><p>Ich schreibe auf, was gebaut wird, und teile es in Phasen.</p></li>
       <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="11" r="4"/><circle cx="8" cy="25" r="3.5"/><circle cx="28" cy="25" r="3.5"/><path d="M15.5 14.5 10 22M20.5 14.5 26 22M11.5 25h13"/></svg><h3>Agents</h3><p>Claude-Code-Agents bauen parallel an getrennten Teilen, nachts arbeiten Cloud-Routinen weiter. Ich prüfe und führe zusammen.</p></li>
       <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="12"/><path d="m12.5 18.5 4 4 7.5-8.5"/></svg><h3>Tests</h3><p>Jede Änderung läuft durch die Tests, bevor sie bleibt.</p></li>
-      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 4.5 28 8.5v8.5c0 6.5-4.3 11.5-10 14-5.7-2.5-10-7.5-10-14V8.5z"/><rect x="13.5" y="16" width="9" height="7" rx="1.5"/><path d="M15.5 16v-2a2.5 2.5 0 0 1 5 0v2"/></svg><h3>Security</h3><p>Keine Schlüssel im Code, keine privaten Daten, Angriffswege geprüft.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 4.5 28 8.5v8.5c0 6.5-4.3 11.5-10 14-5.7-2.5-10-7.5-10-14V8.5z"/><rect x="13.5" y="16" width="9" height="7" rx="1.5"/><path d="M15.5 16v-2a2.5 2.5 0 0 1 5 0v2"/></svg><h3>Security</h3><p>Keine Schlüssel im Code, keine privaten Daten. Vor dem Veröffentlichen prüfe ich, welche Angriffswege es gibt.</p></li>
       <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 26V8M11 15l7-7 7 7"/><path d="M8 26v3h20v-3"/></svg><h3>Release</h3><p>Öffentlich wird nur, was fertig ist: mit Anleitung, Lizenz und Demo.</p></li>
     </ol>
   </div>
@@ -351,8 +373,9 @@ footer .wrap > :last-child{margin-left:auto}
 
 <section class="sec contact" id="kontakt" aria-labelledby="kon-h">
   <div class="wrap rv">
+    <svg class="mark" style="margin:0 auto 26px;display:block" width="64" height="64" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="2.4" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="2.4" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="2.8" fill="#f5f5f7"/></svg>
     <h2 id="kon-h">Kontakt.</h2>
-    <p>Am schnellsten erreichst du mich über GitHub.</p>
+    <p>Für Fragen zu meinen Projekten, Feedback oder Zusammenarbeit: am schnellsten über GitHub.</p>
     <div class="row">
       <a class="pill big" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">Zu GitHub<span class="sr-only"> (neuer Tab)</span></a>
     </div>
@@ -399,7 +422,7 @@ footer .wrap > :last-child{margin-left:auto}
   var TRACKS = [
     {name:"Security", val:"6 TryHackMe-Räume, iPhone-Check", href:"#p-security", col:C.c, phi:-64, k:0, end:1.0, muon:true, dep:6, tl:.55},
     {name:"CC-Werkzeuge", val:"11 Prüfmuster vor jedem Commit", href:"#p-werkzeuge", col:C.y, phi:-8, k:.4, end:.66, dep:4, tl:-.7},
-    {name:"Agent-Board", val:"70 Tests, Open Source", href:"https://stefan-paun.github.io/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:70, tl:.35},
+    {name:"Agent-Board", val:"74 Tests, Open Source", href:"https://stefan-paun.github.io/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:74, tl:.35},
     {name:"Jarvis", val:"3.619 automatische Tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3619, tl:-.3},
     {name:"GWB-Rallye", val:"273 Fragen", href:"#p-rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
     {name:"Cyber-Rallye", val:"135 Fragen", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5}
@@ -553,8 +576,8 @@ footer .wrap > :last-child{margin-left:auto}
 
     TRACKS.forEach(function(t, idx){
       var local = reduce ? 1 : ease(Math.max(0, Math.min(1, (progress - idx*.06)/.75)));
-      ctx.lineWidth = 1.8;
-      var on = focus < 0 || focus === idx, fa = on ? 1 : .18;
+      var fa = faC[idx];
+      ctx.lineWidth = 1.8 + hvC[idx]*.9;
       strokeTrack(t, t.len*local, t.col, fa);
       if(t.jet){
         ctx.lineWidth = 1;
@@ -604,7 +627,7 @@ footer .wrap > :last-child{margin-left:auto}
       ctx.lineJoin = "round"; ctx.lineWidth = 4; ctx.strokeStyle = "#000";
       lab.forEach(function(l){
         ctx.textAlign = l.right ? "left" : "right";
-        ctx.globalAlpha = la * (focus < 0 || focus === l.i ? 1 : .35);
+        ctx.globalAlpha = la * (.35 + .65*(faC[l.i] - .18)/.82);
         var w = ctx.measureText(l.name).width;
         if(l.right && l.x + w > W - 4) l.x = W - 4 - w;
         if(!l.right && l.x - w < 4) l.x = 4 + w;
@@ -616,10 +639,23 @@ footer .wrap > :last-child{margin-left:auto}
       ctx.lineWidth = 1;
       ctx.globalAlpha = 1;
     }
+
+    // tap and hint pulses: a ring that grows from the touched point and fades
+    var now = performance.now();
+    pulses = pulses.filter(function(u){ return now - u.t < 420 + (u.d || 0); });
+    pulses.forEach(function(u){
+      var a = (now - u.t - (u.d || 0))/420; if(a < 0) return;
+      var e = 1 - Math.pow(1 - a, 3);
+      ctx.globalAlpha = (1 - a)*.85; ctx.strokeStyle = u.c; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(u.x, u.y, 4 + 16*e, 0, Math.PI*2); ctx.stroke();
+    });
+    ctx.globalAlpha = 1; ctx.lineWidth = 1;
   }
 
   // pick a track by its name or its line: dim the rest and show what it is
-  var focus = -1, labels = [], pick = document.getElementById("pick"), legend = document.querySelector(".legend");
+  var focus = -1, hov = -1, labels = [], pulses = [], hinted = false, capIdx = -1;
+  var faC = TRACKS.map(function(){ return 1; }), hvC = TRACKS.map(function(){ return 0; });
+  var pick = document.getElementById("pick"), live = document.getElementById("pick-live"), legend = document.querySelector(".legend");
   function hit(ev){
     var r = cv.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top, best = -1, bd = 18;
     labels.forEach(function(l){ if(x >= l.x0 - 6 && x <= l.x1 + 6 && Math.abs(y - l.y) < 12){ best = l.i; bd = 0; } });
@@ -628,7 +664,11 @@ footer .wrap > :last-child{margin-left:auto}
   }
   function showPick(i){
     focus = i;
-    if(i < 0){ pick.classList.remove("on"); draw(); return; }
+    if(i < 0){
+      pick.classList.remove("on"); live.textContent = "";
+      if(pick.contains(document.activeElement)) cv.focus({preventScroll:true});
+      kick(); return;
+    }
     var t = TRACKS[i], a = pick.querySelector("a");
     pick.style.setProperty("--c", t.col);
     pick.querySelector("b").textContent = t.name;
@@ -641,10 +681,28 @@ footer .wrap > :last-child{margin-left:auto}
     pick.style.left = Math.max(16, Math.min(host.width - pick.offsetWidth - 16, px)) + "px";
     pick.style.top = Math.max(60, Math.min(host.height - pick.offsetHeight - 120, py)) + "px";
     pick.classList.add("on");
-    draw();
+    live.textContent = t.name + ": " + t.val;
+    kick();
   }
-  cv.addEventListener("pointermove", function(ev){ if(ev.pointerType === "mouse") cv.classList.toggle("hot", hit(ev) >= 0); });
-  cv.addEventListener("click", function(ev){ var i = hit(ev); showPick(i === focus ? -1 : i); });
+  function labelPos(i){ var l = labels.filter(function(q){ return q.i === i; })[0]; return l ? {x:(l.right === false ? l.x0 : l.x0) - 8, y:l.y} : null; }
+  cv.addEventListener("pointermove", function(ev){
+    if(ev.pointerType !== "mouse") return;
+    var i = hit(ev); cv.classList.toggle("hot", i >= 0);
+    if(i !== hov){ hov = i; kick(); }
+  });
+  cv.addEventListener("pointerleave", function(){ if(hov >= 0){ hov = -1; kick(); } });
+  cv.addEventListener("click", function(ev){
+    var i = hit(ev);
+    if(i >= 0){ var r = cv.getBoundingClientRect(); pulses.push({x:ev.clientX - r.left, y:ev.clientY - r.top, t:performance.now(), c:TRACKS[i].col}); }
+    showPick(i === focus ? -1 : i);
+  });
+  // keyboard: arrows walk through the projects, Enter follows the card's link
+  cv.addEventListener("keydown", function(ev){
+    var n = TRACKS.length;
+    if(ev.key === "ArrowRight" || ev.key === "ArrowDown"){ ev.preventDefault(); showPick((focus + 1) % n); }
+    else if(ev.key === "ArrowLeft" || ev.key === "ArrowUp"){ ev.preventDefault(); showPick(focus <= 0 ? n - 1 : focus - 1); }
+    else if(ev.key === "Enter" && focus >= 0){ ev.preventDefault(); pick.querySelector("a").click(); }
+  });
   document.addEventListener("keydown", function(ev){ if(ev.key === "Escape" && focus >= 0) showPick(-1); });
 
   // scroll position through the pinned scene drives the camera and the captions
@@ -653,16 +711,37 @@ footer .wrap > :last-child{margin-left:auto}
     var r = scene.getBoundingClientRect(), span = r.height - window.innerHeight;
     return span > 0 ? Math.max(0, Math.min(1, -r.top/span)) : 0;
   }
+  // captions switch at .36 and .68 with a little hysteresis, so they never flicker at a boundary
   function captions(p){
-    var idx = p < .08 ? -1 : p < .38 ? 0 : p < .68 ? 1 : 2;
+    var lo = [0, .36, .68], idx = capIdx < 0 ? 0 : capIdx;
+    while(idx < 2 && p > lo[idx + 1] + .02) idx++;
+    while(idx > 0 && p < lo[idx] - .02) idx--;
+    if(idx === capIdx) return;
+    capIdx = idx;
     caps.forEach(function(c, i){ c.classList.toggle("on", i === idx); });
+    // first time the visitor scrolls in: one quiet pulse on a name shows that the lines can be tapped
+    if(!hinted && focus < 0 && progress >= 1){
+      var lp = labelPos(2);
+      if(lp){ hinted = true; var t = performance.now(); pulses.push({x:lp.x, y:lp.y, t:t, c:"#f5f5f7"}, {x:lp.x, y:lp.y, t:t, d:520, c:"#f5f5f7"}); kick(); }
+    }
+  }
+  function settle(arr, goalFn, k){
+    var moving = false;
+    for(var i=0;i<arr.length;i++){ var g = goalFn(i), d = g - arr[i]; if(Math.abs(d) > .004){ arr[i] += d*k; moving = true; } else arr[i] = g; }
+    return moving;
   }
   function step(){
+    raf = 0;
+    if(document.hidden) return;
     var d = target - shown;
     shown = Math.abs(d) < .0006 ? target : shown + d*.14;
+    var m1 = settle(faC, function(i){ return focus < 0 || focus === i ? 1 : .18; }, .2);
+    var m2 = settle(hvC, function(i){ return hov === i ? 1 : 0; }, .3);
     draw();
-    raf = shown === target ? 0 : requestAnimationFrame(step);
+    if(shown !== target || m1 || m2 || pulses.length) raf = requestAnimationFrame(step);
   }
+  function kick(){ if(!raf) raf = requestAnimationFrame(step); }
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) kick(); });
   var sceneOn = true, tick = 0;
   if("IntersectionObserver" in window){
     new IntersectionObserver(function(es){ sceneOn = es[0].isIntersecting; if(!sceneOn && focus >= 0) showPick(-1); }).observe(scene);
@@ -671,7 +750,7 @@ footer .wrap > :last-child{margin-left:auto}
     if(reduce || !sceneOn) return;
     target = sceneP(); captions(target); legend.classList.toggle("on", target > .02);
     if(focus >= 0 && Math.abs(target - shown) > .02) showPick(-1);
-    if(!raf) raf = requestAnimationFrame(step);
+    kick();
   }
   window.addEventListener("scroll", function(){
     if(tick) return;
@@ -679,8 +758,9 @@ footer .wrap > :last-child{margin-left:auto}
   }, {passive:true});
 
   function run(ts){
-    if(!t0) t0 = ts;
-    progress = Math.min(1.6, (ts - t0)/1600);
+    if(document.hidden){ t0 = 0; document.addEventListener("visibilitychange", function again(){ if(!document.hidden){ document.removeEventListener("visibilitychange", again); requestAnimationFrame(run); } }); return; }
+    if(!t0) t0 = ts - progress/1.6*1300;
+    progress = Math.min(1.6, (ts - t0)/1300*1.6);
     draw();
     if(progress < 1.6) requestAnimationFrame(run);
   }
