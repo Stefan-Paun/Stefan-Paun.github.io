@@ -54,6 +54,7 @@ p{text-wrap:pretty}
 .nav .wrap{height:100%;display:flex;align-items:center;gap:28px}
 .brand{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:600;font-size:1.3rem;letter-spacing:-.02em}
 .brand:hover{text-decoration:none}
+.brand-t{white-space:nowrap}
 .nav nav{margin-left:auto;display:flex;gap:26px}
 .nav nav a{color:var(--grey-2);font-size:.8rem;letter-spacing:-.01em;padding:12px 0}
 .nav nav a:hover{color:var(--text);text-decoration:none}
@@ -80,9 +81,9 @@ p{text-wrap:pretty}
 .btn-p:hover{background:var(--blue-btn-hi)}
 .btn-s{border:1px solid rgba(255,255,255,.28);color:var(--text)}
 .btn-s:hover{border-color:var(--text);background:rgba(255,255,255,.06)}
-.proof{margin:22px auto 0;color:var(--grey-2);font-size:.88rem;letter-spacing:-.005em}
-.proof a{color:var(--grey-2);text-decoration:underline;text-decoration-color:rgba(161,161,166,.4);text-underline-offset:3px}
-.proof a:hover{color:var(--text)}
+.proof{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:36px auto 0;padding:0;list-style:none}
+.proof a{display:inline-flex;align-items:center;min-height:32px;padding:0 14px;border-radius:980px;border:1px solid var(--hair);color:var(--grey-2);font-size:.8rem;letter-spacing:-.005em;transition:color .2s,border-color .2s}
+.proof a:hover{color:var(--text);border-color:rgba(255,255,255,.3);text-decoration:none}
 .more::after{content:"";display:inline-block;width:.42em;height:.42em;margin-left:.32em;border-right:1.6px solid currentColor;border-top:1.6px solid currentColor;transform:translateY(-.08em) rotate(45deg)}
 
 /* pinned product scene */
@@ -94,9 +95,20 @@ p{text-wrap:pretty}
 .cap{position:absolute;left:50%;bottom:0;width:min(780px,100% - 2*var(--gutter));transform:translate(-50%,16px);opacity:0;margin:0;font-weight:600;font-size:clamp(1.5rem,3.4vw,2.5rem);line-height:1.12;letter-spacing:-.028em;transition:opacity .5s var(--ease),transform .7s var(--ease)}
 .cap span{color:var(--grey)}
 .cap.on{opacity:1;transform:translate(-50%,0)}
-.legend{position:absolute;top:clamp(16px,3vh,28px);left:50%;transform:translateX(-50%);display:flex;gap:22px;margin:0;padding:0;list-style:none;color:var(--grey-2);font-size:.82rem;letter-spacing:-.005em;white-space:nowrap}
+.legend{position:absolute;top:clamp(16px,3vh,28px);left:50%;transform:translateX(-50%);display:flex;gap:22px;margin:0;padding:0;list-style:none;color:var(--grey-2);font-size:.8rem;letter-spacing:-.005em;white-space:nowrap}
+.legend{opacity:0;transition:opacity .5s var(--ease)}
+.legend.on{opacity:1}
 .legend li{display:inline-flex;align-items:center;gap:8px}
 .legend li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.legend li.plain{color:var(--grey)}
+.legend li.plain::before{display:none}
+.pick{position:absolute;z-index:2;width:min(280px,calc(100% - 32px));padding:16px 18px;border-radius:18px;background:rgba(29,29,31,.92);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border:1px solid var(--hair);opacity:0;transform:translateY(6px);transition:opacity .25s var(--ease),transform .35s var(--ease);pointer-events:none}
+.pick.on{opacity:1;transform:none;pointer-events:auto}
+.pick b{display:flex;align-items:center;gap:8px;font-size:1.06rem;font-weight:700;letter-spacing:-.02em}
+.pick b::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.pick .v{display:block;margin-top:4px;color:var(--grey-2);font-size:.9rem}
+.pick a{display:inline-block;margin-top:10px;font-size:.95rem}
+#cv.hot{cursor:pointer}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 /* section heads */
@@ -112,17 +124,18 @@ p{text-wrap:pretty}
 .tile{position:relative;background:var(--card);border-radius:28px;padding:clamp(28px,3.4vw,44px);overflow:hidden;display:flex;flex-direction:column;min-width:0}
 .tile h3{margin:0;font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:700;letter-spacing:-.025em;line-height:1.1}
 .tile p{margin:12px 0 0;color:#c7c7cc;font-size:1.06rem;line-height:1.5;max-width:44ch}
-.tile .kind{display:inline-flex;align-items:center;gap:8px;margin-top:18px;color:var(--grey-2);font-size:.82rem;letter-spacing:-.005em}
+.tile .kind{display:inline-flex;align-items:center;gap:8px;margin-top:18px;color:var(--grey-2);font-size:.875rem;letter-spacing:-.005em}
 .tile .kind::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
 .num{display:block;font-weight:700;font-size:clamp(3.4rem,7vw,5.6rem);line-height:1;letter-spacing:-.045em;font-variant-numeric:tabular-nums;color:var(--text)}
-.num-l{display:block;margin-top:6px;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word;color:var(--grey-2);font-size:1.02rem;font-weight:600;letter-spacing:-.015em}
+.num-l{display:block;margin-top:6px;color:var(--grey-2);font-size:1.02rem;font-weight:600;letter-spacing:-.015em}
 .links{display:flex;gap:12px 26px;flex-wrap:wrap;margin-top:22px;font-size:1.02rem}
-.note{margin-top:auto;padding-top:22px;color:var(--grey-2);font-size:.82rem}
+.note{margin-top:auto;padding-top:22px;color:var(--grey-2);font-size:.875rem}
 .t-ab{grid-column:span 6;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,56px);align-items:center}
-.t-ab .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,32px);margin-top:32px;max-width:440px}
+.t-ab .stats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr) minmax(0,1fr);gap:clamp(14px,3vw,32px);margin-top:32px;max-width:480px}
 .t-ab .stats .num{font-size:clamp(2.8rem,5vw,4.2rem)}
 a.shot{display:block;transition:transform .5s var(--ease)}
 a.shot:hover{transform:scale(1.012)}
+a.shot:focus-visible{outline-offset:-3px}
 .shot{border-radius:16px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06)}
 .t-jv,.t-sec{grid-column:span 3}
 .t-jv .num,.t-sec .num{margin-bottom:28px}
@@ -137,7 +150,7 @@ a.shot:hover{transform:scale(1.012)}
 .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
 .steps li{background:#fff;border-radius:22px;padding:28px 24px 30px;display:flex;flex-direction:column;gap:12px}
 .steps svg{width:36px;height:36px;color:var(--ink)}
-.steps b{font-size:1.14rem;font-weight:700;letter-spacing:-.02em}
+.steps h3{margin:0;font-size:1.14rem;font-weight:700;letter-spacing:-.02em}
 .steps p{margin:0;color:#6e6e73;font-size:.95rem;line-height:1.45}
 .steps li:last-child svg{color:var(--blue-ink)}
 
@@ -151,7 +164,7 @@ a.shot:hover{transform:scale(1.012)}
 
 footer{border-top:1px solid var(--hair);padding:22px 0 calc(22px + env(safe-area-inset-bottom));color:var(--grey-2);font-size:.76rem}
 footer .wrap{display:flex;gap:20px;flex-wrap:wrap}
-footer a{color:var(--grey-2)}
+footer a{color:var(--grey-2);display:inline-block;padding:10px 0;margin:-10px 0}
 footer .wrap > :last-child{margin-left:auto}
 
 /* reveal: visible by default, hidden only once JS is known to run */
@@ -171,7 +184,7 @@ footer .wrap > :last-child{margin-left:auto}
 @media (max-width:760px){
   .scene{height:180vh}
   .sticky{place-items:start center;padding-top:56px}
-  .legend{gap:16px;font-size:.78rem}
+  .legend{gap:6px 16px;font-size:.78rem;flex-wrap:wrap;justify-content:center;white-space:normal;width:calc(100% - 32px)}
   .nav{background:rgba(22,22,23,.95);-webkit-backdrop-filter:none;backdrop-filter:none}
   .nav.on-light{background:rgba(245,245,247,.96)}
   .nav .pill{height:36px;padding:0 18px}
@@ -179,13 +192,21 @@ footer .wrap > :last-child{margin-left:auto}
 }
 @media (max-width:560px){
   .cta .btn{flex:1 1 100%}
+  .nav nav{display:flex;margin-left:auto;gap:16px}
+  .nav nav a{font-size:.82rem;padding:14px 0}
+  .nav .pill{display:none}
+  .brand{font-size:1.1rem}
+}
+@media (max-width:430px){
+  .brand-t{display:none}
   .steps{grid-template-columns:minmax(0,1fr)}
   .steps li:last-child{grid-column:auto}
   .t-ab .stats{gap:14px}
-  .t-ab .stats .num-l{font-size:.86rem}
+  .t-ab .stats .num-l{font-size:.8rem}
   footer .wrap > :last-child{margin-left:0}
 }
 @media (prefers-reduced-motion:reduce){
+  .legend{opacity:1}
   html{scroll-behavior:auto}
   *{transition:none!important}
   .js .rv{opacity:1;transform:none}
@@ -202,14 +223,14 @@ footer .wrap > :last-child{margin-left:auto}
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Stefan Paun, zum Anfang">
       <svg width="22" height="22" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="none" stroke="#86868b" stroke-width="1.4"/><path d="M14 14L23 6" stroke="#35D0FF" stroke-width="1.8"/><path d="M14 14C17 17 20 18 24 17" stroke="#FFD23A" stroke-width="1.8" fill="none"/><circle cx="14" cy="14" r="2.2" fill="#f5f5f7"/></svg>
-      Stefan Paun
+      <span class="brand-t">Stefan Paun</span>
     </a>
     <nav aria-label="Seitenbereiche">
       <a href="#projekte">Projekte</a>
       <a href="#arbeitsweise">Arbeitsweise</a>
       <a href="#kontakt">Kontakt</a>
     </nav>
-    <a class="pill" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub</a>
+    <a class="pill" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub<span class="sr-only"> (neuer Tab)</span></a>
   </div>
 </header>
 
@@ -220,21 +241,26 @@ footer .wrap > :last-child{margin-left:auto}
     <p class="sub">Ich baue <em>KI-Agents</em> und lerne <em>Cybersecurity</em>.</p>
     <p class="intro">17, Schüler in Wien, Matura 2027.</p>
     <div class="cta">
-      <a class="btn btn-p" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Agent-Board live ansehen</a>
-      <a class="btn btn-s" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-p" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Agent-Board live ansehen<span class="sr-only"> (neuer Tab)</span></a>
+      <a class="btn btn-s" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub<span class="sr-only"> (neuer Tab)</span></a>
     </div>
-    <p class="proof">Agent-Board: <a href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">öffentlich auf GitHub</a> · Release v1.4.0 · 70 Tests, CI auf 3 Betriebssystemen</p>
+    <ul class="proof" aria-label="Agent-Board nachprüfen">
+      <li><a href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Agent-Board ist Open Source<span class="sr-only"> (neuer Tab)</span></a></li>
+      <li><a href="https://github.com/Stefan-Paun/agent-board/releases/tag/v1.4.0" target="_blank" rel="noopener">Release v1.4.0<span class="sr-only"> (neuer Tab)</span></a></li>
+      <li><a href="https://github.com/Stefan-Paun/agent-board/actions" target="_blank" rel="noopener">70 Tests in CI auf 3 Systemen<span class="sr-only"> (neuer Tab)</span></a></li>
+    </ul>
   </div>
 </section>
 
 <section class="scene" id="scene" aria-label="Alle Projekte als ein Teilchen-Ereignis">
   <div class="sticky">
-    <ul class="legend" aria-hidden="true"><li style="--c:var(--yellow)">KI-Agents</li><li style="--c:var(--cyan)">Security</li><li style="--c:var(--red)">Lernspiele</li></ul>
+    <ul class="legend" aria-hidden="true"><li style="--c:var(--yellow)">KI-Agents</li><li style="--c:var(--cyan)">Security</li><li style="--c:var(--red)">Lernspiele</li><li class="plain">Form schematisch, Zahlen echt</li></ul>
+    <div class="pick" id="pick" aria-live="polite"><b></b><span class="v"></span><a></a></div>
     <canvas id="cv" role="img" aria-label="Teilchen-Ereignis in 3D: jedes Projekt ist eine farbige Spur aus demselben Punkt." aria-describedby="cv-list"></canvas>
     <ul class="sr-only" id="cv-list"><li>Agent-Board, KI-Agent, 70 Tests</li><li>Jarvis, KI-Agent, 3.619 Tests</li><li>Claude-Code-Werkzeuge, KI-Agent, 11 Prüfmuster</li><li>Security, 6 TryHackMe-Räume</li><li>GWB-Rallye, Lernspiel, 273 Fragen</li><li>Cyber-Rallye, Lernspiel, 135 Fragen</li></ul>
     <div class="caps">
-      <p class="cap">Ein Ursprung. <span>Jedes Projekt ist eine Spur.</span></p>
-      <p class="cap">Die Geometrie ist schematisch. <span>Die Zahlen sind echt.</span></p>
+      <p class="cap">Alles beginnt an einem Punkt. <span>Jede farbige Linie ist ein Projekt.</span></p>
+      <p class="cap">Tipp auf eine Linie. <span>Dann siehst du, was dahintersteckt.</span></p>
       <p class="cap">3.619 Tests. <span>Automatische Tests für Jarvis, jede Nacht in der Cloud.</span></p>
     </div>
   </div>
@@ -246,7 +272,7 @@ footer .wrap > :last-child{margin-left:auto}
       <h2 id="pj-h">Was ich gebaut habe. <span>Jedes Projekt mit einer echten Zahl.</span></h2>
     </div>
     <div class="bento">
-      <article class="tile t-ab rv">
+      <article class="tile t-ab rv" id="p-agent-board">
         <div>
           <h3>Agent-Board</h3>
           <p>Eine Live-Ansicht in Pixel-Art für Claude-Code-Agents. Jeder Subagent ist eine kleine Figur, die in den Raum des Werkzeugs geht, das sie gerade benutzt. So sieht man auf einen Blick, wer arbeitet und wer auf eine Freigabe wartet.</p>
@@ -256,12 +282,12 @@ footer .wrap > :last-child{margin-left:auto}
             <div><span class="num">3</span><span class="num-l">Sprachen</span></div>
           </div>
           <div class="links">
-            <a class="more" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Live-Demo ansehen</a>
-            <a class="more" href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Code auf GitHub</a>
+            <a class="more" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener">Live-Demo ansehen<span class="sr-only"> (neuer Tab)</span></a>
+            <a class="more" href="https://github.com/Stefan-Paun/agent-board" target="_blank" rel="noopener">Code auf GitHub<span class="sr-only"> (neuer Tab)</span></a>
           </div>
           <span class="kind" style="--c:var(--yellow)">KI-Agent · öffentlich, Release v1.4.0</span>
         </div>
-        <a class="shot" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener" aria-label="Live-Demo von Agent-Board öffnen">
+        <a class="shot" href="https://stefan-paun.github.io/agent-board/?demo=1" target="_blank" rel="noopener" aria-label="Live-Demo von Agent-Board öffnen (neuer Tab)">
           <picture>
             <source type="image/webp" srcset="img/agent-board-720.webp">
             <img src="img/agent-board.jpg" width="1200" height="750" loading="lazy" alt="Agent-Board bei Nacht: eine Pixel-Wohnung mit Räumen für Archiv, Werkstatt und Terminal, darin kleine Agenten-Figuren, rechts die Liste der aktiven Agents.">
@@ -269,7 +295,7 @@ footer .wrap > :last-child{margin-left:auto}
         </a>
       </article>
 
-      <article class="tile t-jv rv">
+      <article class="tile t-jv rv" id="p-jarvis">
         <span class="num">3.619</span>
         <h3>Jarvis</h3>
         <p>Mein Sprachassistent für Mac und Windows. Ich drücke eine Taste oder sage „Hey Jarvis“, er hört zu, erledigt Aufgaben mit seinen Werkzeugen und antwortet mit Stimme. Daten verschlüsselt, Entsperren per Touch ID, jede Nacht ein Testlauf in der Cloud.</p>
@@ -277,7 +303,7 @@ footer .wrap > :last-child{margin-left:auto}
         <span class="note">Kein öffentlicher Code, weil persönliche Daten im Spiel sind.</span>
       </article>
 
-      <article class="tile t-sec rv">
+      <article class="tile t-sec rv" id="p-security">
         <span class="num">6</span>
         <h3>Security</h3>
         <p>6 Räume im Lernpfad Pre Security auf TryHackMe, dazu der Cisco-Kurs Introduction to Cybersecurity. Praxis am eigenen iPhone: per USB mit dem Mobile Verification Toolkit von Amnesty International gegen 6.630 öffentliche Spyware-Indikatoren abgeglichen, keine gefunden. Das ist ein Abgleich mit bekannten Mustern, kein Beweis.</p>
@@ -285,7 +311,7 @@ footer .wrap > :last-child{margin-left:auto}
         <span class="note">Ein Zertifikat habe ich noch nicht.</span>
       </article>
 
-      <article class="tile t-ry rv">
+      <article class="tile t-ry rv" id="p-rallye">
         <h3>Rallye-Engine</h3>
         <p>Ein Lernspiel im Pixel-Look mit Weltkarte, Bossen, Shop und Probetest. Einmal gebaut, zwei Spiele daraus: die GWB-Rallye mit 273 Fragen und die Cyber-Rallye mit 135 Fragen und Wiederholung nach dem Leitner-System.</p>
         <span class="kind" style="--c:var(--red)">Lernspiel · 408 Fragen · noch nicht öffentlich</span>
@@ -297,7 +323,7 @@ footer .wrap > :last-child{margin-left:auto}
         </div>
       </article>
 
-      <article class="tile t-cc rv">
+      <article class="tile t-cc rv" id="p-werkzeuge">
         <span class="num">11</span>
         <h3>Claude-Code-Werkzeuge</h3>
         <p>Ein Wächter prüft jeden Commit und Push mit 11 Mustern, bevor er passiert, dazu ein Cockpit für offene Pull Requests und Skills für wiederkehrende Abläufe.</p>
@@ -314,11 +340,11 @@ footer .wrap > :last-child{margin-left:auto}
       <h2 id="arb-h">So baue ich. <span>Jedes Projekt geht durch dieselben Schichten. Was eine Schicht nicht schafft, kommt nicht weiter.</span></h2>
     </div>
     <ol class="steps">
-      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="5" width="20" height="26" rx="3"/><path d="M13 12h10M13 17h10M13 22h6"/></svg><b>Plan</b><p>Ich schreibe auf, was gebaut wird, und teile es in Phasen.</p></li>
-      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="11" r="4"/><circle cx="8" cy="25" r="3.5"/><circle cx="28" cy="25" r="3.5"/><path d="M15.5 14.5 10 22M20.5 14.5 26 22M11.5 25h13"/></svg><b>Agents</b><p>Claude-Code-Agents bauen parallel an getrennten Teilen, nachts arbeiten Cloud-Routinen weiter. Ich prüfe und führe zusammen.</p></li>
-      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="12"/><path d="m12.5 18.5 4 4 7.5-8.5"/></svg><b>Tests</b><p>Jede Änderung läuft durch die Tests, bevor sie bleibt.</p></li>
-      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 4.5 28 8.5v8.5c0 6.5-4.3 11.5-10 14-5.7-2.5-10-7.5-10-14V8.5z"/><rect x="13.5" y="16" width="9" height="7" rx="1.5"/><path d="M15.5 16v-2a2.5 2.5 0 0 1 5 0v2"/></svg><b>Security</b><p>Keine Schlüssel im Code, keine privaten Daten, Angriffswege geprüft.</p></li>
-      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 26V8M11 15l7-7 7 7"/><path d="M8 26v3h20v-3"/></svg><b>Release</b><p>Öffentlich wird nur, was fertig ist: mit Anleitung, Lizenz und Demo.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="5" width="20" height="26" rx="3"/><path d="M13 12h10M13 17h10M13 22h6"/></svg><h3>Plan</h3><p>Ich schreibe auf, was gebaut wird, und teile es in Phasen.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="11" r="4"/><circle cx="8" cy="25" r="3.5"/><circle cx="28" cy="25" r="3.5"/><path d="M15.5 14.5 10 22M20.5 14.5 26 22M11.5 25h13"/></svg><h3>Agents</h3><p>Claude-Code-Agents bauen parallel an getrennten Teilen, nachts arbeiten Cloud-Routinen weiter. Ich prüfe und führe zusammen.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="12"/><path d="m12.5 18.5 4 4 7.5-8.5"/></svg><h3>Tests</h3><p>Jede Änderung läuft durch die Tests, bevor sie bleibt.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 4.5 28 8.5v8.5c0 6.5-4.3 11.5-10 14-5.7-2.5-10-7.5-10-14V8.5z"/><rect x="13.5" y="16" width="9" height="7" rx="1.5"/><path d="M15.5 16v-2a2.5 2.5 0 0 1 5 0v2"/></svg><h3>Security</h3><p>Keine Schlüssel im Code, keine privaten Daten, Angriffswege geprüft.</p></li>
+      <li class="rv"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 26V8M11 15l7-7 7 7"/><path d="M8 26v3h20v-3"/></svg><h3>Release</h3><p>Öffentlich wird nur, was fertig ist: mit Anleitung, Lizenz und Demo.</p></li>
     </ol>
   </div>
 </section>
@@ -326,10 +352,9 @@ footer .wrap > :last-child{margin-left:auto}
 <section class="sec contact" id="kontakt" aria-labelledby="kon-h">
   <div class="wrap rv">
     <h2 id="kon-h">Kontakt.</h2>
-    <p>Am schnellsten erreichst du mich über GitHub. LinkedIn kommt Anfang November dazu.</p>
+    <p>Am schnellsten erreichst du mich über GitHub.</p>
     <div class="row">
-      <a class="pill big" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">Zu GitHub</a>
-      <span class="soon">LinkedIn folgt Anfang November</span>
+      <a class="pill big" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">Zu GitHub<span class="sr-only"> (neuer Tab)</span></a>
     </div>
     <p class="hint">Zu Agent-Board sind Issues und Feedback auf GitHub willkommen.</p>
   </div>
@@ -342,7 +367,7 @@ footer .wrap > :last-child{margin-left:auto}
     <span>Gebaut mit Claude Code</span>
     <span>Zahlen: Stand Oktober 2026</span>
     <span>Keine Cookies, kein Tracking</span>
-    <a href="detektor.html">Detektor-Version</a>
+    <a href="detektor.html">Andere Ansicht dieser Seite</a>
   </div>
 </footer>
 
@@ -367,18 +392,17 @@ footer .wrap > :last-child{margin-left:auto}
     var r = light.getBoundingClientRect(), mid = nav.offsetHeight/2;
     nav.classList.toggle("on-light", r.top <= mid && r.bottom >= mid);
   }
-  window.addEventListener("scroll", navTone, {passive:true});
   navTone();
 
   // --- the product: the event in 3D, turned by the scroll position through the scene ---
   // Same schematic geometry as the detector view on the main page; only the figures are data.
   var TRACKS = [
-    {name:"Security", col:C.c, phi:-64, k:0, end:1.0, muon:true, dep:6, tl:.55},
-    {name:"CC-Werkzeuge", col:C.y, phi:-8, k:.4, end:.66, dep:4, tl:-.7},
-    {name:"Agent-Board", col:C.y, phi:-36, k:.75, end:.66, dep:70, tl:.35},
-    {name:"Jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3619, tl:-.3},
-    {name:"GWB-Rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
-    {name:"Cyber-Rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5}
+    {name:"Security", val:"6 TryHackMe-Räume, iPhone-Check", href:"#p-security", col:C.c, phi:-64, k:0, end:1.0, muon:true, dep:6, tl:.55},
+    {name:"CC-Werkzeuge", val:"11 Prüfmuster vor jedem Commit", href:"#p-werkzeuge", col:C.y, phi:-8, k:.4, end:.66, dep:4, tl:-.7},
+    {name:"Agent-Board", val:"70 Tests, Open Source", href:"https://stefan-paun.github.io/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:70, tl:.35},
+    {name:"Jarvis", val:"3.619 automatische Tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3619, tl:-.3},
+    {name:"GWB-Rallye", val:"273 Fragen", href:"#p-rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
+    {name:"Cyber-Rallye", val:"135 Fragen", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5}
   ];
   var cv = document.getElementById("cv"), ctx = cv.getContext("2d");
   var scene = document.getElementById("scene"), caps = document.querySelectorAll(".cap");
@@ -466,7 +490,7 @@ footer .wrap > :last-child{margin-left:auto}
   }
   function strokeTrack(t, len, col, base){
     if(len <= 0) return;
-    var steps = Math.max(8, Math.ceil(len*60)), run = 6, prev = P(0,0,0);
+    var steps = Math.max(8, Math.ceil(len*(W < 520 ? 36 : 60))), run = 6, prev = P(0,0,0);
     ctx.strokeStyle = col;
     for(var s0=0;s0<steps;s0+=run){
       ctx.beginPath(); ctx.moveTo(prev[0], prev[1]);
@@ -530,27 +554,29 @@ footer .wrap > :last-child{margin-left:auto}
     TRACKS.forEach(function(t, idx){
       var local = reduce ? 1 : ease(Math.max(0, Math.min(1, (progress - idx*.06)/.75)));
       ctx.lineWidth = 1.8;
-      strokeTrack(t, t.len*local, t.col, 1);
+      var on = focus < 0 || focus === idx, fa = on ? 1 : .18;
+      strokeTrack(t, t.len*local, t.col, fa);
       if(t.jet){
         ctx.lineWidth = 1;
         [-.06,.05,.1].forEach(function(dk, m){
           var c = {phi:t.phi + (m-1)*3.2, k:t.k + dk*6, end:t.end, tl:t.tl + (m-1)*.08};
-          strokeTrack(c, lenTo(c, t.end*.98)*local, t.col, 1);
+          strokeTrack(c, lenTo(c, t.end*.98)*local, t.col, fa);
         });
       }
+      t.proj = []; for(var pj=0;pj<=24;pj++) t.proj.push(pt3(t, t.len*local*pj/24));
       ctx.fillStyle = t.col;
       for(var b=1;b<=6;b++){
         var rr = .08 + b*.068; if(rr > t.end) break;
         var s = lenTo(t, rr); if(s > t.len*local) break;
         var q = pt3(t, s);
-        ctx.globalAlpha = depthA(q[2]);
+        ctx.globalAlpha = fa*depthA(q[2]);
         ctx.beginPath(); ctx.arc(q[0], q[1], 2.1, 0, Math.PI*2); ctx.fill();
       }
       if(t.muon && local >= 1){
         var a = t.phi*Math.PI/180;
         for(var h=0;h<5;h++){
           var r = .9 + h*.02, m3 = P(Math.cos(a)*r, Math.sin(a)*r, r*t.tl);
-          ctx.globalAlpha = depthA(m3[2]);
+          ctx.globalAlpha = fa*depthA(m3[2]);
           ctx.beginPath(); ctx.arc(m3[0], m3[1], 2.3, 0, Math.PI*2); ctx.fill();
         }
       }
@@ -560,7 +586,8 @@ footer .wrap > :last-child{margin-left:auto}
     ctx.beginPath(); ctx.arc(v[0], v[1], 3.4, 0, Math.PI*2); ctx.fillStyle = C.bone; ctx.fill();
 
     // project names at the track ends, faded in as the event turns
-    var la = reduce ? 1 : Math.max(0, Math.min(1, (shown - .2)/.2)) * Math.min(1, progress);
+    var la = reduce ? 1 : Math.max(focus >= 0 ? 1 : 0, Math.min(1, (shown - .12)/.18)) * Math.min(1, progress);
+    labels = [];
     if(la > 0){
       ctx.font = "600 " + (W < 420 ? 11 : 13) + "px -apple-system, BlinkMacSystemFont, 'SF Pro Text', Archivo, sans-serif";
       ctx.textBaseline = "middle";
@@ -568,7 +595,7 @@ footer .wrap > :last-child{margin-left:auto}
       var lab = TRACKS.map(function(t){
         var e2 = pt(t, t.len), a = Math.atan2(e2[1], e2[0]), z = t.len*t.tl*(1.02/t.end);
         var q = P(Math.cos(a)*1.02, Math.sin(a)*1.02, z), dx = q[0] - v[0];
-        return {name:t.name, x:q[0] + (dx >= 0 ? 10 : -10), y:q[1], right:dx >= 0};
+        return {i:TRACKS.indexOf(t), name:t.name, x:q[0] + (dx >= 0 ? 10 : -10), y:q[1], right:dx >= 0};
       });
       [true, false].forEach(function(side){
         var g = lab.filter(function(l){ return l.right === side; }).sort(function(a, b){ return a.y - b.y; });
@@ -577,7 +604,11 @@ footer .wrap > :last-child{margin-left:auto}
       ctx.lineJoin = "round"; ctx.lineWidth = 4; ctx.strokeStyle = "#000";
       lab.forEach(function(l){
         ctx.textAlign = l.right ? "left" : "right";
-        ctx.globalAlpha = la;
+        ctx.globalAlpha = la * (focus < 0 || focus === l.i ? 1 : .35);
+        var w = ctx.measureText(l.name).width;
+        if(l.right && l.x + w > W - 4) l.x = W - 4 - w;
+        if(!l.right && l.x - w < 4) l.x = 4 + w;
+        labels.push({i:l.i, x0:l.right ? l.x : l.x - w, x1:l.right ? l.x + w : l.x, y:l.y});
         ctx.strokeText(l.name, l.x, l.y);
         ctx.fillStyle = "#f5f5f7";
         ctx.fillText(l.name, l.x, l.y);
@@ -586,6 +617,35 @@ footer .wrap > :last-child{margin-left:auto}
       ctx.globalAlpha = 1;
     }
   }
+
+  // pick a track by its name or its line: dim the rest and show what it is
+  var focus = -1, labels = [], pick = document.getElementById("pick"), legend = document.querySelector(".legend");
+  function hit(ev){
+    var r = cv.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top, best = -1, bd = 18;
+    labels.forEach(function(l){ if(x >= l.x0 - 6 && x <= l.x1 + 6 && Math.abs(y - l.y) < 12){ best = l.i; bd = 0; } });
+    if(best < 0) TRACKS.forEach(function(t, i){ (t.proj || []).forEach(function(q){ var d = Math.hypot(q[0] - x, q[1] - y); if(d < bd){ bd = d; best = i; } }); });
+    return best;
+  }
+  function showPick(i){
+    focus = i;
+    if(i < 0){ pick.classList.remove("on"); draw(); return; }
+    var t = TRACKS[i], a = pick.querySelector("a");
+    pick.style.setProperty("--c", t.col);
+    pick.querySelector("b").textContent = t.name;
+    pick.querySelector(".v").textContent = t.val;
+    a.href = t.href; a.textContent = t.ext ? "Live-Demo ansehen" : "Zum Projekt";
+    if(t.ext){ a.target = "_blank"; a.rel = "noopener"; } else { a.removeAttribute("target"); a.removeAttribute("rel"); }
+    var host = pick.parentNode.getBoundingClientRect(), r = cv.getBoundingClientRect();
+    var lb = labels.filter(function(l){ return l.i === i; })[0] || {x0:W/2, x1:W/2, y:H/2};
+    var px = r.left - host.left + (lb.x0 + lb.x1)/2 - 140, py = r.top - host.top + lb.y + 18;
+    pick.style.left = Math.max(16, Math.min(host.width - pick.offsetWidth - 16, px)) + "px";
+    pick.style.top = Math.max(60, Math.min(host.height - pick.offsetHeight - 120, py)) + "px";
+    pick.classList.add("on");
+    draw();
+  }
+  cv.addEventListener("pointermove", function(ev){ if(ev.pointerType === "mouse") cv.classList.toggle("hot", hit(ev) >= 0); });
+  cv.addEventListener("click", function(ev){ var i = hit(ev); showPick(i === focus ? -1 : i); });
+  document.addEventListener("keydown", function(ev){ if(ev.key === "Escape" && focus >= 0) showPick(-1); });
 
   // scroll position through the pinned scene drives the camera and the captions
   var raf = 0;
@@ -603,12 +663,20 @@ footer .wrap > :last-child{margin-left:auto}
     draw();
     raf = shown === target ? 0 : requestAnimationFrame(step);
   }
+  var sceneOn = true, tick = 0;
+  if("IntersectionObserver" in window){
+    new IntersectionObserver(function(es){ sceneOn = es[0].isIntersecting; if(!sceneOn && focus >= 0) showPick(-1); }).observe(scene);
+  }
   function onScroll(){
-    if(reduce) return;
-    target = sceneP(); captions(target);
+    if(reduce || !sceneOn) return;
+    target = sceneP(); captions(target); legend.classList.toggle("on", target > .02);
+    if(focus >= 0 && Math.abs(target - shown) > .02) showPick(-1);
     if(!raf) raf = requestAnimationFrame(step);
   }
-  window.addEventListener("scroll", onScroll, {passive:true});
+  window.addEventListener("scroll", function(){
+    if(tick) return;
+    tick = requestAnimationFrame(function(){ tick = 0; navTone(); onScroll(); });
+  }, {passive:true});
 
   function run(ts){
     if(!t0) t0 = ts;
