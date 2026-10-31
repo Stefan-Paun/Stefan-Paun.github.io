@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Stefan Paun</title>
-<meta name="description" content="Stefan Paun baut KI-Agents und lernt Cybersecurity. Projekte: Agent-Board, Jarvis, Claude-Code-Werkzeuge, Lernspiele, Security.">
+<meta name="description" content="Stefan Paun baut KI-Agents und lernt Cybersecurity. Projekte: Agent-Board, Jarvis, Nachsitzen, Claude-Code-Werkzeuge, Lernspiele, Security.">
 <link rel="canonical" href="https://stefanpaun.page/">
 <link rel="alternate" hreflang="de" href="https://stefanpaun.page/">
 <link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/">
@@ -170,7 +170,7 @@ a.shot:focus-visible{outline-offset:-3px}
 .shot{position:relative}
 .shot-cap{position:absolute;left:12px;bottom:12px;padding:6px 12px;border-radius:980px;background:rgba(0,0,0,.72);color:#f5f5f7;font-size:.875rem;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .shot{border-radius:16px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06)}
-.t-jv,.t-sec{grid-column:span 3}
+.t-jv,.t-sec{grid-column:span 3}.t-ns{grid-column:span 6;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,56px);align-items:center}.t-ns .shot{margin-top:0}
 .t-jv .num-l,.t-sec .num-l,.t-ry .num-l,.t-cc .num-l{margin-bottom:24px}
 .t-ry{grid-column:span 4}
 .t-ry .shot{margin-top:28px}
@@ -255,7 +255,7 @@ footer .wrap > :last-child{margin-left:auto}
   .kbtn{display:none}
   .nav nav{display:none}
   .nav .pill{margin-left:auto}
-  .t-ab{grid-template-columns:minmax(0,1fr)}
+  .t-ab{grid-template-columns:minmax(0,1fr)}.t-ns{grid-template-columns:minmax(0,1fr)}
   .t-jv,.t-sec,.t-ry,.t-cc{grid-column:span 6}
   .t-mr{grid-template-columns:minmax(0,1fr)}
 }
@@ -449,6 +449,23 @@ footer .wrap > :last-child{margin-left:auto}
           <figure class="shot"><img src="img/matura-frage.webp" width="960" height="540" loading="lazy" alt="Eine Mathe-Frage im Spiel: Punkt an einer Geraden spiegeln, mit Koordinatensystem und Eingabefeld."></figure>
         </div>
       </article>
+
+      <article class="tile t-ns rv" id="p-nachsitzen" style="--i:6">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 50 90, 90 60, 120 40 S 150 20, 156 8" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <div>
+          <span class="num">5</span><span class="num-l">KI-Figuren mit Gedächtnis</span>
+          <h3>Nachsitzen</h3>
+          <p>Ein Werwolf-Spiel, in dem die Mitspieler Claude-Figuren sind: Jede hat ihren eigenen Kopf, sieht nachts nur, was in ihrer Nähe passiert, lügt über ihren Platz und schreibt nach der Partie in ihr Heft, wem sie traut. Beim nächsten Spiel liest sie es wieder. Echte Spuren (Tinte, Kreide, Zettel) machen Alibis prüfbar.</p>
+          <span class="kind" style="--c:var(--yellow)">KI-Agents · Spiel im Browser, Node ohne Abhängigkeiten · in Arbeit</span>
+          <span class="note">Noch nicht öffentlich. Eine Partie kostet etwa zwei Cent an KI-Aufrufen und läuft nur auf meinem Rechner.</span>
+        </div>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="img/nachsitzen-720.webp">
+            <img src="img/nachsitzen.jpg" width="1100" height="700" loading="lazy" alt="Nachsitzen: oben das Pixel-Klassenzimmer mit sechs Pulten und Lampe, darunter der Chat der Figuren bei der Abstimmung, rechts die Spurentafel mit Raumplan und Beobachtungen.">
+          </picture>
+        </div>
+      </article>
     </div>
   </div>
 </section>
@@ -473,6 +490,7 @@ footer .wrap > :last-child{margin-left:auto}
     <div class="rv">
       <h2 id="now-h">Gerade. <span>Stand <time datetime="2026-10">Oktober 2026</time>.</span></h2>
       <ul class="now-list">
+        <li style="--c:var(--yellow)"><b>Nachsitzen</b> ist neu: ein Werwolf-Spiel mit fünf Claude-Figuren, die sich über Partien hinweg erinnern. Seit <time datetime="2026-10-31">31. Oktober</time>, noch nicht öffentlich.</li>
         <li style="--c:var(--yellow)"><b>Agent-Board</b> hat jetzt eine Stadtansicht: Jeder Agent läuft durch eine kleine Pixel-Stadt. Neu seit <time datetime="2026-10-30">30. Oktober</time>.</li>
         <li style="--c:var(--cyan)"><b>Security:</b> Lernpfad Pre Security auf TryHackMe und der Cisco-Kurs laufen.</li>
         <li style="--c:var(--red)"><b>Schule:</b> Matura-Vorbereitung, auch mit eigenen Lernspielen.</li>
