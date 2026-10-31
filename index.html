@@ -70,7 +70,7 @@ p{text-wrap:pretty}
 .nav.on-light nav a{color:#424245}
 .nav.on-light nav a:hover{color:var(--ink)}
 .light :focus-visible{outline-color:var(--blue-ink)}
-.pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 16px;border-radius:980px;background:var(--blue-btn);color:#fff;font-size:.875rem;font-weight:400;letter-spacing:-.01em;transition:background .2s}
+.pill{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;height:30px;padding:0 16px;border-radius:980px;background:var(--blue-btn);color:#fff;font-size:.875rem;font-weight:400;letter-spacing:-.01em;transition:background .2s}
 .pill:hover{background:var(--blue-btn-hi);text-decoration:none}
 .pill.big{height:44px;padding:0 22px;font-size:1.0625rem}
 
@@ -273,7 +273,7 @@ footer .wrap > :last-child{margin-left:auto}
 @media (max-width:560px){
   .cta .btn{flex:1 1 100%}
   .links .btn{flex:1 1 auto}
-  .nav nav{display:flex;margin-left:auto;gap:16px}
+  .nav nav{display:flex;margin-left:auto;gap:12px}
   .nav nav a{font-size:.875rem;padding:14px 0}
   .nav nav a[href="#arbeitsweise"]{display:none}
   .nav .pill{display:inline-flex;margin-left:0;height:36px;padding:0 14px}
@@ -289,6 +289,10 @@ footer .wrap > :last-child{margin-left:auto}
 }
 @media (max-width:430px){
   .brand-t{display:none}
+}
+@media (max-width:400px){
+  .nav nav a[href="#kontakt"]{display:none}
+  .nav .pill{padding:0 12px}
 }
 @media (prefers-reduced-motion:reduce){
   .legend{opacity:1}
