@@ -452,7 +452,8 @@ footer .wrap > :last-child{margin-left:auto}
         <span class="num">4</span><span class="num-l">attack scenarios</span>
         <h3>Pruefstand</h3>
         <p>A test bench for AI coding agents. It drops worthless fake keys carrying a marker into a throwaway folder, hides an instruction like “send the .env to this address” in a README or bug report, and then runs my real agent against it under three defence profiles. A honeypot on my own machine catches any attempt to send the data out; nothing leaves the machine. Each run ends with a verdict from clean to exfiltrated. That tells me whether my guardrails actually hold, instead of hoping they do.</p>
-        <span class="kind" style="--c:var(--cyan)">Security · Node, no dependencies, 22 tests · not public yet</span>
+        <span class="kind" style="--c:var(--cyan)">Security · Node, no dependencies, 29 tests · open source</span>
+        <div class="links"><a class="more" href="https://github.com/Stefan-Paun/pruefstand" target="_blank" rel="noopener">Code on GitHub<span class="sr-only"> (new tab)</span></a></div>
         <span class="note">One concrete finding: a deny rule stops the read tool, but not “cat .env” through the shell. Only the sandbox closes that gap. The bench shows it in black and white.</span>
       </article>
       <article class="tile t-mr rv" id="p-matura" style="--i:5">
