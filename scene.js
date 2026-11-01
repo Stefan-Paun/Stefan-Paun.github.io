@@ -99,7 +99,7 @@
   if(EN) TRACKS.forEach(function(t){ if(t.nameEn) t.name = t.nameEn; if(t.valEn) t.val = t.valEn; });
   TRACKS.forEach(function(t){ var li = document.createElement("li"); li.textContent = t.name + ": " + t.val; document.getElementById("cv-list").appendChild(li); });
   var cv = document.getElementById("cv"), ctx = cv.getContext("2d");
-  var scene = document.getElementById("scene"), caps = document.querySelectorAll(".cap");
+  var scene = document.getElementById("scene"), caps = document.querySelectorAll(".cap"), capDots = document.querySelectorAll(".cap-dots i");
   var W = 0, H = 0, dpr = 1, cx = 0, cy = 0, R = 0;
   var progress = reduce ? 1 : 0, t0 = 0, target = 0, shown = 0;
   var pitch = 0, yaw = 0, persp = 0, zoom = 1, sp = 0, cpch = 1, syw = 0, cyw = 1;
@@ -362,7 +362,8 @@
     var i = hit(ev); cv.classList.toggle("hot", i >= 0);
     if(i !== hov){ hov = i; kick(); }
   });
-  cv.addEventListener("pointerleave", function(){ if(hov >= 0){ hov = -1; kick(); } });
+  cv.addEventListener("pointermove", function(){ cv.style.cursor = hov >= 0 ? "pointer" : ""; });
+  cv.addEventListener("pointerleave", function(){ cv.style.cursor = ""; if(hov >= 0){ hov = -1; kick(); } });
   cv.addEventListener("click", function(ev){
     var i = hit(ev);
     var r = cv.getBoundingClientRect();
@@ -394,6 +395,7 @@
     if(idx === capIdx) return;
     capIdx = idx;
     caps.forEach(function(c, i){ c.classList.toggle("on", i === idx); });
+    capDots.forEach(function(d, i){ d.classList.toggle("on", i === idx); });
   }
   function settle(arr, goalFn, k){
     var moving = false;

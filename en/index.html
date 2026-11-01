@@ -207,7 +207,7 @@ a.shot:focus-visible{outline-offset:-3px}
 .rules li::before{content:counter(r);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--hair);display:grid;place-items:center;font-size:.875rem;color:var(--grey-2);font-variant-numeric:tabular-nums}
 .now b,.rules b{color:var(--text);font-weight:600}
 .avatar{display:block;margin:0 auto 26px;width:96px;height:96px;border-radius:24px;image-rendering:pixelated;box-shadow:0 0 0 1px var(--hair)}
-.lang{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:8px;color:var(--grey-2);font-size:.875rem;text-decoration:none}
+.lang{display:inline-flex;align-items:center;min-height:36px;min-width:44px;justify-content:center;padding:0 10px;border-radius:8px;color:var(--grey-2);font-size:.875rem;text-decoration:none}
 .lang:hover{color:var(--text);text-decoration:none}
 .notes{margin-top:44px}
 .notes h3{margin:0 0 14px;font-size:1.25rem;letter-spacing:-.02em}
@@ -215,7 +215,7 @@ a.shot:focus-visible{outline-offset:-3px}
 .notes a{display:inline-flex;align-items:center;min-height:44px;font-size:1.0625rem}
 .notes small{display:block;color:var(--grey-2);font-size:.875rem;margin-top:-6px}
 /* quick search */
-.kbtn{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border-radius:8px;border:1px solid var(--hair);background:transparent;color:var(--grey-2);font:inherit;font-size:.875rem;cursor:pointer}
+.kbtn{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border-radius:8px;border:1px solid var(--hair);background:transparent;color:var(--grey-2);font:inherit;font-size:.875rem;cursor:pointer}
 .kbtn:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
 .kbtn kbd{font:inherit}
 .palette{width:min(560px,calc(100% - 32px));margin:14vh auto auto;padding:0;border:1px solid var(--hair);border-radius:18px;background:#1d1d1f;color:var(--text);box-shadow:0 30px 80px rgba(0,0,0,.6)}
@@ -306,6 +306,15 @@ footer .wrap > :last-child{margin-left:auto}
 }
 .t-ns{grid-column:span 6;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,56px);align-items:center}
 .t-ns .shot{margin-top:0}
+.sprung{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.sprung a{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border-radius:980px;border:1px solid var(--hair);color:var(--grey-2);font-size:.875rem;text-decoration:none;transition:color .2s,border-color .2s}
+.sprung a::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c);flex:none}
+.sprung a:hover{color:var(--text);border-color:rgba(255,255,255,.3);text-decoration:none}
+.cap-dots{position:absolute;left:50%;bottom:-28px;transform:translateX(-50%);display:flex;gap:8px}
+.cap-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.22);transition:background .4s var(--ease),transform .4s var(--ease)}
+.cap-dots i.on{background:var(--text);transform:scale(1.3)}
+.tile p a{text-decoration:underline;text-decoration-color:rgba(255,255,255,.28);text-underline-offset:3px}
+.tile p a:hover{text-decoration-color:currentColor}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","name":"Stefan Paun","url":"https://stefanpaun.page/","sameAs":["https://github.com/Stefan-Paun"]},{"@type":"WebSite","url":"https://stefanpaun.page/","name":"Stefan Paun","inLanguage":"en"},{"@type":"SoftwareSourceCode","name":"Agent-Board","codeRepository":"https://github.com/Stefan-Paun/agent-board","programmingLanguage":"JavaScript","license":"https://opensource.org/licenses/MIT","author":{"@type":"Person","name":"Stefan Paun"}}]}</script>
 </head>
@@ -340,12 +349,13 @@ footer .wrap > :last-child{margin-left:auto}
       <a class="btn btn-s" href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub<span class="sr-only"> (new tab)</span></a>
     </div>
     <p class="proof"><a class="more" href="agent-board-case-study.html">How I fixed a bug in Agent-Board</a></p>
+    <ul class="sprung" aria-label="Jump to the projects"><li><a href="#p-agent-board" style="--c:var(--yellow)">AI agents</a></li><li><a href="#p-security" style="--c:var(--cyan)">Security</a></li><li><a href="#p-rallye" style="--c:var(--red)">Learning games</a></li><li><a href="#p-resonanz" style="--c:var(--text)">Visualisation</a></li></ul>
   </div>
 </section>
 
 <section class="scene" id="scene" aria-label="All projects as one particle event">
   <div class="sticky">
-    <ul class="legend" aria-hidden="true"><li style="--c:var(--yellow)">AI agents</li><li style="--c:var(--cyan)">Security</li><li style="--c:var(--red)">Learning games</li><li class="plain">Shape schematic, numbers real</li></ul>
+    <ul class="legend" aria-hidden="true"><li style="--c:var(--yellow)">AI agents</li><li style="--c:var(--cyan)">Security</li><li style="--c:var(--red)">Learning games</li><li style="--c:var(--text)">Visualisation</li><li class="plain">Shape schematic, numbers real</li></ul>
     <canvas id="cv" tabindex="0" role="group" aria-roledescription="interactive graphic" aria-label="My projects as coloured tracks from one point, shape schematic, numbers real. Arrow keys pick a project, Enter opens it, Escape closes." aria-describedby="cv-list"></canvas>
     <div class="pick" id="pick"><b></b><span class="v"></span><a href="#projekte">Go to project</a><span class="kh">Enter opens · Escape closes</span></div>
     <p class="kbd-hint" aria-hidden="true">Arrow keys pick a project · Tab leaves the graphic</p>
@@ -356,6 +366,7 @@ footer .wrap > :last-child{margin-left:auto}
       <p class="cap">Every coloured line is a project. <span>Tap one.</span></p>
       <p class="cap">Yellow is AI agents, cyan is security. <span>Red is learning games.</span></p>
       <p class="cap">3,619 tests. <span>Automated tests for Jarvis, every night in the cloud.</span></p>
+      <div class="cap-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
     </div>
   </div>
 </section>
@@ -431,7 +442,7 @@ footer .wrap > :last-child{margin-left:auto}
         <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 40 70, 90 30, 150 10" stroke="#FFD23A" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
         <span class="num">6</span><span class="num-l">building blocks</span>
         <h3>Claude Code tools</h3>
-        <p>Tools that make my AI assistant more reliable. A guard checks every commit and push against 10 patterns. A proof guard stops Claude from saying “done” while no tests have run after a code change. An error diary remembers what went wrong, and a weekly gardener turns my corrections into new rules. My own MCP server supplies live context such as project status and deadlines.</p>
+        <p>Tools that make my AI assistant more reliable. A guard checks every commit and push against 10 patterns: API keys from Anthropic, OpenAI, ElevenLabs, GitHub, AWS and Twilio, private keys, private email addresses, phone numbers and private paths. A proof guard stops Claude from saying “done” while no tests have run after a code change. An error diary remembers what went wrong, and a weekly gardener turns my corrections into new rules. My own MCP server supplies live context such as project status and deadlines.</p>
         <span class="kind" style="--c:var(--yellow)">AI agent · hooks, MCP server, 4 subagents, skill evals</span>
         <div class="links"><a class="more" href="https://github.com/Stefan-Paun/waechter" target="_blank" rel="noopener">Waechter on GitHub<span class="sr-only"> (new tab)</span></a></div>
         <span class="note">The guard is open source, the rest is private.</span>
@@ -460,7 +471,7 @@ footer .wrap > :last-child{margin-left:auto}
           <p>My Spotify listening as a walkable night sky: every artist a star, every listening world a galaxy, and scrolling takes you through a retrospective. Genres come from MusicBrainz because Spotify stopped giving them to new apps in 2026. Drop your own streaming history or sign in with your own account; everything stays in the browser.</p>
           <span class="kind" style="--c:var(--grey-2)">Data visualisation · three.js in the browser, no build · open source</span>
           <div class="links"><a class="more" href="https://stefanpaun.page/resonanz/" target="_blank" rel="noopener">Open the sky<span class="sr-only"> (new tab)</span></a><a class="more" href="https://github.com/Stefan-Paun/resonanz" target="_blank" rel="noopener">Code on GitHub<span class="sr-only"> (new tab)</span></a></div>
-          <span class="note">A snapshot of my data, without display name or playlists. Drag to look around, stars are tappable.</span>
+          <span class="note">A snapshot of my top lists, without display name, playlists or timestamps. Drag to look around, stars are tappable.</span>
         </div>
         <div class="shot">
           <picture>
