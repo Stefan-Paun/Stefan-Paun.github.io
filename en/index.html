@@ -255,7 +255,7 @@ footer .wrap > :last-child{margin-left:auto}
   .kbtn{display:none}
   .nav nav{display:none}
   .nav .pill{margin-left:auto}
-  .t-ab{grid-template-columns:minmax(0,1fr)}
+  .t-ab{grid-template-columns:minmax(0,1fr)}.t-ns{grid-template-columns:minmax(0,1fr)}
   .t-jv,.t-sec,.t-ry,.t-cc{grid-column:span 6}
   .t-mr{grid-template-columns:minmax(0,1fr)}
 }
@@ -304,6 +304,8 @@ footer .wrap > :last-child{margin-left:auto}
   .caps{position:static;display:grid;gap:18px}
   .cap{position:static;transform:none;opacity:1;width:auto;margin-inline:var(--gutter)}
 }
+.t-ns{grid-column:span 6;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,56px);align-items:center}
+.t-ns .shot{margin-top:0}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","name":"Stefan Paun","url":"https://stefanpaun.page/","sameAs":["https://github.com/Stefan-Paun"]},{"@type":"WebSite","url":"https://stefanpaun.page/","name":"Stefan Paun","inLanguage":"en"},{"@type":"SoftwareSourceCode","name":"Agent-Board","codeRepository":"https://github.com/Stefan-Paun/agent-board","programmingLanguage":"JavaScript","license":"https://opensource.org/licenses/MIT","author":{"@type":"Person","name":"Stefan Paun"}}]}</script>
 </head>
@@ -447,6 +449,24 @@ footer .wrap > :last-child{margin-left:auto}
           <figure class="shot mr-main"><img src="../img/matura-klasse.webp" width="960" height="540" loading="lazy" alt="Nachtschule (Night School) in 3D: a dark classroom with maths formulas on the board and the examiner figure in front of it."></figure>
           <figure class="shot"><img src="../img/matura-kammer.webp" width="960" height="540" loading="lazy" alt="The caretaker’s room with a piano; the board shows the map: German in the library, English in the west wing, maths in the east wing, Latin in the basement."></figure>
           <figure class="shot"><img src="../img/matura-frage.webp" width="960" height="540" loading="lazy" alt="A maths question in the game: reflect a point across a line, with a coordinate grid and an input field."></figure>
+        </div>
+      </article>
+
+      <article class="tile t-ns rv" id="p-resonanz" style="--i:7">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 40 70, 80 30, 110 18 S 150 6, 156 4" stroke="#f5f5f7" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <div>
+          <span class="num">203</span><span class="num-l">artists as stars</span>
+          <h3>Resonanz</h3>
+          <p>My Spotify listening as a walkable night sky: every artist a star, every listening world a galaxy, and scrolling takes you through a retrospective. Genres come from MusicBrainz because Spotify stopped giving them to new apps in 2026. Drop your own streaming history or sign in with your own account; everything stays in the browser.</p>
+          <span class="kind" style="--c:var(--grey-2)">Data visualisation · three.js in the browser, no build · open source</span>
+          <div class="links"><a class="more" href="https://stefanpaun.page/resonanz/" target="_blank" rel="noopener">Open the sky<span class="sr-only"> (new tab)</span></a><a class="more" href="https://github.com/Stefan-Paun/resonanz" target="_blank" rel="noopener">Code on GitHub<span class="sr-only"> (new tab)</span></a></div>
+          <span class="note">A snapshot of my data, without display name or playlists. Drag to look around, stars are tappable.</span>
+        </div>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="../img/resonanz-720.webp">
+            <img src="../img/resonanz.webp" width="1440" height="900" loading="lazy" alt="Resonanz: deep blue night sky with a pink German-rap galaxy in the centre, purple Night & R&B to the right, constellation lines and names, and the instrument panel with period switch and legend below.">
+          </picture>
         </div>
       </article>
     </div>
