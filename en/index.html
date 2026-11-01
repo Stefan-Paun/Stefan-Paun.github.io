@@ -456,6 +456,15 @@ footer .wrap > :last-child{margin-left:auto}
         <div class="links"><a class="more" href="https://github.com/Stefan-Paun/pruefstand" target="_blank" rel="noopener">Code on GitHub<span class="sr-only"> (new tab)</span></a></div>
         <span class="note">One concrete finding: a deny rule stops the read tool, but not “cat .env” through the shell. Only the sandbox closes that gap. The bench shows it in black and white.</span>
       </article>
+      <article class="tile t-sec rv" id="p-schleuse" style="--i:5">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 40 80, 60 62, 78 50 L 78 50 C 100 36, 130 22, 152 14" stroke="#4DD0E1" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M70 28 L 86 72" stroke="#4DD0E1" stroke-width="1.6" stroke-linecap="round" opacity=".55"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <span class="num">0</span><span class="num-l">false alarms in 50 real PRs</span>
+        <h3>Schleuse</h3>
+        <p>A gate for incoming pull requests. In 2026 the PolinRider campaign appended malware behind 500 spaces at the end of ordinary config files and used that to send poisoned PRs to large projects. Schleuse reads every PR as data through the GitHub API, checks nothing out, runs nothing, and recognises the attacks by their shape rather than by markers the attacker has long since rotated: code hidden behind whitespace, fonts that are really JavaScript, tasks that run when a folder is opened. Three lines of workflow are enough.</p>
+        <span class="kind" style="--c:var(--cyan)">Security · GitHub Action, Node with no dependencies, 46 tests · open source</span>
+        <div class="links"><a class="more" href="https://github.com/Stefan-Paun/schleuse" target="_blank" rel="noopener">Code on GitHub<span class="sr-only"> (new tab)</span></a></div>
+        <span class="note">Field test: three documented poisoned PRs blocked, fifty merged PRs from next.js, Tailwind, shadcn/ui, NestJS and Prisma without a single false alarm.</span>
+      </article>
       <article class="tile t-mr rv" id="p-matura" style="--i:5">
         <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 60 86, 110 52, 150 14" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 64 92, 116 64, 156 32" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 56 80, 100 40, 140 6" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 70 96, 124 80, 158 54" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
         <div class="mr-text">

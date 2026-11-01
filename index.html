@@ -454,6 +454,15 @@ footer .wrap > :last-child{margin-left:auto}
         <div class="links"><a class="more" href="https://github.com/Stefan-Paun/pruefstand" target="_blank" rel="noopener">Code auf GitHub<span class="sr-only"> (neuer Tab)</span></a></div>
         <span class="note">Konkreter Befund: Eine Deny-Regel stoppt das Lese-Werkzeug, aber nicht „cat .env" über die Shell. Diese Lücke schließt erst die Sandbox. Der Prüfstand zeigt das schwarz auf weiß.</span>
       </article>
+      <article class="tile t-sec rv" id="p-schleuse" style="--i:5">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 40 80, 60 62, 78 50 L 78 50 C 100 36, 130 22, 152 14" stroke="#4DD0E1" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M70 28 L 86 72" stroke="#4DD0E1" stroke-width="1.6" stroke-linecap="round" opacity=".55"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <span class="num">0</span><span class="num-l">Fehlalarme in 50 echten PRs</span>
+        <h3>Schleuse</h3>
+        <p>Eine Torwache für eingehende Pull Requests. 2026 hängte die PolinRider-Kampagne Schadcode hinter 500 Leerzeichen ans Ende ganz normaler Konfig-Dateien und schickte so vergiftete PRs an große Projekte. Schleuse liest jeden PR nur als Daten über die GitHub-API, checkt nichts aus, führt nichts aus, und erkennt die Angriffe an ihrer Form statt an Markern, die der Angreifer längst rotiert: Code hinter Weißraum, Fonts, die in Wahrheit JavaScript sind, Tasks, die beim Öffnen des Ordners starten. Drei Zeilen Workflow genügen.</p>
+        <span class="kind" style="--c:var(--cyan)">Security · GitHub Action, Node ohne Abhängigkeiten, 46 Tests · Open Source</span>
+        <div class="links"><a class="more" href="https://github.com/Stefan-Paun/schleuse" target="_blank" rel="noopener">Code auf GitHub<span class="sr-only"> (neuer Tab)</span></a></div>
+        <span class="note">Echtprobe: drei dokumentiert vergiftete PRs blockiert, fünfzig gemergte PRs von next.js, Tailwind, shadcn/ui, NestJS und Prisma ohne einen Fehlalarm.</span>
+      </article>
       <article class="tile t-mr rv" id="p-matura" style="--i:5">
         <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 60 86, 110 52, 150 14" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 64 92, 116 64, 156 32" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 56 80, 100 40, 140 6" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 70 96, 124 80, 158 54" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
         <div class="mr-text">
