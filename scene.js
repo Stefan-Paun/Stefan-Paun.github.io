@@ -96,7 +96,8 @@
     {name:"Cyber-Rallye", nameEn:"Cyber Rally", val:"135 Fragen", valEn:"135 questions", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5},
     {name:"Nachtschule", nameEn:"Night School", val:"1.445 echte Matura-Fragen", valEn:"1,445 real exam questions", href:"#p-matura", col:C.r, phi:118, k:-.35, end:.84, jet:true, dep:1445, tl:.45},
     {name:"Nachsitzen", val:"6 KI-Figuren mit Gedächtnis", valEn:"6 AI characters with memory", href:"#p-nachsitzen", col:C.y, phi:-92, k:-.3, end:.66, dep:6, tl:-.15},
-    {name:"Resonanz", val:"203 Künstler als Sterne", valEn:"203 artists as stars", href:"#p-resonanz", col:C.bone, phi:-20, k:.15, end:.72, dep:203, tl:.1}
+    {name:"Resonanz", val:"203 Künstler als Sterne", valEn:"203 artists as stars", href:"#p-resonanz", col:C.bone, phi:-20, k:.15, end:.72, dep:203, tl:.1},
+    {name:"Stapelwerk", val:"30 Rätsel auf einer eigenen CPU", valEn:"30 puzzles on a CPU of its own", href:"#p-stapelwerk", col:C.r, phi:-164, k:-.25, end:.84, jet:true, dep:30, tl:-.6}
   ];
   document.getElementById("cv-list").innerHTML = "";
   var EN = document.documentElement.lang === "en";
