@@ -474,6 +474,23 @@ footer .wrap > :last-child{margin-left:auto}
         <div class="links"><a class="more" href="https://github.com/Stefan-Paun/schleuse" target="_blank" rel="noopener">Code on GitHub<span class="sr-only"> (new tab)</span></a></div>
         <span class="note">Field test: three documented poisoned PRs blocked, fifty merged PRs from next.js, Tailwind, shadcn/ui, NestJS and Prisma without a single false alarm.</span>
       </article>
+      <article class="tile t-ns rv" id="p-stapelwerk" style="--i:5">
+        <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 48 90, 96 66, 146 22" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 52 94, 104 76, 154 44" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 44 84, 88 52, 132 8" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
+        <div>
+          <span class="num">30</span><span class="num-l">puzzles on a CPU of its own</span>
+          <h3>Stapelwerk</h3>
+          <p>A learning game for assembly in the browser: 30 puzzles in eight chapters, from changing a single register to linked lists on the heap. The 32-bit CPU was designed just for it; its core is written in Rust with zero third-party crates and runs as WebAssembly. The debugger can go backwards, one step at a time or back to the last change of a register, and shows stack frames, a 64×64 pixel screen and a map of the heap. Seven levels start with a bug that you find with the debugger instead of by guessing.</p>
+          <span class="kind" style="--c:var(--red)">Learning game · Rust as WebAssembly, zero third-party crates · open source</span>
+          <div class="links"><a class="more" href="https://stefanpaun.page/stapelwerk/en/" target="_blank" rel="noopener">Play now<span class="sr-only"> (new tab)</span></a><a class="more" href="https://github.com/Stefan-Paun/stapelwerk" target="_blank" rel="noopener">Code on GitHub<span class="sr-only"> (new tab)</span></a></div>
+          <span class="note">No account, no tracking, works offline after the first visit. The CPU is made up, the concepts are real.</span>
+        </div>
+        <div class="shot">
+          <picture>
+            <source type="image/webp" srcset="../img/stapelwerk-720.webp">
+            <img src="../img/stapelwerk.webp" width="1440" height="900" loading="lazy" alt="Stapelwerk: level 6.3 Flood Fill in the middle of a run. On the left the task and the assembly code, in the middle the registers and the stack with recursion frames, on the right the screen where a red rectangle fills with yellow.">
+          </picture>
+        </div>
+      </article>
       <article class="tile t-mr rv" id="p-matura" style="--i:5">
         <svg class="trk-art" viewBox="0 0 160 100" aria-hidden="true"><path d="M6 94 C 60 86, 110 52, 150 14" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 64 92, 116 64, 156 32" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 56 80, 100 40, 140 6" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M6 94 C 70 96, 124 80, 158 54" stroke="#FF4D4D" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="6" cy="94" r="2.6" fill="#f5f5f7"/></svg>
         <div class="mr-text">
@@ -547,8 +564,9 @@ footer .wrap > :last-child{margin-left:auto}
 <section class="sec now" id="jetzt" aria-labelledby="now-h">
   <div class="wrap now-grid">
     <div class="rv">
-      <h2 id="now-h">Now. <span>As of <time datetime="2026-10">October 2026</time>.</span></h2>
+      <h2 id="now-h">Now. <span>As of <time datetime="2026-11">November 2026</time>.</span></h2>
       <ul class="now-list">
+        <li style="--c:var(--red)"><b>Stapelwerk</b> is new and open source: 30 assembly puzzles on a 32-bit CPU of its own, with a debugger that can also step backwards. Since <time datetime="2026-11-10">10 November</time>.</li>
         <li style="--c:var(--yellow)"><b>Agent-Board</b> now has a city view: every agent walks through a small pixel town. New since <time datetime="2026-10-30">30 October</time>.</li>
         <li style="--c:var(--cyan)"><b>Security:</b> the Pre Security path on TryHackMe and the Cisco course are in progress.</li>
         <li style="--c:var(--red)"><b>School:</b> preparing for my final exams (Matura), partly with my own learning games.</li>
@@ -606,6 +624,7 @@ footer .wrap > :last-child{margin-left:auto}
       <li role="option" id="po2"><a href="agent-board-case-study.html">Agent-Board case study <span>problem, decisions, tests</span></a></li>
       <li role="option" id="po3"><a href="../sicherheit-iphone.html">Security: iPhone check <span>German · method, result, limits</span></a></li>
       <li role="option" id="po8"><a href="../jarvis.html">Jarvis <span>German · how my voice assistant is built</span></a></li>
+      <li role="option" id="po10"><a href="#p-stapelwerk">Stapelwerk <span>assembly puzzles, learning game</span></a></li>
       <li role="option" id="po9"><a href="#notizen">Notes <span>German · agents, tests</span></a></li>
       <li role="option" id="po4"><a href="#arbeitsweise">How I work <span>plan, agents, tests, security, release</span></a></li>
       <li role="option" id="po5"><a href="#jetzt">Now <span>what I’m working on</span></a></li>
