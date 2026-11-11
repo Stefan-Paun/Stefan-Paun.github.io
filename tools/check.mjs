@@ -16,7 +16,7 @@
 //
 // Nur Entwicklungswerkzeug: Die Seite selbst lädt nichts aus tools/.
 
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { lstatSync, readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { dirname, join, posix, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -32,8 +32,10 @@ function alleDateien(wurzel, ordner = '') {
   for (const name of readdirSync(join(wurzel, ordner)).sort()) {
     if (UEBERSPRINGEN.has(name)) continue;
     const rel = ordner ? `${ordner}/${name}` : name;
-    if (statSync(join(wurzel, rel)).isDirectory()) liste.push(...alleDateien(wurzel, rel));
-    else liste.push(rel);
+    const art = lstatSync(join(wurzel, rel));
+    if (art.isSymbolicLink()) continue; // nie aus dem Repo herauslaufen
+    if (art.isDirectory()) liste.push(...alleDateien(wurzel, rel));
+    else if (art.isFile()) liste.push(rel);
   }
   return liste;
 }
@@ -44,9 +46,9 @@ const zeileVon = (text, index) => text.slice(0, index).split('\n').length;
 // echten Tags, und die Zeilennummern der Funde bleiben richtig.
 function ohneCode(html) {
   const leer = (stueck) => stueck.replace(/[^\n]/g, ' ');
-  return html
-    .replace(/<!--[\s\S]*?-->/g, leer)
-    .replace(/(<(script|style)\b[^>]*>)([\s\S]*?)(<\/\2\s*>)/gi, (_, auf, _n, innen, zu) => auf + leer(innen) + zu);
+  // Ein Durchlauf, damit "<!--" in einem Skript und "<script>" in einem Kommentar nichts verschlucken.
+  return html.replace(/<!--[\s\S]*?-->|(<(script|style)\b[^>]*>)([\s\S]*?)(<\/\2\s*>)/gi,
+    (alles, auf, _n, innen, zu) => (auf ? auf + leer(innen) + zu : leer(alles)));
 }
 
 const TAG = /<([a-zA-Z][\w-]*)((?:\s+[^\s"'<>=\/]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'<>]+))?|\s*\/)*)\s*>/g;
@@ -66,6 +68,14 @@ export function tags(html) {
   return liste;
 }
 
+// Zeilen mit Tag-Anfängen, die TAG nicht lesen kann (z. B. fehlendes Leerzeichen zwischen
+// Attributen). Solche Tags würden sonst ungeprüft durchrutschen.
+export function unlesbar(html) {
+  const sauber = ohneCode(html);
+  const gelesen = new Set([...sauber.matchAll(TAG)].map((t) => t.index));
+  return [...sauber.matchAll(/<[a-zA-Z]/g)].filter((m) => !gelesen.has(m.index)).map((m) => zeileVon(sauber, m.index));
+}
+
 const entschluessle = (wert) => wert.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 
 // Zahlen aus dem sichtbaren Text, so wie sie dastehen (für den Vergleich: normal()).
@@ -73,7 +83,8 @@ export function zahlen(html) {
   const text = ohneCode(html)
     .replace(/<(script|style|svg|time)\b[\s\S]*?<\/\1\s*>/gi, ' ')
     .replace(TAG, ' ')
-    .replace(/<\/[a-zA-Z][\w-]*\s*>/g, ' ');
+    .replace(/<\/[a-zA-Z][\w-]*\s*>/g, ' ')
+    .replace(/&#?\w+;/g, ' ');
   return text.match(/\d+(?:[.,]\d+)*/g) ?? [];
 }
 
@@ -91,7 +102,6 @@ function dateiZuPfad(pfad, dateien) {
   let rel;
   try { rel = decodeURIComponent(pfad); } catch { return null; }
   rel = posix.normalize(rel).replace(/^\/+/, '');
-  if (rel.startsWith('..')) return null;
   if (rel === '' || rel === '.') rel = 'index.html';
   else if (rel.endsWith('/')) rel += 'index.html';
   if (dateien.has(rel)) return rel;
@@ -117,12 +127,13 @@ export function pruefe(wurzel) {
   for (const datei of dateiListe.filter((d) => d.endsWith('.html'))) {
     const html = lies(datei);
     const alleTags = tags(html);
-    const robots = alleTags.find((t) => t.name === 'meta' && (t.attribute.name ?? '').toLowerCase() === 'robots');
+    const robots = alleTags.filter((t) => t.name === 'meta' && (t.attribute.name ?? '').toLowerCase() === 'robots');
+    for (const zeile of unlesbar(html)) fund(datei, zeile, 'Tag nicht lesbar (Tippfehler in den Attributen?), bleibt ungeprüft');
     seiten.set(datei, {
       html,
       tags: alleTags,
       ids: alleTags.filter((t) => t.attribute.id).map((t) => t.attribute.id),
-      noindex: /noindex/i.test(robots?.attribute.content ?? ''),
+      noindex: robots.some((t) => /noindex/i.test(t.attribute.content ?? '')),
       canonical: alleTags.find((t) => t.name === 'link' && (t.attribute.rel ?? '').toLowerCase() === 'canonical'),
     });
   }
@@ -198,7 +209,7 @@ export function pruefe(wurzel) {
     if (anker && seiten.has(zielDatei)) {
       let id = anker;
       try { id = decodeURIComponent(anker); } catch { /* bleibt roh */ }
-      if (!seiten.get(zielDatei).ids.includes(id)) return `Sprungziel ${ziel} gibt es in ${zielDatei} nicht`;
+      if (id !== 'top' && !seiten.get(zielDatei).ids.includes(id)) return `Sprungziel ${ziel} gibt es in ${zielDatei} nicht`;
     }
     return null;
   }
@@ -242,7 +253,11 @@ export function pruefe(wurzel) {
   return { funde, seiten: seiten.size, dateien: dateiListe.length };
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+const direktGestartet = () => {
+  try { return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url)); } catch { return false; }
+};
+
+if (direktGestartet()) {
   const wurzel = resolve(process.argv[2] ?? join(dirname(fileURLToPath(import.meta.url)), '..'));
   const anzeige = relative(process.cwd(), wurzel).split(sep).join('/') || '.';
   const { funde, seiten, dateien } = pruefe(wurzel);

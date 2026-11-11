@@ -2,10 +2,12 @@
 // dass sie grün ist und dass jede eingebaute Lücke gemeldet wird.   node --test tools/check.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { normal, pruefe, tags, zahlen } from './check.mjs';
+import { normal, pruefe, tags, unlesbar, zahlen } from './check.mjs';
 
 const BASIS = 'https://beispiel.test';
 const kopf = (pfad, extra = '') => `<!doctype html><html><head><title>t</title><link rel="canonical" href="${BASIS}${pfad}">${extra}</head>`;
@@ -35,7 +37,7 @@ function gutesRepo() {
   };
 }
 
-function laufe(aendere = () => {}) {
+function laufe(aendere = () => {}, mitOrdner = (ordner) => pruefe(ordner).funde) {
   const dateien = gutesRepo();
   aendere(dateien);
   const ordner = mkdtempSync(join(tmpdir(), 'check-'));
@@ -45,7 +47,7 @@ function laufe(aendere = () => {}) {
       mkdirSync(dirname(join(ordner, pfad)), { recursive: true });
       writeFileSync(join(ordner, pfad), inhalt);
     }
-    return pruefe(ordner).funde;
+    return mitOrdner(ordner);
   } finally {
     rmSync(ordner, { recursive: true, force: true });
   }
@@ -117,4 +119,37 @@ test('tags: Attribute mit > und Zeilennummern, zahlen: ohne Skript und <time>', 
   assert.equal(liste[1].attribute.alt, 'a > b');
   assert.deepEqual(zahlen('<p data-x="7">3.619 und 1,5 <time datetime="2026-11-01">1. November</time><script>42</script></p>'), ['3.619', '1,5']);
   assert.equal(normal('3.619'), normal('3,619'));
+});
+
+test('unlesbare Tags werden gemeldet statt verschluckt', () => {
+  assert.deepEqual(unlesbar('<p>ok</p>\n<img src="x.png"class="y">'), [2]);
+  genauEiner(laufe((d) => { d['notiz.html'] = d['notiz.html'].replace('<a href', '<img src="fehlt.png"class="x"><a href'); }), /^notiz\.html:1 .*Tag nicht lesbar/);
+});
+
+test('Kommentarzeichen im Skript verschluckt kein HTML', () => {
+  assert.deepEqual(tags('<script>var a="<!--";</script>\n<img src="x.png">\n<!-- Fuss -->').map((t) => t.name), ['script', 'img']);
+});
+
+test('id fehlt in der DE-Seite, doppelte id, Entities sind keine Zahlen', () => {
+  genauEiner(laufe((d) => { d['en/index.html'] = d['en/index.html'].replace('<h1 ', '<i id="nur-en"></i><h1 '); }), /^index\.html .*id="nur-en" fehlt/);
+  genauEiner(laufe((d) => { d['notiz.html'] = d['notiz.html'].replace('<a href', '<i id="abschnitt"></i><a href'); }), /id="abschnitt" kommt 2-mal vor/);
+  assert.deepEqual(zahlen('<p>a&#8211;b &nbsp; 7</p>'), ['7']);
+});
+
+test('Kommandozeile: Exit-Code 0 bzw. 1, auch über einen verlinkten Pfad, Symlinks im Baum werden übersprungen', () => {
+  const skript = fileURLToPath(new URL('./check.mjs', import.meta.url));
+  const starte = (pfad, ordner) => spawnSync(process.execPath, [pfad, ordner], { encoding: 'utf8' });
+  laufe(() => {}, (ordner) => {
+    symlinkSync(tmpdir(), join(ordner, 'hinaus'));
+    const gut = starte(skript, ordner);
+    assert.equal(gut.status, 0, gut.stderr);
+    assert.match(gut.stdout, /Alles in Ordnung: 4 Seiten/);
+    const verlinkt = join(ordner, 'img', 'werkzeug');
+    symlinkSync(dirname(skript), verlinkt);
+    assert.equal(starte(join(verlinkt, 'check.mjs'), ordner).status, 0);
+    writeFileSync(join(ordner, 'robots.txt'), 'User-agent: *\n');
+    const rot = starte(join(verlinkt, 'check.mjs'), ordner);
+    assert.equal(rot.status, 1);
+    assert.match(rot.stderr, /robots\.txt  nennt keine Sitemap/);
+  });
 });
