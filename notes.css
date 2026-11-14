@@ -42,3 +42,13 @@ code{font-family:var(--mono);font-size:.9em;background:rgba(255,255,255,.08);pad
 footer{border-top:1px solid var(--hair);padding:22px 0 calc(22px + env(safe-area-inset-bottom));color:var(--grey-2);font-size:.875rem}
 footer .in{width:min(720px,100% - 2*var(--gutter));margin:0 auto;display:flex;gap:20px;flex-wrap:wrap}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+/* Rechtliche Seiten (Impressum, Datenschutz): Angaben als Tabelle aus Begriff und Wert. */
+.facts{margin:36px 0 0;padding:6px 24px;border-radius:22px;background:var(--card)}
+.facts div{display:grid;grid-template-columns:minmax(120px,11em) 1fr;gap:4px 20px;padding:14px 0;border-top:1px solid var(--hair)}
+.facts div:first-child{border-top:0}
+.facts dt{color:var(--grey-2);font-size:.875rem;padding-top:.2em}
+.facts dd{margin:0;color:var(--text)}
+.legal li{color:var(--body);margin:6px 0}
+.legal h3{margin:36px 0 0;font-size:1.15rem;letter-spacing:-.015em}
+.legal h3 + p{margin-top:8px}
+@media (max-width:520px){.facts div{grid-template-columns:1fr}}

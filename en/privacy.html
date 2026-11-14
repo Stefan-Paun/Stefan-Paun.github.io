@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy · Stefan Paun</title>
+<meta name="description" content="What happens to your data when you visit stefanpaun.page: no cookies, no tracking, hosting on GitHub Pages.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefanpaun.page/en/privacy.html">
+<link rel="alternate" hreflang="de" href="https://stefanpaun.page/datenschutz.html">
+<link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/privacy.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <a href="./"><svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="3.2" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="3.4" fill="#f5f5f7"/></svg>Stefan Paun</a>
+  <a class="back" href="../datenschutz.html" hreflang="de" lang="de">Deutsch</a>
+</div></header>
+
+<main class="legal">
+  <article>
+    <h1>Privacy. <span>What happens when you visit this site.</span></h1>
+    <p class="meta">As of <time datetime="2026-11-14">14 November 2026</time> · The <a href="../datenschutz.html" hreflang="de">German version</a> is the binding one</p>
+    <p class="lede">This site sets no cookies and measures nothing. I do not learn anything about your visit. On the portfolio pages your browser only connects to GitHub: that is where the site is hosted, and where a small live status on the home page comes from.</p>
+
+    <ul class="take" aria-label="The essentials in three sentences" style="--c:var(--cyan)">
+      <li><b>No tracking:</b> no cookies, no statistics, no ads, no forms, no embedded videos, maps or fonts from other providers.</li>
+      <li><b>Hosting:</b> the site is hosted on GitHub Pages. GitHub logs your IP address for security reasons. I have no access to those logs.</li>
+      <li><b>Resonanz:</b> your listening data is processed in your browser only. It is not sent to me or to any server of mine. Which other providers your browser asks along the way is listed <a href="#resonanz">below</a>.</li>
+    </ul>
+
+    <h2>Who is responsible</h2>
+    <p>I am responsible for this website: Stefan Paun, Vienna, Austria. You can reach me through my <a href="https://github.com/Stefan-Paun" target="_blank" rel="noopener">GitHub profile</a>. There is no non-public way to contact me there: issues and my replies to them can be read by anyone. So please do not put anything personal into them. For a privacy request, a short note without details is enough.</p>
+    <p>This notice covers stefanpaun.page with all of its pages and the projects served under this address (Agent-Board demo, Resonanz, Stapelwerk).</p>
+
+    <h2>Hosting on GitHub Pages</h2>
+    <p>The site is delivered by GitHub Pages, a service of GitHub (GitHub, Inc., 88 Colin P. Kelly Jr. St., San Francisco, CA 94107, USA; in the EU: GitHub B.V., Prins Bernhardplein 200, 1097 JB Amsterdam, the Netherlands). To show the site, your browser has to connect to GitHub's servers.</p>
+    <ul>
+      <li><b>Which data:</b> with every request your browser sends technical details: IP address, time, the address requested, details about browser and device and possibly the page you came from. GitHub states that it logs the IP address of visitors to GitHub Pages sites and stores it for security purposes.</li>
+      <li><b>What for:</b> to deliver the site and to protect it against attacks and abuse.</li>
+      <li><b>Legal basis:</b> legitimate interest in secure and reliable delivery (Art. 6(1)(f) GDPR).</li>
+      <li><b>How long:</b> that is up to GitHub. GitHub does not state a fixed period for these logs.</li>
+      <li><b>Where:</b> GitHub also processes data in the United States and uses service providers, for example a content delivery network (Fastly). GitHub states that it complies with the EU-U.S. Data Privacy Framework and otherwise relies on the European Commission's standard contractual clauses.</li>
+      <li><b>What I see:</b> nothing. I have no access to these logs and I do not receive any visitor statistics.</li>
+    </ul>
+    <p>More details are in <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's privacy statement</a> and in the <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noopener">description of GitHub Pages</a>.</p>
+
+    <h2>Live status on the home page</h2>
+    <p>The Agent-Board tile shows when the project was last updated. To do that, your browser queries GitHub's public interface (api.github.com) when the home page loads, without a login and without cookies. As with hosting, GitHub sees your IP address and that the request comes from stefanpaun.page. The legal basis is my legitimate interest in showing up-to-date information (Art. 6(1)(f) GDPR).</p>
+    <p>So that the query does not run again on every page change, your browser keeps the answer for up to ten minutes in session storage (<code>sessionStorage</code>, entry <code>ab-live-v1</code>). It only contains details about the project: date of the last change, version number, number of open issues. Nothing about you is stored there. The entry disappears when you close the tab.</p>
+
+    <h2>Cookies and browser storage</h2>
+    <p>The portfolio pages (home page, case study, notes) set no cookies. Apart from the entry for the live status, they store nothing in your browser. There are no analytics scripts, no embedded videos, no maps and no fonts from third-party servers.</p>
+
+    <h2>Projects served under this address</h2>
+    <p>Three of my projects run under stefanpaun.page. They are hosted on GitHub Pages as well, so everything said about hosting above applies to them. None of them sets cookies. Agent-Board and Stapelwerk keep a copy of their own files in your browser from the first visit so that they work without a network. Agent-Board also stores the sound setting when it loads. Everything else is only stored once you use a feature. You can remove all of it at any time by clearing the site data for stefanpaun.page in your browser.</p>
+
+    <h3>Agent-Board (live demo)</h3>
+    <p>The demo does not connect to any third-party server. It remembers your settings in your browser's storage (<code>localStorage</code>): language, sound on or off, volume, background music and whether you switched on notifications. It only asks for permission to show notifications when you click the bell.</p>
+
+    <h3>Stapelwerk</h3>
+    <p>The game does not connect to any third-party server. Your progress, your solutions and your choice of light or dark theme stay in your browser's storage (<code>localStorage</code>).</p>
+
+    <h3 id="resonanz">Resonanz</h3>
+    <p>Resonanz shows listening habits as a night sky. All the calculation happens in your browser. There is no server of mine that listening data is sent to, and I do not see any of it. The sky you see when you open it is a snapshot of my own top lists.</p>
+    <p>Your browser only connects to other providers when you use the feature in question:</p>
+    <ul>
+      <li><b>An artist's star card:</b> the cover images come from a Spotify server (i.scdn.co). Spotify sees your IP address when they load.</li>
+      <li><b>Preview:</b> only when you press play does your browser ask Deezer (api.deezer.com) for the title and artist and play the 30-second preview from Deezer's servers. To do that it loads a small script from Deezer and runs it in the page. Deezer sees your IP address and the title searched for.</li>
+      <li><b>Your own sky with a Spotify account:</b> you log in directly with Spotify (accounts.spotify.com). Your browser then fetches your top artists, your top songs and your recently played songs from Spotify (api.spotify.com). For genre and origin it asks MusicBrainz (musicbrainz.org) for the names of these artists. That step starts by itself after login, and you can cancel it. MusicBrainz sees your IP address and the names it is asked for.</li>
+      <li><b>Your own sky from your streaming history:</b> the file you drop in is analysed in your browser only. It is not uploaded anywhere.</li>
+    </ul>
+    <p>The providers are Spotify AB (Sweden), Deezer S.A. (France) and the MetaBrainz Foundation (USA). What they do with these requests is governed by their own rules: <a href="https://www.spotify.com/at/legal/privacy-policy/" target="_blank" rel="noopener">Spotify</a>, <a href="https://www.deezer.com/legal/personal-datas" target="_blank" rel="noopener">Deezer</a>, <a href="https://metabrainz.org/privacy" target="_blank" rel="noopener">MetaBrainz</a>. The legal basis is my legitimate interest in offering the feature you choose (Art. 6(1)(f) GDPR).</p>
+    <p>In your browser's storage (<code>localStorage</code>) Resonanz keeps: the language, the Spotify client ID you enter, your own sky (when you log in with an account, including the times of your recently played songs), the analysis of your history, the answers from MusicBrainz and, only if you tick the box, a comparison sky. The access token from Spotify is kept in session storage only and disappears when you close the tab. “Back to Stefan’s sky” deletes your sky, the history analysis and the access token.</p>
+    <p>Resonanz is an independent project and is not affiliated with Spotify, Deezer or MusicBrainz.</p>
+
+    <h2>Links to other sites</h2>
+    <p>When you click a link to GitHub or another website, that provider's rules apply there. The provider only learns about your visit once you click.</p>
+
+    <h2>Your rights</h2>
+    <p>Under the General Data Protection Regulation you have the right of access, rectification, erasure, restriction of processing, data portability and the right to object. I do not store any data about visitors to this site myself. For the host's logs, GitHub is the right place to ask. You are still welcome to contact me and I will help you find the right way.</p>
+    <p>If you think your data is not being processed lawfully here, you can lodge a complaint with a supervisory authority. In Austria that is the <a href="https://dsb.gv.at/" target="_blank" rel="noopener">Data Protection Authority</a> (Datenschutzbehörde), Barichgasse 40-42, 1030 Vienna.</p>
+    <p>Apart from the connection data that is technically necessary, you do not have to provide anything to use this site. There is no automated decision-making and no profiling.</p>
+
+    <h2>Changes</h2>
+    <p>If something changes on the site that affects your data, I will update this notice. The date at the top shows which version this is.</p>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="./">Home</a><a href="legal-notice.html">Legal notice</a><a href="privacy.html">Privacy</a></div></footer>
+</body>
+</html>
