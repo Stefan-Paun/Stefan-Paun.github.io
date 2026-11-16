@@ -17,13 +17,7 @@
       dep:299, kv:[["Typ","KI-Agent"],["Stand","öffentlich, v1.6.0"],["Tests","über 290"],["Sprachen","Englisch, Deutsch, Spanisch"]], log:"#agent-board", href:"https://stefanpaun.page/agent-board/?demo=1", hrefText:"Live-Demo öffnen"},
     {id:"jarvis", name:"JARVIS", kind:"KI-Agent", col:C.y, line:"Sprachassistent für Mac und Windows", val:"3.600+ Tests", phi:22, k:-.45, end:.66,
       title:"Jarvis", text:"Sprachassistent mit Stimme, Werkzeugen, verschlüsselten Daten und nächtlichen Tests in der Cloud.",
-      dep:3600, kv:[["Typ","KI-Agent"],["Stand","im Einsatz, privat"],["Tests","über 3.600"],["Systeme","macOS, Windows"]], log:"#jarvis"},
-    {id:"gwb-rallye", name:"GWB-RALLYE", kind:"Lernspiel", col:C.r, line:"Lernspiel Geografie und Wirtschaft", val:"273 Fragen", phi:34, k:.3, end:.84, jet:true,
-      title:"GWB-Rallye", text:"Pixel-Lernspiel mit Weltkarte, Bossen, Shop und Probetest für Geografie und Wirtschaft.",
-      dep:273, kv:[["Typ","Lernspiel"],["Stand","spielbar"],["Fragen","273"]], log:"#rallye"},
-    {id:"cyber-rallye", name:"CYBER-RALLYE", kind:"Lernspiel", col:C.r, line:"Lernspiel zu Security-Grundlagen", val:"135 Fragen", phi:76, k:-.2, end:.84, jet:true,
-      title:"Cyber-Rallye", text:"Dieselbe Engine für Security-Grundlagen: 5 Welten und Wiederholung nach dem Leitner-System.",
-      dep:135, kv:[["Typ","Lernspiel"],["Stand","spielbar"],["Fragen","135"]], log:"#rallye"}
+      dep:3600, kv:[["Typ","KI-Agent"],["Stand","im Einsatz, privat"],["Tests","über 3.600"],["Systeme","macOS, Windows"]], log:"#jarvis"}
   ];
   var byId = {}; TRACKS.forEach(function(t){ byId[t.id] = t; });
 
@@ -141,7 +135,7 @@
   for(i=0;i<64;i++) EMC.push(.25 + rnd()*.5);
   for(i=0;i<32;i++) HC.push(rnd());
   // dip of each real track along the beam (schematic, like phi and k)
-  var DIP = {"security":.55, "werkzeuge":-.7, "agent-board":.35, "jarvis":-.3, "gwb-rallye":.8, "cyber-rallye":-.5};
+  var DIP = {"security":.55, "werkzeuge":-.7, "agent-board":.35, "jarvis":-.3};
   TRACKS.forEach(function(t){ t.tl = DIP[t.id] || 0; });
 
   // helix: transverse circle through the vertex, z grows linearly with path length

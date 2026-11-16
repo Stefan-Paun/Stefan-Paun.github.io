@@ -127,6 +127,7 @@ p{text-wrap:pretty}
 .links{display:flex;align-items:center;gap:10px 22px;flex-wrap:wrap;margin-top:22px;font-size:1.0625rem}
 .links a{display:inline-flex;align-items:center;min-height:44px}
 .links a.btn:hover{text-decoration:none}
+.tile .live[hidden]{display:none}
 .tile .live{display:flex;align-items:center;gap:8px;margin:10px 0 0;color:var(--grey-2);font-size:.875rem;line-height:1.4;max-width:none}
 .live-dot{width:7px;height:7px;border-radius:50%;background:#30d158;box-shadow:0 0 0 3px rgba(48,209,88,.18)}
 a.stat-link{color:inherit;border-radius:8px}
@@ -135,8 +136,12 @@ a.stat-link:hover .num-l{color:var(--text)}
 a.stat-link .num-l{text-decoration:underline;text-decoration-color:rgba(161,161,166,.35);text-underline-offset:4px}
 .note{margin-top:auto;padding-top:22px;color:var(--grey-2);font-size:.875rem}
 .t-ab{grid-column:span 6;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,56px);align-items:center}
-.t-ab .stats{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:clamp(20px,3.5vw,44px);margin-top:32px}
-.t-ab .stats .num{font-size:clamp(2.8rem,5vw,4.2rem)}
+.t-ab > div{container-type:inline-size;min-width:0}
+/* Kennzahlen skalieren mit der Textspalte (cqi), damit "290+" nie in den Screenshot läuft */
+.t-ab .stats{display:grid;grid-template-columns:repeat(3,minmax(0,max-content));justify-content:start;gap:16px clamp(16px,6cqi,40px);margin-top:32px}
+.t-ab .stats > *{min-width:0}
+.t-ab .stats .num{font-size:clamp(2.2rem,12cqi,4rem)}
+.t-ab .stats .num-l{font-size:clamp(.8125rem,3.7cqi,1.0625rem);hyphens:auto}
 a.shot{display:block;transition:transform .5s var(--ease)}
 a.shot:hover{transform:scale(1.012)}
 a.shot:focus-visible{outline-offset:-3px}
@@ -290,9 +295,7 @@ footer .wrap > :last-child{margin-left:auto}
 }
 @media (max-width:430px){
   .brand-t{display:none}
-  .t-ab .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px}
-  .t-ab .stats .num{font-size:2.6rem}
-  .t-ab .stats .num-l{hyphens:auto}
+  .t-ab .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:400px){
   .nav .wrap{gap:18px}

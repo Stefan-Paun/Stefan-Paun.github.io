@@ -92,8 +92,6 @@
     {name:"Schleuse", nameEn:"Schleuse", val:"3 vergiftete PRs blockiert, 31 ohne Fehlalarm", valEn:"3 poisoned PRs blocked, 31 without a false alarm", href:"#p-schleuse", col:C.c, phi:-112, k:.5, end:.74, muon:true, dep:107, tl:.62},
     {name:"Agent-Board", val:"Release v1.6.0, über 290 Tests", valEn:"release v1.6.0, 290+ tests", href:"https://stefanpaun.page/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:299, tl:.35},
     {name:"Jarvis", val:"über 3.600 automatische Tests", valEn:"3,600+ automated tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3600, tl:-.3},
-    {name:"GWB-Rallye", nameEn:"GWB Rally", val:"273 Fragen", valEn:"273 questions", href:"#p-rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
-    {name:"Cyber-Rallye", nameEn:"Cyber Rally", val:"135 Fragen", valEn:"135 questions", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5},
     {name:"Nachtschule", nameEn:"Night School", val:"über 1.500 Matura-Fragen mit Quelle", valEn:"1,500+ exam questions with sources", href:"#p-matura", col:C.r, phi:118, k:-.35, end:.84, jet:true, dep:1529, tl:.45},
     {name:"Nachsitzen", val:"6 KI-Figuren mit Gedächtnis", valEn:"6 AI characters with memory", href:"#p-nachsitzen", col:C.y, phi:-92, k:-.3, end:.66, dep:6, tl:-.15},
     {name:"Resonanz", val:"203 Künstler als Sterne", valEn:"203 artists as stars", href:"#p-resonanz", col:C.bone, phi:-20, k:.15, end:.72, dep:203, tl:.1},

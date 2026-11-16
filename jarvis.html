@@ -27,13 +27,13 @@
 <main>
   <article>
     <h1>Jarvis: Wie mein Sprachassistent aufgebaut ist. <span>Ablauf, Entscheidungen, Grenzen.</span></h1>
-    <p class="meta">Stand <time datetime="2026-10-30">30. Oktober 2026</time> · privates Projekt, gebaut mit Claude Code</p>
+    <p class="meta">Stand <time datetime="2026-11-16">16. November 2026</time> · privates Projekt, gebaut mit Claude Code</p>
     <p class="lede">Jarvis ist mein persönlicher Sprachassistent. Ich spreche mit ihm, er versteht mich, nutzt Werkzeuge und antwortet mit Stimme. Gebaut habe ich ihn in Python, gemeinsam mit Claude Code. Der Code ist privat. Hier beschreibe ich, wie er funktioniert.</p>
 
     <ul class="take c-y" aria-label="Das Wichtigste in drei Sätzen">
       <li><b>Ablauf:</b> Taste oder „Hey Jarvis“, dann Whisper, dann Claude mit Werkzeugen, dann eine Stimme.</li>
       <li><b>Haltung:</b> Persönliche Daten sind verschlüsselt, Tests dürfen sie nie anfassen, und ich merge selbst.</li>
-      <li><b>Zahl:</b> über 3.600 automatische Tests (Stand <time datetime="2026-11-16">16. November 2026</time>). Das ist eine Menge, aber kein Beweis, dass alles stimmt.</li>
+      <li><b>Zahl:</b> über 3.600 automatische Tests. Das ist eine Menge, aber kein Beweis, dass alles stimmt.</li>
     </ul>
 
     <h2>Ablauf einer Anfrage</h2>
@@ -60,7 +60,7 @@
     <p>Claude bekommt nicht alle Werkzeuge auf einmal. Die wichtigsten gehen in voller Beschreibung mit, der Rest steht als Ein-Zeilen-Liste da und wird bei Bedarf nachgeladen. Das spart Tokens. Dazu gibt es ein festes Budget für den Anfang jeder Anfrage. Wird eine Beschreibung zu lang, kürze ich sie. Das Limit erhöhe ich nicht.</p>
 
     <div class="figs">
-      <div><b>3.600+</b><span>automatische Tests (Stand 16.11.2026)</span></div>
+      <div><b>3.600+</b><span>automatische Tests</span></div>
       <div><b>1</b><span>Codebasis für Mac und Windows</span></div>
       <div><b>4</b><span>Stationen pro Anfrage</span></div>
     </div>
