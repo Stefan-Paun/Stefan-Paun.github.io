@@ -85,16 +85,16 @@
   // --- the product: the event in 3D, turned by the scroll position through the scene ---
   // Same schematic geometry as the detector view on the main page; only the figures are data.
   var TRACKS = [
-    {name:"Security", val:"6 TryHackMe-Räume, iPhone-Check", valEn:"6 TryHackMe rooms, iPhone check", href:"#p-security", col:C.c, phi:-64, k:0, end:1.0, muon:true, dep:6, tl:.55},
-    {name:"CC-Werkzeuge", nameEn:"CC tools", val:"10 Prüfmuster vor jedem Commit", valEn:"10 checks before every commit", href:"#p-werkzeuge", col:C.y, phi:-8, k:.4, end:.66, dep:4, tl:-.7},
+    {name:"iPhone-Check", nameEn:"iPhone check", val:"6.630 Spyware-Indikatoren geprüft", valEn:"6,630 spyware indicators checked", href:"#p-security", col:C.c, phi:-64, k:0, end:1.0, muon:true, dep:6630, tl:.55},
+    {name:"CC-Werkzeuge", nameEn:"CC tools", val:"bis zu 10 Prüfmuster vor jedem Commit", valEn:"up to 10 checks before every commit", href:"#p-werkzeuge", col:C.y, phi:-8, k:.4, end:.66, dep:4, tl:-.7},
     {name:"Prüfstand", nameEn:"Test bench", val:"10 Angriffs-Szenarien", valEn:"10 attack scenarios", href:"#p-pruefstand", col:C.c, phi:96, k:-.3, end:.78, muon:true, dep:10, tl:-.45},
     {name:"Ungelöst", nameEn:"Unsolved", val:"215 offene Probleme gefunden", valEn:"215 open problems found", href:"#p-ungeloest", col:C.y, phi:118, k:.15, end:.72, dep:215, tl:.15},
-    {name:"Schleuse", nameEn:"Schleuse", val:"3 vergiftete PRs blockiert", valEn:"3 poisoned PRs blocked", href:"#p-schleuse", col:C.c, phi:-112, k:.5, end:.74, muon:true, dep:46, tl:.62},
-    {name:"Agent-Board", val:"85 Tests, Open Source", valEn:"85 tests, open source", href:"https://stefanpaun.page/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:85, tl:.35},
-    {name:"Jarvis", val:"3.619 automatische Tests", valEn:"3,619 automated tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3619, tl:-.3},
+    {name:"Schleuse", nameEn:"Schleuse", val:"3 vergiftete PRs blockiert, 31 ohne Fehlalarm", valEn:"3 poisoned PRs blocked, 31 without a false alarm", href:"#p-schleuse", col:C.c, phi:-112, k:.5, end:.74, muon:true, dep:107, tl:.62},
+    {name:"Agent-Board", val:"Release v1.6.0, über 290 Tests", valEn:"release v1.6.0, 290+ tests", href:"https://stefanpaun.page/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:299, tl:.35},
+    {name:"Jarvis", val:"über 3.600 automatische Tests", valEn:"3,600+ automated tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3600, tl:-.3},
     {name:"GWB-Rallye", nameEn:"GWB Rally", val:"273 Fragen", valEn:"273 questions", href:"#p-rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
     {name:"Cyber-Rallye", nameEn:"Cyber Rally", val:"135 Fragen", valEn:"135 questions", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5},
-    {name:"Nachtschule", nameEn:"Night School", val:"1.445 echte Matura-Fragen", valEn:"1,445 real exam questions", href:"#p-matura", col:C.r, phi:118, k:-.35, end:.84, jet:true, dep:1445, tl:.45},
+    {name:"Nachtschule", nameEn:"Night School", val:"über 1.500 Matura-Fragen mit Quelle", valEn:"1,500+ exam questions with sources", href:"#p-matura", col:C.r, phi:118, k:-.35, end:.84, jet:true, dep:1529, tl:.45},
     {name:"Nachsitzen", val:"6 KI-Figuren mit Gedächtnis", valEn:"6 AI characters with memory", href:"#p-nachsitzen", col:C.y, phi:-92, k:-.3, end:.66, dep:6, tl:-.15},
     {name:"Resonanz", val:"203 Künstler als Sterne", valEn:"203 artists as stars", href:"#p-resonanz", col:C.bone, phi:-20, k:.15, end:.72, dep:203, tl:.1},
     {name:"Stapelwerk", val:"30 Rätsel auf einer eigenen CPU", valEn:"30 puzzles on a CPU of its own", href:"#p-stapelwerk", col:C.r, phi:-164, k:-.25, end:.84, jet:true, dep:30, tl:-.6}
@@ -103,7 +103,9 @@
   var EN = document.documentElement.lang === "en";
   if(EN) TRACKS.forEach(function(t){ if(t.nameEn) t.name = t.nameEn; if(t.valEn) t.val = t.valEn; });
   TRACKS.forEach(function(t){ var li = document.createElement("li"); li.textContent = t.name + ": " + t.val; document.getElementById("cv-list").appendChild(li); });
-  var cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  var cv = document.getElementById("cv"), ctx = cv && cv.getContext("2d");
+  // no 2D canvas (blocked or very old browser): show legend and captions statically, like without JavaScript
+  if(!ctx){ document.documentElement.classList.add("no-cv"); return; }
   var scene = document.getElementById("scene"), caps = document.querySelectorAll(".cap"), capDots = document.querySelectorAll(".cap-dots i");
   var W = 0, H = 0, dpr = 1, cx = 0, cy = 0, R = 0;
   var progress = reduce ? 1 : 0, t0 = 0, target = 0, shown = 0;

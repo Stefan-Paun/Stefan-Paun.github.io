@@ -2,6 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Wie ich mit Claude-Code-Agents baue · Stefan Paun</title>
 <meta name="description" content="Meine Arbeitsweise mit Claude-Code-Agents: Plan, parallele Worktrees, lokale Tests, Nachtschicht mit Draft-PRs, eigene Prüfung und was schiefging.">
@@ -11,7 +13,9 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Wie ich mit Claude-Code-Agents baue">
 <meta property="og:description" content="Meine Arbeitsweise mit Claude-Code-Agents: Plan, parallele Worktrees, lokale Tests, Nachtschicht mit Draft-PRs, eigene Prüfung und was schiefging.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="notes.css">
 </head>
 <body>
@@ -23,10 +27,10 @@
 <main>
   <article>
     <h1>Wie ich mit Claude-Code-Agents baue. <span>Arbeitsweise und Fehler.</span></h1>
-    <p class="meta">Notiz · Stand <time datetime="2026-10-30">30. Oktober 2026</time></p>
+    <p class="meta">Notiz · Stand <time datetime="2026-11-16">16. November 2026</time></p>
     <p class="lede">Ich schreibe meinen Code nicht mehr allein. Claude-Code-Agents bauen mit, ich plane und prüfe. Hier steht, wie das bei mir abläuft und wo es schiefging.</p>
 
-    <ul class="take" aria-label="Das Wichtigste in drei Sätzen" style="--c:var(--yellow)">
+    <ul class="take c-y" aria-label="Das Wichtigste in drei Sätzen">
       <li><b>Ablauf:</b> erst ein Plan, dann Agents parallel in getrennten Arbeitskopien, Tests lokal.</li>
       <li><b>Regel:</b> Ich prüfe und merge selbst. Auch die nächtliche Routine öffnet nur Draft-PRs.</li>
       <li><b>Lehre:</b> Agents machen sich gegenseitig Ärger, wenn sie dieselben Dateien anfassen. Klare Zuständigkeiten helfen.</li>
@@ -42,12 +46,12 @@
     <p>Bei Jarvis ist das Repo privat, und die Cloud-Minuten sind begrenzt. Deshalb laufen die Tests bei mir lokal. Nach jedem Lauf prüfe ich, ob Tests echte Daten verändert haben. Warum, steht in der <a href="notizen-tests.html">Notiz über Tests</a>.</p>
 
     <h2>Nachtschicht</h2>
-    <p>Drei Routinen laufen nachts um 03:30, sonntags nicht: eine für Jarvis, eine für Agent-Board und eine für ein privates Lernspiel. Jede nimmt das älteste offene Issue mit einem bestimmten Label, baut auf einem eigenen Branch, testet, lässt einen zweiten Agent prüfen und öffnet einen Draft-PR. Gibt es kein Issue, passiert nichts. Die Routine darf pushen und Drafts öffnen. Mergen darf sie nicht.</p>
+    <p>Fünf Routinen laufen nachts in der Cloud, sonntags nicht: für Jarvis, Agent-Board, ein privates Lernspiel, den Prüfstand und einige kleinere Projekte. Jede nimmt ein offenes Issue mit einem bestimmten Label (oder ein Bündel kleiner Issues), baut auf einem eigenen Branch, testet, lässt einen zweiten Agent prüfen und öffnet einen Draft-PR. Gibt es kein Issue, passiert nichts. Die Routine darf pushen und Drafts öffnen. Mergen darf sie nicht.</p>
 
     <div class="figs">
-      <div><b>3</b><span>Nachtschicht-Routinen, 03:30 Uhr, Sonntag frei</span></div>
-      <div><b>0</b><span>Merges durch Agents, die mache ich</span></div>
-      <div><b>3.619</b><span>Tests bei Jarvis (28.10.2026)</span></div>
+      <div><b>5</b><span>Nachtschicht-Routinen, Sonntag frei</span></div>
+      <div><b>0</b><span>Merges durch die Routinen, das entscheide ich</span></div>
+      <div><b>3.600+</b><span>Tests bei Jarvis</span></div>
     </div>
 
     <h2>Ich prüfe und merge selbst</h2>
@@ -72,6 +76,5 @@
 </main>
 
 <footer><div class="in"><span>© 2026 Stefan Paun</span><a href="index.html">Zur Startseite</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></footer>
-<style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style>
 </body>
 </html>

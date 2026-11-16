@@ -2,6 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>iPhone auf Spyware prüfen · Stefan Paun</title>
 <meta name="description" content="Wie ich mein eigenes iPhone mit dem Mobile Verification Toolkit auf bekannte Spyware-Spuren geprüft habe: Vorgehen, Ergebnis und Grenzen.">
@@ -11,7 +13,9 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Wie ich mein iPhone auf Spyware geprüft habe">
 <meta property="og:description" content="Vorgehen, Ergebnis und Grenzen eines Abgleichs mit dem Mobile Verification Toolkit.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="notes.css">
 </head>
 <body>
@@ -26,7 +30,7 @@
     <p class="meta">Geprüft am <time datetime="2026-10-28">28. Oktober 2026</time> · eigenes Gerät, per USB vom Mac aus</p>
     <p class="lede">Ich wollte wissen, wie man ein Handy auf staatliche Spyware wie Pegasus oder Predator untersucht. Also habe ich es an meinem eigenen iPhone ausprobiert, mit den Werkzeugen, die auch Forschende verwenden.</p>
 
-    <ul class="take" aria-label="Das Wichtigste in drei Sätzen" style="--c:var(--cyan)">
+    <ul class="take c-c" aria-label="Das Wichtigste in drei Sätzen">
       <li><b>Werkzeug:</b> das Mobile Verification Toolkit (MVT) von Amnesty International und die öffentlichen Indikatoren für bekannte Spyware.</li>
       <li><b>Ergebnis:</b> keine Treffer. Ein paar Auffälligkeiten habe ich einzeln nachgeprüft, alle waren Fehlalarme.</li>
       <li><b>Grenze:</b> Das ist ein Abgleich mit bekannten Mustern. Neue oder unbekannte Spyware findet so ein Test nicht.</li>
@@ -62,6 +66,5 @@
 </main>
 
 <footer><div class="in"><span>© 2026 Stefan Paun</span><a href="index.html">Zur Startseite</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></footer>
-<style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style>
 </body>
 </html>

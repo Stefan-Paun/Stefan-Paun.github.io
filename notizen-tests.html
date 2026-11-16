@@ -2,6 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Was mir Tests beigebracht haben · Stefan Paun</title>
 <meta name="description" content="Lehren aus Jarvis und Agent-Board: Warum Tests echte Daten schützen müssen, was wackelnde Tests bedeuten und warum rote Tests nicht gepusht werden.">
@@ -11,7 +13,9 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Was mir Tests beigebracht haben">
 <meta property="og:description" content="Lehren aus Jarvis und Agent-Board: Warum Tests echte Daten schützen müssen, was wackelnde Tests bedeuten und warum rote Tests nicht gepusht werden.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="notes.css">
 </head>
 <body>
@@ -26,15 +30,15 @@
     <p class="meta">Notiz · Stand <time datetime="2026-10-30">30. Oktober 2026</time></p>
     <p class="lede">Tests zu schreiben fand ich zuerst nebensächlich. Dann haben Tests bei mir echten Schaden angerichtet, und ich habe verstanden, warum sie selbst Regeln brauchen.</p>
 
-    <ul class="take" aria-label="Das Wichtigste in drei Sätzen" style="--c:var(--cyan)">
+    <ul class="take c-c" aria-label="Das Wichtigste in drei Sätzen">
       <li><b>Datenschutz:</b> Tests dürfen nie an echte Daten. Ein Schutz im Code und ein Prüfschritt nach jedem Lauf sichern das ab.</li>
       <li><b>Wackler:</b> Ein Test, der mal rot und mal grün ist, zeigt oft ein echtes Problem.</li>
       <li><b>Regel:</b> Rote Tests pushe ich nicht, und ich schaue mir den Exit-Code an, nicht nur die Ausgabe.</li>
     </ul>
 
     <div class="figs">
-      <div><b>3.619</b><span>Tests bei Jarvis (28.10.2026), Lauf rund 5 Minuten</span></div>
-      <div><b>135</b><span>Unit-Tests bei Agent-Board, dazu Browser-Tests</span></div>
+      <div><b>3.600+</b><span>Tests bei Jarvis (Stand 16.11.2026)</span></div>
+      <div><b>290+</b><span>Unit-Tests bei Agent-Board (Stand 16.11.2026), dazu Browser-Tests</span></div>
       <div><b>0</b><span>erlaubte neue Dateien im Datenordner nach einem Lauf</span></div>
     </div>
 
@@ -69,6 +73,5 @@
 </main>
 
 <footer><div class="in"><span>© 2026 Stefan Paun</span><a href="index.html">Zur Startseite</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></footer>
-<style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style>
 </body>
 </html>
