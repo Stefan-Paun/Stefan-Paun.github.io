@@ -2,6 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Jarvis: Aufbau meines Sprachassistenten · Stefan Paun</title>
 <meta name="description" content="Wie mein privater Sprachassistent Jarvis aufgebaut ist: Ablauf einer Anfrage, Entscheidungen mit Abwägungen, Zahlen und Grenzen.">
@@ -11,7 +13,9 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jarvis: Wie mein Sprachassistent aufgebaut ist">
 <meta property="og:description" content="Wie mein privater Sprachassistent Jarvis aufgebaut ist: Ablauf einer Anfrage, Entscheidungen mit Abwägungen, Zahlen und Grenzen.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Cpath d='M8 24 L26 6' stroke='%2335D0FF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M8 24 Q19 21 28 13' stroke='%23FFD23A' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Cpath d='M8 24 Q17 28 26 28' stroke='%23FF4D4D' stroke-width='2.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='8' cy='24' r='3' fill='%23f5f5f7'/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="notes.css">
 </head>
 <body>
@@ -23,18 +27,18 @@
 <main>
   <article>
     <h1>Jarvis: Wie mein Sprachassistent aufgebaut ist. <span>Ablauf, Entscheidungen, Grenzen.</span></h1>
-    <p class="meta">Stand <time datetime="2026-10-30">30. Oktober 2026</time> · privates Projekt, gebaut mit Claude Code</p>
+    <p class="meta">Stand <time datetime="2026-11-16">16. November 2026</time> · privates Projekt, gebaut mit Claude Code</p>
     <p class="lede">Jarvis ist mein persönlicher Sprachassistent. Ich spreche mit ihm, er versteht mich, nutzt Werkzeuge und antwortet mit Stimme. Gebaut habe ich ihn in Python, gemeinsam mit Claude Code. Der Code ist privat. Hier beschreibe ich, wie er funktioniert.</p>
 
-    <ul class="take" aria-label="Das Wichtigste in drei Sätzen" style="--c:var(--yellow)">
+    <ul class="take c-y" aria-label="Das Wichtigste in drei Sätzen">
       <li><b>Ablauf:</b> Taste oder „Hey Jarvis“, dann Whisper, dann Claude mit Werkzeugen, dann eine Stimme.</li>
       <li><b>Haltung:</b> Persönliche Daten sind verschlüsselt, Tests dürfen sie nie anfassen, und ich merge selbst.</li>
-      <li><b>Zahl:</b> 3.619 automatische Tests am 28. Oktober 2026. Das ist eine Menge, aber kein Beweis, dass alles stimmt.</li>
+      <li><b>Zahl:</b> über 3.600 automatische Tests. Das ist eine Menge, aber kein Beweis, dass alles stimmt.</li>
     </ul>
 
     <h2>Ablauf einer Anfrage</h2>
     <p>Ich drücke eine Taste oder sage „Hey Jarvis“. Whisper macht aus meiner Sprache Text. Der Text geht an Claude, und Claude darf Werkzeuge benutzen, zum Beispiel für Wetter, Timer oder Musik. Die Antwort wird als Stimme ausgegeben. Es gibt außerdem eine Weboberfläche für den Browser und das iPhone.</p>
-    <svg role="img" aria-labelledby="dg-t dg-d" viewBox="0 0 640 150" style="width:100%;height:auto;max-width:640px;margin:1.2em 0">
+    <svg role="img" aria-labelledby="dg-t dg-d" viewBox="0 0 640 150" class="flow-svg">
       <title id="dg-t">Ablauf einer Anfrage an Jarvis</title>
       <desc id="dg-d">Vier Stationen von links nach rechts: Eingabe per Taste oder Wake-Word, Whisper wandelt Sprache in Text, Claude mit Werkzeugen, Antwort als Stimme.</desc>
       <g fill="none" stroke="#86868b" stroke-width="2"><path d="M152 70 H176"/><path d="M312 70 H336"/><path d="M472 70 H496"/></g>
@@ -56,7 +60,7 @@
     <p>Claude bekommt nicht alle Werkzeuge auf einmal. Die wichtigsten gehen in voller Beschreibung mit, der Rest steht als Ein-Zeilen-Liste da und wird bei Bedarf nachgeladen. Das spart Tokens. Dazu gibt es ein festes Budget für den Anfang jeder Anfrage. Wird eine Beschreibung zu lang, kürze ich sie. Das Limit erhöhe ich nicht.</p>
 
     <div class="figs">
-      <div><b>3.619</b><span>automatische Tests (28.10.2026, Laufzeit rund 5 Minuten)</span></div>
+      <div><b>3.600+</b><span>automatische Tests</span></div>
       <div><b>1</b><span>Codebasis für Mac und Windows</span></div>
       <div><b>4</b><span>Stationen pro Anfrage</span></div>
     </div>
@@ -89,7 +93,7 @@
     </ul>
 
     <h2>Grenzen</h2>
-    <p>Einige Tests schlagen gelegentlich fehl, etwa bei Zeitabhängigkeit, Netzproblemen oder hoher Last. Ein Teil der neueren Funktionen ist noch nicht im Alltag erprobt. Und 3.619 Tests sagen nur, dass die Fälle klappen, an die ich gedacht habe.</p>
+    <p>Einige Tests schlagen gelegentlich fehl, etwa bei Zeitabhängigkeit, Netzproblemen oder hoher Last. Ein Teil der neueren Funktionen ist noch nicht im Alltag erprobt. Und über 3.600 Tests sagen nur, dass die Fälle klappen, an die ich gedacht habe.</p>
 
     <h2>Warum der Code privat ist</h2>
     <p>Jarvis arbeitet mit sehr persönlichen Daten. Selbst ein sauberer Code gibt Hinweise darauf, was es gibt und wo es liegt. Ich zeige deshalb den Aufbau, aber keinen Code und keine Screenshots mit Inhalten. Öffentlich und vorzeigbar ist dafür <a href="agent-board-fallstudie.html">Agent-Board</a>.</p>
@@ -99,6 +103,5 @@
 </main>
 
 <footer><div class="in"><span>© 2026 Stefan Paun</span><a href="index.html">Zur Startseite</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></footer>
-<style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style>
 </body>
 </html>

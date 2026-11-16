@@ -52,3 +52,8 @@ footer .in{width:min(720px,100% - 2*var(--gutter));margin:0 auto;display:flex;ga
 .legal h3{margin:36px 0 0;font-size:1.15rem;letter-spacing:-.015em}
 .legal h3 + p{margin-top:8px}
 @media (max-width:520px){.facts div{grid-template-columns:1fr}}
+/* früher als style-Attribute und <style> im body; jetzt hier, damit die CSP ohne 'unsafe-inline' auskommt */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.nav .back-gap{margin-left:18px}
+.c-c{--c:var(--cyan)}.c-y{--c:var(--yellow)}
+svg.flow-svg{width:100%;height:auto;max-width:640px;margin:1.2em 0}

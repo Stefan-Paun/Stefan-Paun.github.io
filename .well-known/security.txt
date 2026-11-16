@@ -1,0 +1,4 @@
+Contact: mailto:kontakt@stefanpaun.page
+Expires: 2027-11-15T23:00:00Z
+Preferred-Languages: de, en
+Canonical: https://stefanpaun.page/.well-known/security.txt
