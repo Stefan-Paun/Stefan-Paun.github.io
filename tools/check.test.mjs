@@ -15,7 +15,7 @@ const kopf = (pfad, extra = '') => `<!doctype html><html><head><title>t</title><
 const start = (praefix, zahl, sprache) => `${kopf(sprache === 'en' ? '/en/' : '/')}<body>
 <main id="top"><h1 id="titel">Seite</h1>
 <span class="num">${zahl}</span> Tests, Version 1.5.0, <time datetime="2026-10-31">${sprache === 'en' ? '31 October' : '31. Oktober'}</time>
-<a href="#titel">hoch</a> <a href="${praefix}notiz.html#abschnitt">Notiz</a> <a href="${BASIS}/stapelwerk/">Projekt</a>
+<a href="#titel">hoch</a> <a href="${praefix}notiz.html#abschnitt">Notiz</a> <a href="${BASIS}/stackworks/">Projekt</a>
 <picture><source srcset="${praefix}img/bild.webp 720w"><img src="${praefix}img/bild.webp" width="10" height="10" alt="Bild"></picture>
 <script>const html = '<img src="gibt-es-nicht.png"> 999';</script>
 </main></body></html>`;
@@ -28,7 +28,7 @@ function gutesRepo() {
 <url><loc>${BASIS}/</loc><xhtml:link rel="alternate" hreflang="en" href="${BASIS}/en/"/></url>
 <url><loc>${BASIS}/en/</loc></url>
 <url><loc>${BASIS}/notiz.html</loc></url>
-<url><loc>${BASIS}/stapelwerk/</loc></url>
+<url><loc>${BASIS}/stackworks/</loc></url>
 </urlset>`,
     'index.html': start('', '3.619', 'de'),
     'en/index.html': start('../', '3,619', 'en'),

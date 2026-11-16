@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 
 // Unterordner der Domain, die aus anderen Repos kommen (eigene GitHub-Pages-Projekte).
 // Links und Sitemap-Einträge dorthin lassen sich lokal nicht prüfen.
-export const FREMDE_PFADE = ['agent-board', 'resonanz', 'stapelwerk'];
+export const FREMDE_PFADE = ['agent-board', 'resonance', 'stackworks'];
 const ALTE_DOMAIN = ['stefan-paun', 'github', 'io'].join('.');
 const UEBERSPRINGEN = new Set(['.git', '.github', '.claude', 'node_modules', 'tools']);
 const STARTSEITEN = ['index.html', 'en/index.html'];
