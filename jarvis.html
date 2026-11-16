@@ -7,21 +7,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Jarvis: Aufbau meines Sprachassistenten · Stefan Paun</title>
 <meta name="description" content="Wie mein privater Sprachassistent Jarvis aufgebaut ist: Ablauf einer Anfrage, Entscheidungen mit Abwägungen, Zahlen und Grenzen.">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0E1013">
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="https://stefanpaun.page/jarvis.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jarvis: Wie mein Sprachassistent aufgebaut ist">
 <meta property="og:description" content="Wie mein privater Sprachassistent Jarvis aufgebaut ist: Ablauf einer Anfrage, Entscheidungen mit Abwägungen, Zahlen und Grenzen.">
+<meta property="og:url" content="https://stefanpaun.page/jarvis.html">
+<meta property="og:image" content="https://stefanpaun.page/img/vorschau.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Datenblatt SP-17: Stefan Paun, 17, Wien. Ich baue KI-Agents und lerne Cybersecurity. Daneben ein Chip mit elf Pins, einer pro Projekt.">
+<meta property="og:site_name" content="Stefan Paun">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="notes.css">
 </head>
 <body>
 <header class="nav"><div class="in">
-  <a href="index.html"><svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="3.2" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="3.4" fill="#f5f5f7"/></svg>Stefan Paun</a>
-  <a class="back" href="index.html#p-jarvis">Zurück zu den Projekten</a>
+  <p class="id"><b>SP-17</b><b>Stefan Paun</b><span>Jarvis: Aufbau</span><span>Application Note AN-02</span></p>
+  <nav class="links2" aria-label="Seitennavigation"><a class="back" href="index.html#p-jarvis">← Datenblatt SP-17</a></nav>
 </div></header>
 
 <main>
@@ -30,7 +39,7 @@
     <p class="meta">Stand <time datetime="2026-11-16">16. November 2026</time> · privates Projekt, gebaut mit Claude Code</p>
     <p class="lede">Jarvis ist mein persönlicher Sprachassistent. Ich spreche mit ihm, er versteht mich, nutzt Werkzeuge und antwortet mit Stimme. Gebaut habe ich ihn in Python, gemeinsam mit Claude Code. Der Code ist privat. Hier beschreibe ich, wie er funktioniert.</p>
 
-    <ul class="take c-y" aria-label="Das Wichtigste in drei Sätzen">
+    <ul class="take" aria-label="Das Wichtigste in drei Sätzen">
       <li><b>Ablauf:</b> Taste oder „Hey Jarvis“, dann Whisper, dann Claude mit Werkzeugen, dann eine Stimme.</li>
       <li><b>Haltung:</b> Persönliche Daten sind verschlüsselt, Tests dürfen sie nie anfassen, und ich merge selbst.</li>
       <li><b>Zahl:</b> über 3.600 automatische Tests. Das ist eine Menge, aber kein Beweis, dass alles stimmt.</li>
@@ -41,19 +50,19 @@
     <svg role="img" aria-labelledby="dg-t dg-d" viewBox="0 0 640 150" class="flow-svg">
       <title id="dg-t">Ablauf einer Anfrage an Jarvis</title>
       <desc id="dg-d">Vier Stationen von links nach rechts: Eingabe per Taste oder Wake-Word, Whisper wandelt Sprache in Text, Claude mit Werkzeugen, Antwort als Stimme.</desc>
-      <g fill="none" stroke="#86868b" stroke-width="2"><path d="M152 70 H176"/><path d="M312 70 H336"/><path d="M472 70 H496"/></g>
-      <g fill="#86868b"><path d="M176 64 l8 6 l-8 6z"/><path d="M336 64 l8 6 l-8 6z"/><path d="M496 64 l8 6 l-8 6z"/></g>
-      <g fill="#111" stroke="#35D0FF" stroke-width="2"><rect x="8" y="30" width="144" height="80" rx="12"/></g>
-      <g fill="#111" stroke="#86868b" stroke-width="2"><rect x="184" y="30" width="128" height="80" rx="12"/></g>
-      <g fill="#111" stroke="#FFD23A" stroke-width="3"><rect x="344" y="30" width="128" height="80" rx="12"/></g>
-      <g fill="#111" stroke="#86868b" stroke-width="2"><rect x="504" y="30" width="128" height="80" rx="12"/></g>
-      <g fill="#f5f5f7" font-family="system-ui,-apple-system,sans-serif" font-size="15" text-anchor="middle" font-weight="600">
+      <g fill="none" stroke="#A8A39B" stroke-width="2"><path d="M152 70 H176"/><path d="M312 70 H336"/><path d="M472 70 H496"/></g>
+      <g fill="#A8A39B"><path d="M176 64 l8 6 l-8 6z"/><path d="M336 64 l8 6 l-8 6z"/><path d="M496 64 l8 6 l-8 6z"/></g>
+      <g fill="#0E1013" stroke="#ECE8E1" stroke-width="2"><rect x="8" y="30" width="144" height="80"/></g>
+      <g fill="#0E1013" stroke="#A8A39B" stroke-width="2"><rect x="184" y="30" width="128" height="80"/></g>
+      <g fill="#0E1013" stroke="#D9773B" stroke-width="3"><rect x="344" y="30" width="128" height="80"/></g>
+      <g fill="#0E1013" stroke="#A8A39B" stroke-width="2"><rect x="504" y="30" width="128" height="80"/></g>
+      <g fill="#ECE8E1" font-family="Archivo,Arial,sans-serif" font-size="15" text-anchor="middle" font-weight="600">
         <text x="80" y="66">Taste oder</text><text x="80" y="86">„Hey Jarvis“</text>
         <text x="248" y="66">Whisper</text><text x="248" y="86">Sprache → Text</text>
         <text x="408" y="66">Claude</text><text x="408" y="86">mit Werkzeugen</text>
         <text x="568" y="66">Antwort</text><text x="568" y="86">als Stimme</text>
       </g>
-      <g fill="#86868b" font-family="system-ui,-apple-system,sans-serif" font-size="12" text-anchor="middle">
+      <g fill="#A8A39B" font-family="Archivo,Arial,sans-serif" font-size="12" text-anchor="middle">
         <text x="80" y="136">1 Eingabe</text><text x="248" y="136">2 Text</text><text x="408" y="136">3 KI-Agent</text><text x="568" y="136">4 Ausgabe</text>
       </g>
     </svg>

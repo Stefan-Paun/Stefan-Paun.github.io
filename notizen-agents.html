@@ -7,21 +7,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Wie ich mit Claude-Code-Agents baue · Stefan Paun</title>
 <meta name="description" content="Meine Arbeitsweise mit Claude-Code-Agents: Plan, parallele Worktrees, lokale Tests, Nachtschicht mit Draft-PRs, eigene Prüfung und was schiefging.">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0E1013">
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="https://stefanpaun.page/notizen-agents.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Wie ich mit Claude-Code-Agents baue">
 <meta property="og:description" content="Meine Arbeitsweise mit Claude-Code-Agents: Plan, parallele Worktrees, lokale Tests, Nachtschicht mit Draft-PRs, eigene Prüfung und was schiefging.">
+<meta property="og:url" content="https://stefanpaun.page/notizen-agents.html">
+<meta property="og:image" content="https://stefanpaun.page/img/vorschau.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Datenblatt SP-17: Stefan Paun, 17, Wien. Ich baue KI-Agents und lerne Cybersecurity. Daneben ein Chip mit elf Pins, einer pro Projekt.">
+<meta property="og:site_name" content="Stefan Paun">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="notes.css">
 </head>
 <body>
 <header class="nav"><div class="in">
-  <a href="index.html"><svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24 L26 6" stroke="#35D0FF" stroke-width="3.2" stroke-linecap="round"/><path d="M8 24 Q19 21 28 13" stroke="#FFD23A" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M8 24 Q17 28 26 28" stroke="#FF4D4D" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="8" cy="24" r="3.4" fill="#f5f5f7"/></svg>Stefan Paun</a>
-  <a class="back" href="index.html#notizen">Zurück zu den Notizen</a>
+  <p class="id"><b>SP-17</b><b>Stefan Paun</b><span>Notiz: Arbeiten mit Agents</span><span>Application Note AN-03</span></p>
+  <nav class="links2" aria-label="Seitennavigation"><a class="back" href="index.html#notizen">← Datenblatt SP-17</a></nav>
 </div></header>
 
 <main>
@@ -30,7 +39,7 @@
     <p class="meta">Notiz · Stand <time datetime="2026-11-16">16. November 2026</time></p>
     <p class="lede">Ich schreibe meinen Code nicht mehr allein. Claude-Code-Agents bauen mit, ich plane und prüfe. Hier steht, wie das bei mir abläuft und wo es schiefging.</p>
 
-    <ul class="take c-y" aria-label="Das Wichtigste in drei Sätzen">
+    <ul class="take" aria-label="Das Wichtigste in drei Sätzen">
       <li><b>Ablauf:</b> erst ein Plan, dann Agents parallel in getrennten Arbeitskopien, Tests lokal.</li>
       <li><b>Regel:</b> Ich prüfe und merge selbst. Auch die nächtliche Routine öffnet nur Draft-PRs.</li>
       <li><b>Lehre:</b> Agents machen sich gegenseitig Ärger, wenn sie dieselben Dateien anfassen. Klare Zuständigkeiten helfen.</li>

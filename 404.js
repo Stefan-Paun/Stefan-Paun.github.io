@@ -1,7 +1,8 @@
-// Englische Fassung, wenn die fehlende Adresse unter /en/ lag. Ohne JavaScript bleibt alles deutsch.
+// Zeigt die angefragte Adresse (nur als Text). Englische Fassung, wenn die Adresse unter /en/ lag. Ohne JavaScript bleibt alles deutsch.
+document.getElementById("addr").textContent = location.pathname;
 if (/^\/en(\/|$)/.test(location.pathname)) {
   document.documentElement.lang = "en";
-  document.title = "404 · Page not found · Stefan Paun";
+  document.title = "404 · Pin not connected · Stefan Paun";
   for (const el of document.querySelectorAll("[data-en]")) {
     if (el.hasAttribute("aria-label")) el.setAttribute("aria-label", el.dataset.en);
     else el.textContent = el.dataset.en;
