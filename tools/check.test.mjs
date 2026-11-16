@@ -2,6 +2,7 @@
 // dass sie grün ist und dass jede eingebaute Lücke gemeldet wird.   node --test tools/check.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { mkdtempSync, mkdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -111,6 +112,23 @@ test('robots.txt und alte Adresse', () => {
   assert.equal(funde.length, 2, funde.join('\n'));
   assert.match(funde[0], /^robots\.txt:4 .*Sitemap sollte/);
   assert.match(funde[1], /^robots\.txt:4 .*alte Adresse/);
+});
+
+test('CSP: Inline-Skript ohne Hash, style-Attribut, Seite ohne CSP', () => {
+  const skript = `const html = '<img src="gibt-es-nicht.png"> 999';`;
+  const hash = `'sha256-${createHash('sha256').update(skript).digest('base64')}'`;
+  const mitCsp = (quellen) => (d) => {
+    for (const datei of ['index.html', 'en/index.html', 'notiz.html', '404.html']) {
+      d[datei] = d[datei].replace('<head>', `<head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src ${quellen}; style-src 'self'">`);
+    }
+  };
+  assert.deepEqual(laufe(mitCsp(`'self' ${hash}`)), []);
+  const ohneHash = laufe(mitCsp("'self'"));
+  assert.equal(ohneHash.length, 2, ohneHash.join('\n'));
+  assert.match(ohneHash[0], /^en\/index\.html:6 .*Inline-<script> fehlt in der CSP/);
+  assert.match(ohneHash[1], /^index\.html:6 .*Inline-<script> fehlt in der CSP/);
+  genauEiner(laufe((d) => { mitCsp(`'self' ${hash}`)(d); d['notiz.html'] = d['notiz.html'].replace('<h2 ', '<h2 style="color:red" '); }), /^notiz\.html:1 .*style-Attribut an <h2>/);
+  genauEiner(laufe((d) => { mitCsp(`'self' ${hash}`)(d); d['notiz.html'] = d['notiz.html'].replace(/<meta http-equiv[^>]*>/, ''); }), /^notiz\.html .*keine Content-Security-Policy/);
 });
 
 test('tags: Attribute mit > und Zeilennummern, zahlen: ohne Skript und <time>', () => {

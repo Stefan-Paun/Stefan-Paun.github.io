@@ -13,9 +13,13 @@
 //      (3.619 und 3,619 gelten als gleich; Datumsangaben in <time> zählen nicht).
 //   5. Canonical: stimmt bei indexierbaren Seiten mit der eigenen (Sitemap-)URL überein.
 //   6. Domain: robots.txt nennt die Sitemap der eigenen Domain, nirgends steht die alte Adresse.
+//   7. CSP (sobald eine Seite eine Content-Security-Policy als <meta> hat): jede Seite hat eine,
+//      kein style-Attribut, kein <style>-Block, und jedes Inline-Skript steht mit seinem
+//      sha256-Hash in script-src. Sonst blockiert der Browser es still.
 //
 // Nur Entwicklungswerkzeug: Die Seite selbst lädt nichts aus tools/.
 
+import { createHash } from 'node:crypto';
 import { lstatSync, readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { dirname, join, posix, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -248,6 +252,33 @@ export function pruefe(wurzel) {
     lies(datei).split('\n').forEach((zeile, i) => {
       if (zeile.toLowerCase().includes(ALTE_DOMAIN)) fund(datei, i + 1, `alte Adresse ${ALTE_DOMAIN} (läuft über eine Weiterleitung)`);
     });
+  }
+
+  // 7. Content-Security-Policy
+  const csp = (seite) => seite.tags.find((t) => t.name === 'meta' && (t.attribute['http-equiv'] ?? '').toLowerCase() === 'content-security-policy');
+  if ([...seiten.values()].some(csp)) {
+    for (const [datei, seite] of seiten) {
+      const meta = csp(seite);
+      if (!meta) { fund(datei, 0, 'hat keine Content-Security-Policy, die anderen Seiten schon'); continue; }
+      const richtlinie = (name) => {
+        const teil = (meta.attribute.content ?? '').split(';').map((s) => s.trim().split(/\s+/)).find((w) => w[0] === name);
+        return teil ? teil.slice(1) : null;
+      };
+      const skripte = richtlinie('script-src') ?? richtlinie('default-src') ?? [];
+      const stile = richtlinie('style-src') ?? richtlinie('default-src') ?? [];
+      for (const tag of seite.tags) {
+        if ('style' in tag.attribute && !stile.includes("'unsafe-inline'")) fund(datei, tag.zeile, `style-Attribut an <${tag.name}> wird von der CSP blockiert, besser eine Klasse`);
+      }
+      for (const m of seite.html.matchAll(/<(script|style)\b([^>]*)>([\s\S]*?)<\/\1\s*>/gi)) {
+        const art = m[1].toLowerCase();
+        const attr = {};
+        for (const a of m[2].matchAll(ATTRIBUT)) attr[a[1].toLowerCase()] = a[2] ?? a[3] ?? a[4] ?? '';
+        if (art === 'script' && ('src' in attr || /json/i.test(attr.type ?? ''))) continue;
+        const hash = `'sha256-${createHash('sha256').update(m[3]).digest('base64')}'`;
+        const erlaubt = art === 'script' ? skripte : stile;
+        if (!erlaubt.includes(hash) && !erlaubt.includes("'unsafe-inline'")) fund(datei, zeileVon(seite.html, m.index), `Inline-<${art}> fehlt in der CSP (${art}-src ${hash})`);
+      }
+    }
   }
 
   return { funde, seiten: seiten.size, dateien: dateiListe.length };
