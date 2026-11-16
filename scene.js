@@ -90,7 +90,7 @@
     {name:"Prüfstand", nameEn:"Test bench", val:"10 Angriffs-Szenarien", valEn:"10 attack scenarios", href:"#p-pruefstand", col:C.c, phi:96, k:-.3, end:.78, muon:true, dep:10, tl:-.45},
     {name:"Ungelöst", nameEn:"Unsolved", val:"215 offene Probleme gefunden", valEn:"215 open problems found", href:"#p-ungeloest", col:C.y, phi:118, k:.15, end:.72, dep:215, tl:.15},
     {name:"Schleuse", nameEn:"Schleuse", val:"3 vergiftete PRs blockiert", valEn:"3 poisoned PRs blocked", href:"#p-schleuse", col:C.c, phi:-112, k:.5, end:.74, muon:true, dep:46, tl:.62},
-    {name:"Agent-Board", val:"85 Tests, Open Source", valEn:"85 tests, open source", href:"https://stefan-paun.github.io/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:85, tl:.35},
+    {name:"Agent-Board", val:"85 Tests, Open Source", valEn:"85 tests, open source", href:"https://stefanpaun.page/agent-board/?demo=1", ext:true, col:C.y, phi:-36, k:.75, end:.66, dep:85, tl:.35},
     {name:"Jarvis", val:"3.619 automatische Tests", valEn:"3,619 automated tests", href:"#p-jarvis", col:C.y, phi:22, k:-.45, end:.66, dep:3619, tl:-.3},
     {name:"GWB-Rallye", nameEn:"GWB Rally", val:"273 Fragen", valEn:"273 questions", href:"#p-rallye", col:C.r, phi:34, k:.3, end:.84, jet:true, dep:273, tl:.8},
     {name:"Cyber-Rallye", nameEn:"Cyber Rally", val:"135 Fragen", valEn:"135 questions", href:"#p-rallye", col:C.r, phi:76, k:-.2, end:.84, jet:true, dep:135, tl:-.5},
