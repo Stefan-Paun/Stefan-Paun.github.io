@@ -1,0 +1,53 @@
+{
+  "hinweis": "Erzeugt von tools/zahlen.mjs aus origin/main der Repos. Nicht von Hand ändern, neu messen.",
+  "stand": "2026-11-17",
+  "projekte": {
+    "agent-board": {
+      "repo": "Stefan-Paun/agent-board",
+      "commit": "60eeac1",
+      "release": "v1.6.0",
+      "tests": 304,
+      "anzeige": 300,
+      "fehlgeschlagen": 0,
+      "gezaehlt": "node --test auf origin/main"
+    },
+    "jarvis": {
+      "repo": "privat",
+      "tests": 4451,
+      "anzeige": 4400,
+      "gezaehlt": "statisch: Testmethoden in test_*.py, Suite nicht gestartet"
+    },
+    "detention": {
+      "repo": "Stefan-Paun/detention",
+      "commit": "cfd179c",
+      "tests": 149,
+      "anzeige": 140,
+      "fehlgeschlagen": 0,
+      "gezaehlt": "node --test auf origin/main"
+    },
+    "injection-bench": {
+      "repo": "Stefan-Paun/injection-bench",
+      "commit": "899ddfc",
+      "tests": 138,
+      "anzeige": 130,
+      "fehlgeschlagen": 0,
+      "gezaehlt": "node --test auf origin/main"
+    },
+    "pr-airlock": {
+      "repo": "Stefan-Paun/pr-airlock",
+      "commit": "41666aa",
+      "tests": 107,
+      "anzeige": 100,
+      "fehlgeschlagen": 0,
+      "gezaehlt": "node --test auf origin/main"
+    },
+    "unanswered": {
+      "repo": "Stefan-Paun/unanswered",
+      "commit": "a07c27e",
+      "tests": 137,
+      "anzeige": 130,
+      "fehlgeschlagen": 0,
+      "gezaehlt": "node --test auf origin/main"
+    }
+  }
+}
