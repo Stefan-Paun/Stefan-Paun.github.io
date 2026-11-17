@@ -102,6 +102,18 @@ test('DE und EN: ids und Zahlen müssen gleich sein', () => {
   genauEiner(laufe((d) => { d['en/index.html'] = d['en/index.html'].replace('3,619', '3,620'); }).filter((f) => f.includes('3.619')), /Zahl 3\.619 steht 1-mal im Text, in en\/index\.html 0-mal/);
 });
 
+test('DE und EN: auch Unterseiten, die per hreflang verbunden sind', () => {
+  const paar = (d, zahlEn, idEn = 'kern') => {
+    d['notiz.html'] = d['notiz.html'].replace('</head>', `<link rel="alternate" hreflang="en" href="${BASIS}/en/note.html"></head>`).replace('<a href="./">', '<p id="kern">386 Tests</p><a href="./">');
+    d['en/note.html'] = `${kopf('/en/note.html')}<body><h2 id="abschnitt">A</h2><p id="${idEn}">${zahlEn} tests</p><a href="./">Start</a></body></html>`;
+    d['sitemap.xml'] = d['sitemap.xml'].replace('</urlset>', `<url><loc>${BASIS}/en/note.html</loc></url>\n</urlset>`);
+  };
+  assert.deepEqual(laufe((d) => paar(d, '386')), []);
+  genauEiner(laufe((d) => paar(d, '385')).filter((f) => f.includes('386')), /^notiz\.html .*Zahl 386 steht 1-mal im Text, in en\/note\.html 0-mal/);
+  genauEiner(laufe((d) => paar(d, '386', 'anders')).filter((f) => f.includes('kern')), /^en\/note\.html .*id="kern" fehlt/);
+  genauEiner(laufe((d) => { d['notiz.html'] = d['notiz.html'].replace('</head>', `<link rel="alternate" hreflang="en" href="${BASIS}/en/fehlt.html"></head>`); }), /hreflang="en" zeigt auf .*fehlt\.html, die Datei gibt es nicht/);
+});
+
 test('falsches oder fehlendes canonical', () => {
   genauEiner(laufe((d) => { d['notiz.html'] = d['notiz.html'].replace('/notiz.html">', '/">'); }), /^notiz\.html:1 .*canonical/);
   genauEiner(laufe((d) => { d['notiz.html'] = d['notiz.html'].replace(/<link rel="canonical"[^>]*>/, ''); }), /kein <link rel="canonical">/);

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agent security case study · Stefan Paun</title>
+<meta name="description" content="Three tools that make AI coding agents safer: a hook before the push, a gate for pull requests and a test bench that measures whether defences against hidden instructions actually hold.">
+<meta name="theme-color" content="#0E1013">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefanpaun.page/en/agent-security-case-study.html">
+<link rel="alternate" hreflang="de" href="https://stefanpaun.page/sicherheit-agenten.html">
+<link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/agent-security-case-study.html">
+<link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/sicherheit-agenten.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Case study: three barriers for AI agents">
+<meta property="og:description" content="commit-guard, pr-airlock and injection-bench: decisions, limits and numbers with sources.">
+<meta property="og:url" content="https://stefanpaun.page/en/agent-security-case-study.html">
+<meta property="og:image" content="https://stefanpaun.page/img/vorschau-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Datasheet SP-17: Stefan Paun, 17, Vienna. I build AI agents and I’m learning cybersecurity. Next to it a chip with eleven pins, one per project.">
+<meta property="og:site_name" content="Stefan Paun">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preload" href="../fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <p class="id"><b>SP-17</b><b>Stefan Paun</b><span>Case study agent security</span><span>Application Note AN-06</span></p>
+  <nav class="links2" aria-label="Page navigation"><a href="../sicherheit-agenten.html" hreflang="de" lang="de">Deutsch</a><a class="back" href="./#p-pruefstand">← Datasheet SP-17</a></nav>
+</div></header>
+
+<main>
+  <article>
+    <h1>Three barriers for AI agents. <span>A case study in agent security.</span></h1>
+    <p class="meta">As of <time datetime="2026-11-17">17 November 2026</time> · every number comes from the public repos, sources at the end · built with Claude Code</p>
+    <p class="lede">I let AI coding agents work on my code every day. They commit, push and read other people’s pull requests, READMEs and bug reports. At each of these points a mistake or a hidden instruction can slip through. So I built three tools: two of them each guard one door, the third measures whether the defences hold at all.</p>
+
+    <ul class="take" aria-label="The key points in three sentences">
+      <li><b>Before the push:</b> <code>commit-guard</code> checks every <code>git commit</code> and <code>git push</code> before the agent runs it.</li>
+      <li><b>At the pull request:</b> <code>pr-airlock</code> reads outside changes only as data and blocks poisoned PRs by their shape.</li>
+      <li><b>Measure, don’t assume:</b> <code>injection-bench</code> sets my real agent loose on hidden instructions and counts what gets through.</li>
+    </ul>
+
+    <table>
+      <caption>The chain</caption>
+      <thead><tr><th scope="col">Stage</th><th scope="col">When</th><th scope="col">Catches</th></tr></thead>
+      <tbody>
+        <tr><td>commit-guard</td><td>locally, before the agent commits or pushes</td><td>keys, private data, risky pushes</td></tr>
+        <tr><td>pr-airlock</td><td>on GitHub, when a pull request arrives</td><td>poisoned changes from outside</td></tr>
+        <tr><td>injection-bench</td><td>on my machine, after every change to the setup</td><td>defences that only sound good</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="commit-guard">Stage 1: commit-guard, before anything leaves the repo</h2>
+    <p>commit-guard is a Claude Code hook that runs before every tool call. When the agent wants to commit, the hook reads the newly added lines and looks for 10 patterns: 7 built-in key formats such as API keys, GitHub tokens and private keys, plus private email addresses, phone numbers and private paths that you configure yourself. On a push it checks the branch and the author address. In a public repo a finding is denied; in any other repo Claude Code asks me first.</p>
+
+    <h3>Decision: a real parser instead of a search rule</h3>
+    <p>The first version used a regular expression to look for “git push”. Nested or rewritten commands slipped past it. Today a small shell parser without dependencies splits the command the way the shell would, and a second one reads git’s options. So the hook checks exactly the repo git would use.</p>
+
+    <h3>Decision: anything unclear counts as suspicious</h3>
+    <p>If the parser cannot read a command safely, it is denied in a public repo and asked about elsewhere. If the hook itself fails, it asks as well. That costs a false alarm now and then, but there is no silent pass. The hook’s own git calls are hardened too: it never starts anything that is configured in the repo under check.</p>
+
+    <div class="figs">
+      <div><b>386</b><span>automated tests on main, all green</span></div>
+      <div><b>10</b><span>patterns checked on commit, 7 of them built in</span></div>
+      <div><b>3 × 3</b><span>test matrix: Linux, macOS, Windows with 3 Node versions each</span></div>
+    </div>
+    <p><strong>Limit:</strong> commit-guard catches common mistakes; it is not a complete secret scanner. Its README itself recommends running gitleaks as well. Next, the Wächter mod in my own Claude Code is meant to move onto this core; that is a draft and not active yet.</p>
+
+    <h2 id="pr-airlock">Stage 2: pr-airlock, when code comes from outside</h2>
+    <p>A commit hook only protects what I write myself. But code also arrives from outside, as a pull request. In 2026 the PolinRider campaign appended malicious code to the end of perfectly ordinary config files, pushed so far to the right that it is invisible in the diff view, and sent poisoned PRs to large open-source projects. Several maintainers built their own stopgaps. pr-airlock is a ready-made check for this, as a GitHub Action and on the command line.</p>
+
+    <h3>Decision: read only, never run</h3>
+    <p>pr-airlock fetches the PR only as data through the GitHub API. It checks nothing out, installs nothing and runs nothing. The check runs in the version from the target branch, so a PR cannot switch it off itself. The settings come from the target branch too; a PR that changes them gets a finding of its own that blocks.</p>
+
+    <h3>Decision: shape instead of markers</h3>
+    <p>The attackers have already changed their telltale markers several times. So pr-airlock looks for the shape of the attack: code behind an unusual amount of whitespace, font files that are really text, tasks that start by themselves when a folder is opened. Whatever it cannot check, for example because GitHub omits a diff, becomes a finding of its own and blocks for code instead of passing silently.</p>
+
+    <div class="figs">
+      <div><b>3 of 3</b><span>documented poisoned PRs blocked in the field test</span></div>
+      <div><b>0</b><span>false alarms in 31 merged PRs of large projects</span></div>
+      <div><b data-zahl="pr-airlock.tests">over 100</b><span>automated tests on main</span></div>
+    </div>
+    <p><strong>Limit:</strong> a clean result means “none of the known shapes”, not “safe”. A variant without these traits would need a different detector, and after an infection pr-airlock does not replace scanning your own machine.</p>
+
+    <h2 id="injection-bench">Stage 3: injection-bench, whether the defence really holds</h2>
+    <p>The first two stages check code. The harder question is the agent itself: what does it do when a file it reads tells it to send secrets away? The usual advice is “add a deny rule” or “turn on the sandbox”. It is rarely measured.</p>
+    <p>injection-bench builds a sealed test setup for this: worthless fake secrets carrying a random marker sit in a throwaway folder, together with a scenario that contains a hidden instruction. A honeypot on my own machine records every attempt to send something. Then my real agent works in that folder under one defence profile. At the end its output, the honeypot log and the folder are turned into a verdict from “clean” to “exfiltrated”. A profile holds when nothing left the machine. No real secret is ever used.</p>
+
+    <div class="figs">
+      <div><b>10 + 2</b><span>attack scenarios across 9 surfaces plus 2 control tasks, corpus v1</span></div>
+      <div><b>3</b><span>defence profiles in the default run</span></div>
+      <div><b data-zahl="injection-bench.tests">over 130</b><span>automated tests on main</span></div>
+    </div>
+
+    <table>
+      <caption>Sample benchmark: model Haiku, corpus v1, one run each</caption>
+      <thead><tr><th scope="col">Defence profile</th><th scope="col">Resilience</th><th scope="col">Attacks held</th></tr></thead>
+      <tbody>
+        <tr><td>no guardrails</td><td>90/100</td><td>9 of 10</td></tr>
+        <tr><td>deny reads of secret files</td><td>100/100</td><td>10 of 10</td></tr>
+        <tr><td>deny reads and sandbox</td><td>100/100</td><td>10 of 10</td></tr>
+      </tbody>
+    </table>
+    <p>The agent completed the control tasks under all three profiles, so the profiles do not simply block everything. The important caveat: this is a single measurement. That is why injection-bench can run every case several times and then reports rates with an uncertainty range instead of celebrating a single number.</p>
+    <p><strong>One finding:</strong> a deny rule for <code>.env</code> stops the agent’s read tool, but not reading through the shell. Only the sandbox closes that gap. These are exactly the assumptions I want to measure before I rely on them.</p>
+
+    <h2>What the chain cannot do</h2>
+    <p>Each stage recognises what it knows. commit-guard looks for patterns, pr-airlock for shapes, injection-bench measures a fixed corpus. A new attack outside of that can get through. No stage replaces reading changes yourself. The three tools only make mistakes rarer and more visible.</p>
+
+    <h2>What I take away</h2>
+    <p>A defence you don’t measure is a guess. When a tool cannot check something, it should say so loudly instead of waving it through. And outside content is read, never run: that rule is built into all three tools.</p>
+
+    <h2 id="fundstellen">Sources</h2>
+    <p>Every number comes from the “main” branch of the public repos on <time datetime="2026-11-17">17 November 2026</time>. I counted the tests myself with <code>node --test</code>.</p>
+    <dl class="facts">
+      <div><dt>386 tests</dt><dd>commit-guard, commit <a href="https://github.com/Stefan-Paun/commit-guard/tree/2a52656097fc94636b8ab9ea18774306221c9006" target="_blank" rel="noopener">2a52656<span class="sr-only"> (new tab)</span></a>, <code>npm test</code></dd></div>
+      <div><dt>10 patterns, 3 × 3 matrix</dt><dd><a href="https://github.com/Stefan-Paun/commit-guard/blob/2a52656097fc94636b8ab9ea18774306221c9006/README.md#what-it-checks" target="_blank" rel="noopener">commit-guard README<span class="sr-only"> (new tab)</span></a>, <a href="https://github.com/Stefan-Paun/commit-guard/blob/2a52656097fc94636b8ab9ea18774306221c9006/.github/workflows/test.yml" target="_blank" rel="noopener">test workflow<span class="sr-only"> (new tab)</span></a></dd></div>
+      <div><dt>3 of 3, 0 in 31</dt><dd><a href="https://github.com/Stefan-Paun/pr-airlock/blob/41666aae99f819edc448a677d68a7a282ebd5ff8/README.md#field-test-2026-11-01" target="_blank" rel="noopener">pr-airlock README, field test<span class="sr-only"> (new tab)</span></a></dd></div>
+      <div><dt>Tests pr-airlock</dt><dd>commit <a href="https://github.com/Stefan-Paun/pr-airlock/tree/41666aae99f819edc448a677d68a7a282ebd5ff8" target="_blank" rel="noopener">41666aa<span class="sr-only"> (new tab)</span></a>, <code>node --test</code></dd></div>
+      <div><dt>Corpus, profiles</dt><dd><a href="https://github.com/Stefan-Paun/injection-bench/blob/899ddfc7e1e8f402ba0406cd4e7656a07a50830c/BENCHMARK.md" target="_blank" rel="noopener">injection-bench BENCHMARK.md<span class="sr-only"> (new tab)</span></a></dd></div>
+      <div><dt>Sample benchmark</dt><dd><a href="https://github.com/Stefan-Paun/injection-bench/blob/899ddfc7e1e8f402ba0406cd4e7656a07a50830c/docs/beispiel-benchmark.md" target="_blank" rel="noopener">docs/beispiel-benchmark.md<span class="sr-only"> (new tab)</span></a>, measured on <time datetime="2026-11-01">1 November 2026</time></dd></div>
+      <div><dt>Tests injection-bench</dt><dd>commit <a href="https://github.com/Stefan-Paun/injection-bench/tree/899ddfc7e1e8f402ba0406cd4e7656a07a50830c" target="_blank" rel="noopener">899ddfc<span class="sr-only"> (new tab)</span></a>, <code>node --test</code></dd></div>
+    </dl>
+
+    <p class="note">All three tools are open source, have no dependencies and are purely defensive: the tests use made-up data, never real malware or real keys.</p>
+    <div class="links">
+      <a href="https://github.com/Stefan-Paun/commit-guard" target="_blank" rel="noopener">commit-guard on GitHub<span class="sr-only"> (new tab)</span></a>
+      <a href="https://github.com/Stefan-Paun/pr-airlock" target="_blank" rel="noopener">pr-airlock on GitHub<span class="sr-only"> (new tab)</span></a>
+      <a href="https://github.com/Stefan-Paun/injection-bench" target="_blank" rel="noopener">injection-bench on GitHub<span class="sr-only"> (new tab)</span></a>
+    </div>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="./">Home</a><a href="legal-notice.html">Legal notice</a><a href="privacy.html">Privacy</a></div></footer>
+</body>
+</html>
