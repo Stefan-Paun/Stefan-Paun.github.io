@@ -36,13 +36,13 @@
 <main>
   <article>
     <h1>Jarvis: Wie mein Sprachassistent aufgebaut ist. <span>Ablauf, Entscheidungen, Grenzen.</span></h1>
-    <p class="meta">Stand <time datetime="2026-11-16">16. November 2026</time> · privates Projekt, gebaut mit Claude Code</p>
+    <p class="meta">Stand <time datetime="2026-11-17">17. November 2026</time> · privates Projekt, gebaut mit Claude Code</p>
     <p class="lede">Jarvis ist mein persönlicher Sprachassistent. Ich spreche mit ihm, er versteht mich, nutzt Werkzeuge und antwortet mit Stimme. Gebaut habe ich ihn in Python, gemeinsam mit Claude Code. Der Code ist privat. Hier beschreibe ich, wie er funktioniert.</p>
 
     <ul class="take" aria-label="Das Wichtigste in drei Sätzen">
       <li><b>Ablauf:</b> Taste oder „Hey Jarvis“, dann Whisper, dann Claude mit Werkzeugen, dann eine Stimme.</li>
       <li><b>Haltung:</b> Persönliche Daten sind verschlüsselt, Tests dürfen sie nie anfassen, und ich merge selbst.</li>
-      <li><b>Zahl:</b> über 3.600 automatische Tests. Das ist eine Menge, aber kein Beweis, dass alles stimmt.</li>
+      <li><b>Zahl:</b> über <span data-zahl="jarvis.tests">4.400</span> automatische Tests. Das ist eine Menge, aber kein Beweis, dass alles stimmt.</li>
     </ul>
 
     <h2>Ablauf einer Anfrage</h2>
@@ -102,7 +102,7 @@
     </ul>
 
     <h2>Grenzen</h2>
-    <p>Einige Tests schlagen gelegentlich fehl, etwa bei Zeitabhängigkeit, Netzproblemen oder hoher Last. Ein Teil der neueren Funktionen ist noch nicht im Alltag erprobt. Und über 3.600 Tests sagen nur, dass die Fälle klappen, an die ich gedacht habe.</p>
+    <p>Einige Tests schlagen gelegentlich fehl, etwa bei Zeitabhängigkeit, Netzproblemen oder hoher Last. Ein Teil der neueren Funktionen ist noch nicht im Alltag erprobt. Und über <span data-zahl="jarvis.tests">4.400</span> Tests sagen nur, dass die Fälle klappen, an die ich gedacht habe.</p>
 
     <h2>Warum der Code privat ist</h2>
     <p>Jarvis arbeitet mit sehr persönlichen Daten. Selbst ein sauberer Code gibt Hinweise darauf, was es gibt und wo es liegt. Ich zeige deshalb den Aufbau, aber keinen Code und keine Screenshots mit Inhalten. Öffentlich und vorzeigbar ist dafür <a href="agent-board-fallstudie.html">Agent-Board</a>.</p>

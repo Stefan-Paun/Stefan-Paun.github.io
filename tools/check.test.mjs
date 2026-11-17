@@ -3,12 +3,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { mkdtempSync, mkdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { normal, pruefe, tags, unlesbar, zahlen } from './check.mjs';
+import { formatiere, normal, pruefe, pruefeZahlen, tags, unlesbar, zahlen } from './check.mjs';
+import { anzeige } from './zahlen.mjs';
 
 const BASIS = 'https://beispiel.test';
 const kopf = (pfad, extra = '') => `<!doctype html><html><head><title>t</title><link rel="canonical" href="${BASIS}${pfad}">${extra}</head>`;
@@ -169,5 +170,69 @@ test('Kommandozeile: Exit-Code 0 bzw. 1, auch über einen verlinkten Pfad, Symli
     const rot = starte(join(verlinkt, 'check.mjs'), ordner);
     assert.equal(rot.status, 1);
     assert.match(rot.stderr, /robots\.txt  nennt keine Sitemap/);
+  });
+});
+
+// --- 8. Zahlen-Abgleich (tools/zahlen.json) ---
+
+const ZAHLEN = { stand: '2026-11-17', projekte: {
+  'agent-board': { repo: 'Stefan-Paun/agent-board', release: 'v1.6.0', tests: 304, anzeige: 300 },
+  jarvis: { repo: 'privat', tests: 4451, anzeige: 4400 },
+} };
+const mitZahlen = (aenderung = {}) => (d) => {
+  d['tools/zahlen.json'] = JSON.stringify(ZAHLEN);
+  const block = (en) => `<p>Release <span data-zahl="agent-board.version">v1.6.0</span>, ${en ? 'over' : 'über'} <span data-zahl="agent-board.tests">300</span> Tests</p>
+<table><tr><th>Tests</th><td class="c-typ v" data-zahl="jarvis.tests"><span class="q">${en ? 'over' : 'über'}</span>${en ? '4,400' : '4.400'}</td></tr></table>`;
+  d['index.html'] = d['index.html'].replace('<html>', '<html lang="de">').replace('</main>', block(false) + '</main>');
+  d['en/index.html'] = d['en/index.html'].replace('<html>', '<html lang="en">').replace('</main>', block(true) + '</main>');
+  for (const [datei, f] of Object.entries(aenderung)) d[datei] = f(d[datei]);
+};
+
+test('Zahlen: anzeige rundet ab und bleibt echt kleiner, formatiere je Sprache', () => {
+  assert.deepEqual([304, 300, 137, 149, 4451, 4400, 1000, 9].map(anzeige), [300, 290, 130, 140, 4400, 4300, 900, 0]);
+  assert.equal(formatiere(4400, 'de'), '4.400');
+  assert.equal(formatiere(4400, 'en'), '4,400');
+  assert.equal(formatiere(300, 'en'), '300');
+});
+
+test('Zahlen: passende Seite ist grün, ohne zahlen.json wird nichts verlangt', () => {
+  assert.deepEqual(laufe(mitZahlen()), []);
+  assert.deepEqual(laufe((d) => { d['index.html'] = d['index.html'].replace('</main>', 'über 5 Tests</main>'); d['en/index.html'] = d['en/index.html'].replace('</main>', 'over 5 Tests</main>'); }), []);
+});
+
+test('Zahlen: falsche Testzahl, falsche Version, unmarkierte Zahl, fehlendes Projekt', () => {
+  genauEiner(laufe(mitZahlen({ 'en/index.html': (h) => h.replace('4,400', '4,300') })).filter((f) => f.includes('jarvis')), /^en\/index\.html:\d+ .*jarvis: Testzahl "over 4,300" passt nicht, laut zahlen\.json "über 4,400"/);
+  genauEiner(laufe(mitZahlen({ 'index.html': (h) => h.replace('4.400', '4,400'), 'en/index.html': (h) => h })).filter((f) => f.includes('jarvis')), /Testzahl "über 4,400" passt nicht/);
+  const version = laufe(mitZahlen({ 'index.html': (h) => h.replace('>v1.6.0<', '>v1.7.0<'), 'en/index.html': (h) => h.replace('>v1.6.0<', '>v1.7.0<') }));
+  assert.equal(version.length, 2, version.join('\n'));
+  assert.match(version[0], /agent-board: Version "v1\.7\.0" passt nicht, aktuelles Release ist v1\.6\.0/);
+  genauEiner(laufe(mitZahlen({ 'notiz.html': (h) => h.replace('</body>', 'über 3.600 automatische Tests</body>') })), /^notiz\.html .*"über 3\.600 automatische Tests" steht ohne data-zahl/);
+  const fehlt = laufe(mitZahlen({ 'index.html': (h) => h.replace(' data-zahl="jarvis.tests"', ''), 'en/index.html': (h) => h.replace(' data-zahl="jarvis.tests"', '') }));
+  assert.ok(fehlt.some((f) => /^index\.html .*jarvis: keine Stelle mit data-zahl/.test(f)), fehlt.join('\n'));
+});
+
+test('Zahlen: unstimmige zahlen.json und unbekanntes Projekt werden gemeldet', () => {
+  const kaputt = structuredClone(ZAHLEN);
+  kaputt.projekte.jarvis.anzeige = 4451;
+  kaputt.projekte['agent-board'].fehlgeschlagen = 2;
+  const funde = laufe((d) => { mitZahlen()(d); d['tools/zahlen.json'] = JSON.stringify(kaputt); }).filter((f) => f.startsWith('tools/zahlen.json'));
+  assert.equal(funde.length, 2, funde.join('\n'));
+  assert.match(funde.join('\n'), /agent-board: 2 rote Tests/);
+  assert.match(funde.join('\n'), /jarvis: anzeige 4451 ist nicht kleiner als 4451/);
+  genauEiner(laufe(mitZahlen({ 'notiz.html': (h) => h.replace('</body>', '<b data-zahl="glas.tests">1</b></body>') })), /Projekt glas fehlt in tools\/zahlen\.json/);
+});
+
+test('Kommandozeile: zahlen.mjs --pruefen gibt Exit 0 bei passender und Exit 1 bei falscher Zahl', () => {
+  const skript = fileURLToPath(new URL('./zahlen.mjs', import.meta.url));
+  const starte = (ordner) => spawnSync(process.execPath, [skript, '--pruefen', ordner], { encoding: 'utf8' });
+  laufe(mitZahlen(), (ordner) => {
+    const gut = starte(ordner);
+    assert.equal(gut.status, 0, gut.stderr);
+    assert.match(gut.stdout, /Zahlen-Abgleich in Ordnung/);
+    const pfad = join(ordner, 'index.html');
+    writeFileSync(pfad, readFileSync(pfad, 'utf8').replace('>300<', '>310<'));
+    const rot = starte(ordner);
+    assert.equal(rot.status, 1);
+    assert.match(rot.stderr, /agent-board: Testzahl "310" passt nicht, laut zahlen\.json "über 300"/);
   });
 });

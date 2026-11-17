@@ -16,6 +16,10 @@
 //   7. CSP (sobald eine Seite eine Content-Security-Policy als <meta> hat): jede Seite hat eine,
 //      kein style-Attribut, kein <style>-Block, und jedes Inline-Skript steht mit seinem
 //      sha256-Hash in script-src. Sonst blockiert der Browser es still.
+//   8. Zahlen (sobald tools/zahlen.json da ist): Jede mit data-zahl="projekt.tests" markierte
+//      Stelle zeigt genau die Zahl aus zahlen.json (DE 4.400, EN 4,400), data-zahl="projekt.version"
+//      die Release-Version; jedes Projekt steht markiert auf beiden Startseiten, und kein
+//      "über N Tests" steht unmarkiert im Text. Neu messen: node tools/zahlen.mjs
 //
 // Nur Entwicklungswerkzeug: Die Seite selbst lädt nichts aus tools/.
 
@@ -26,7 +30,7 @@ import { fileURLToPath } from 'node:url';
 
 // Unterordner der Domain, die aus anderen Repos kommen (eigene GitHub-Pages-Projekte).
 // Links und Sitemap-Einträge dorthin lassen sich lokal nicht prüfen.
-export const FREMDE_PFADE = ['agent-board', 'resonance', 'stackworks'];
+export const FREMDE_PFADE = ['agent-board', 'detention', 'resonance', 'stackworks'];
 const ALTE_DOMAIN = ['stefan-paun', 'github', 'io'].join('.');
 const UEBERSPRINGEN = new Set(['.git', '.github', '.claude', 'node_modules', 'tools']);
 const STARTSEITEN = ['index.html', 'en/index.html'];
@@ -281,7 +285,88 @@ export function pruefe(wurzel) {
     }
   }
 
+  // 8. Zahlen-Abgleich mit tools/zahlen.json
+  funde.push(...pruefeZahlen(wurzel, seiten));
+
   return { funde, seiten: seiten.size, dateien: dateiListe.length };
+}
+
+// Inhalt eines Elements ab Index (nach dem Start-Tag) bis zum passenden End-Tag, ohne Tags.
+function elementText(sauber, name, ab) {
+  const muster = new RegExp(`<(/?)${name}\\b[^>]*>`, 'gi');
+  muster.lastIndex = ab;
+  let tiefe = 1, m;
+  while ((m = muster.exec(sauber))) {
+    tiefe += m[1] ? -1 : 1;
+    if (tiefe === 0) return { text: sauber.slice(ab, m.index), ende: muster.lastIndex };
+  }
+  return { text: sauber.slice(ab), ende: sauber.length };
+}
+
+const sichtbar = (stueck) => stueck.replace(/<[^>]*>/g, ' ').replace(/&nbsp;|&#160;/g, ' ').replace(/\s+/g, ' ').trim();
+export const formatiere = (zahl, sprache) => String(zahl).replace(/\B(?=(\d{3})+(?!\d))/g, sprache === 'en' ? ',' : '.');
+const UNMARKIERT = /(?<![\w])(über|over)\s+\d[\d.,]*\s+(automatische\s+|automated\s+)?tests\b/gi;
+
+// Prüft die mit data-zahl markierten Stellen gegen tools/zahlen.json. seiten: Map wie in pruefe()
+// (fehlt sie, werden alle HTML-Dateien gelesen). Gibt die Funde als Textzeilen zurück.
+export function pruefeZahlen(wurzel, seiten = null) {
+  const funde = [];
+  const fund = (datei, zeile, text) => funde.push(`${datei}${zeile ? ':' + zeile : ''}  ${text}`);
+  if (!seiten) {
+    seiten = new Map();
+    for (const d of alleDateien(wurzel).filter((d) => d.endsWith('.html'))) seiten.set(d, { html: readFileSync(join(wurzel, d), 'utf8') });
+  }
+  const jsonPfad = join(wurzel, 'tools', 'zahlen.json');
+  let daten = null;
+  try { daten = JSON.parse(readFileSync(jsonPfad, 'utf8')); } catch (e) {
+    if (e.code !== 'ENOENT') { fund('tools/zahlen.json', 0, `nicht lesbar: ${e.message}`); return funde; }
+  }
+  const projekte = daten?.projekte ?? {};
+  for (const [id, e] of Object.entries(projekte)) {
+    if (!Number.isInteger(e.tests) || !Number.isInteger(e.anzeige)) fund('tools/zahlen.json', 0, `${id}: tests/anzeige fehlen`);
+    else if (!(e.anzeige < e.tests)) fund('tools/zahlen.json', 0, `${id}: anzeige ${e.anzeige} ist nicht kleiner als ${e.tests} ("über" wäre falsch)`);
+    if (e.fehlgeschlagen) fund('tools/zahlen.json', 0, `${id}: ${e.fehlgeschlagen} rote Tests beim Messen, Zahl so nicht zeigen`);
+  }
+
+  const gefunden = new Map(); // datei -> Set der Projekt-ids
+  for (const [datei, seite] of seiten) {
+    const sauber = ohneCode(seite.html);
+    const sprache = (sauber.match(/<html\b[^>]*\blang="([a-z]+)/i)?.[1] ?? 'de').toLowerCase();
+    let rest = sauber;
+    const marken = [...sauber.matchAll(/<([a-zA-Z][\w-]*)\b[^>]*\bdata-zahl="([^"]*)"[^>]*>/g)];
+    if (marken.length && !daten) { fund(datei, zeileVon(sauber, marken[0].index), 'data-zahl ohne tools/zahlen.json (node tools/zahlen.mjs)'); continue; }
+    for (const m of marken) {
+      const zeile = zeileVon(sauber, m.index);
+      const { text: roh, ende } = elementText(sauber, m[1], m.index + m[0].length);
+      rest = rest.slice(0, m.index) + rest.slice(m.index, ende).replace(/[^\n]/g, ' ') + rest.slice(ende);
+      const text = sichtbar(roh);
+      const [id, feld] = m[2].split('.');
+      const e = projekte[id];
+      if (!e) { fund(datei, zeile, `data-zahl="${m[2]}": Projekt ${id} fehlt in tools/zahlen.json`); continue; }
+      if (!gefunden.has(datei)) gefunden.set(datei, new Set());
+      gefunden.get(datei).add(id);
+      if (feld === 'tests') {
+        const soll = formatiere(e.anzeige, sprache);
+        const ist = text.match(/\d+(?:[.,]\d+)*/g) ?? [];
+        if (ist.length !== 1 || ist[0] !== soll) fund(datei, zeile, `${id}: Testzahl "${text}" passt nicht, laut zahlen.json "über ${soll}" (gemessen ${e.tests})`);
+      } else if (feld === 'version') {
+        if (!e.release) fund(datei, zeile, `${id}: keine Release-Version in tools/zahlen.json`);
+        else if (!new RegExp(`(^|[^\\w.])${e.release.replace(/\./g, '\\.')}($|[^\\w.])`).test(text)) fund(datei, zeile, `${id}: Version "${text}" passt nicht, aktuelles Release ist ${e.release}`);
+      } else fund(datei, zeile, `data-zahl="${m[2]}": unbekanntes Feld (tests oder version)`);
+    }
+    if (daten) for (const u of sichtbar(rest.replace(/<[^>]*>/g, (t) => t.replace(/[^\n]/g, ' '))).matchAll(UNMARKIERT)) {
+      fund(datei, 0, `"${u[0]}" steht ohne data-zahl im Text, wird beim Zahlen-Abgleich nicht geprüft`);
+    }
+  }
+  if (daten) {
+    for (const start of STARTSEITEN) {
+      if (!seiten.has(start)) continue;
+      for (const id of Object.keys(projekte)) {
+        if (!gefunden.get(start)?.has(id)) fund(start, 0, `${id}: keine Stelle mit data-zahl="${id}.tests", die Zahl fehlt auf der Startseite`);
+      }
+    }
+  }
+  return funde;
 }
 
 const direktGestartet = () => {
