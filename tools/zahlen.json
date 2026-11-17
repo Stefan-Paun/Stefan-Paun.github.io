@@ -5,7 +5,7 @@
     "agent-board": {
       "repo": "Stefan-Paun/agent-board",
       "commit": "60eeac1",
-      "release": "v1.6.0",
+      "release": "v1.7.0",
       "tests": 304,
       "anzeige": 300,
       "fehlgeschlagen": 0,
