@@ -10,7 +10,8 @@
 //   3. Links: relative href/src/srcset (und Links auf die eigene Domain) zeigen auf vorhandene
 //      Dateien, Sprungziele (#id) gibt es auf der Zielseite.
 //   4. DE/EN: index.html und en/index.html haben dieselben id-Attribute und dieselben Zahlen
-//      (3.619 und 3,619 gelten als gleich; Datumsangaben in <time> zählen nicht).
+//      (3.619 und 3,619 gelten als gleich; Datumsangaben in <time> zählen nicht). Dasselbe gilt
+//      für jede andere Seite und die Seite, auf die ihr <link rel="alternate" hreflang="en"> zeigt.
 //   5. Canonical: stimmt bei indexierbaren Seiten mit der eigenen (Sitemap-)URL überein.
 //   6. Domain: robots.txt nennt die Sitemap der eigenen Domain, nirgends steht die alte Adresse.
 //   7. CSP (sobald eine Seite eine Content-Security-Policy als <meta> hat): jede Seite hat eine,
@@ -227,20 +228,31 @@ export function pruefe(wurzel) {
     for (const [id, anzahl] of zaehle(seite.ids)) if (anzahl > 1) fund(datei, 0, `id="${id}" kommt ${anzahl}-mal vor`);
   }
 
-  // 4. DE/EN-Gleichstand der Startseiten
-  const [de, en] = STARTSEITEN.map((d) => seiten.get(d));
-  if (!de || !en) fund(STARTSEITEN[de ? 1 : 0], 0, 'fehlt, DE/EN-Vergleich nicht möglich');
-  else {
+  // 4. DE/EN-Gleichstand: die Startseiten und jedes Seitenpaar, das per hreflang verbunden ist
+  const vergleiche = (dateiDe, dateiEn) => {
+    const de = seiten.get(dateiDe), en = seiten.get(dateiEn);
     const idsDe = new Set(de.ids), idsEn = new Set(en.ids);
-    for (const id of idsDe) if (!idsEn.has(id)) fund(STARTSEITEN[1], 0, `id="${id}" fehlt (in ${STARTSEITEN[0]} vorhanden)`);
-    for (const id of idsEn) if (!idsDe.has(id)) fund(STARTSEITEN[0], 0, `id="${id}" fehlt (in ${STARTSEITEN[1]} vorhanden)`);
+    for (const id of idsDe) if (!idsEn.has(id)) fund(dateiEn, 0, `id="${id}" fehlt (in ${dateiDe} vorhanden)`);
+    for (const id of idsEn) if (!idsDe.has(id)) fund(dateiDe, 0, `id="${id}" fehlt (in ${dateiEn} vorhanden)`);
     const roh = [zahlen(de.html), zahlen(en.html)];
     const zDe = zaehle(roh[0].map(normal)), zEn = zaehle(roh[1].map(normal));
     for (const zahl of [...new Set([...zDe.keys(), ...zEn.keys()])].sort((a, b) => a - b)) {
       const a = zDe.get(zahl) ?? 0, b = zEn.get(zahl) ?? 0;
       const geschrieben = roh.flat().find((z) => normal(z) === zahl);
-      if (a !== b) fund(STARTSEITEN[0], 0, `Zahl ${geschrieben} steht ${a}-mal im Text, in ${STARTSEITEN[1]} ${b}-mal`);
+      if (a !== b) fund(dateiDe, 0, `Zahl ${geschrieben} steht ${a}-mal im Text, in ${dateiEn} ${b}-mal`);
     }
+  };
+  if (!seiten.has(STARTSEITEN[0]) || !seiten.has(STARTSEITEN[1])) fund(STARTSEITEN[seiten.has(STARTSEITEN[0]) ? 1 : 0], 0, 'fehlt, DE/EN-Vergleich nicht möglich');
+  else vergleiche(...STARTSEITEN);
+  for (const [datei, seite] of seiten) {
+    if (STARTSEITEN.includes(datei)) continue;
+    const alt = seite.tags.find((t) => t.name === 'link' && /(^|\s)alternate(\s|$)/i.test(t.attribute.rel ?? '') && (t.attribute.hreflang ?? '').toLowerCase() === 'en');
+    if (!alt) continue;
+    const href = alt.attribute.href ?? '';
+    const pfad = href === basis || href.startsWith(basis + '/') ? href.slice(basis.length) || '/' : null;
+    const enDatei = pfad && !istFremd(pfad) ? dateiZuPfad(pfad.split(/[?#]/)[0], dateien) : null;
+    if (!enDatei || !seiten.has(enDatei)) { if (pfad && !istFremd(pfad)) fund(datei, alt.zeile, `hreflang="en" zeigt auf ${href}, die Datei gibt es nicht`); continue; }
+    if (enDatei !== datei) vergleiche(datei, enDatei);
   }
 
   // 6. Domain
