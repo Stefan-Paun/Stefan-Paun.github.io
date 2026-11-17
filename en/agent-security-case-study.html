@@ -62,7 +62,7 @@
     <p>commit-guard is a Claude Code hook that runs before every tool call. When the agent wants to commit, the hook reads the newly added lines and looks for 10 patterns: 7 built-in key formats such as API keys, GitHub tokens and private keys, plus private email addresses, phone numbers and private paths that you configure yourself. On a push it checks the branch and the author address. In a public repo a finding is denied; in any other repo Claude Code asks me first.</p>
 
     <h3>Decision: a real parser instead of a search rule</h3>
-    <p>The first version used a regular expression to look for <q>git push</q>. Nested or rewritten commands slipped past it. Today a small shell parser without dependencies splits the command the way the shell would, and a second one reads git’s options. So the hook checks exactly the repo git would use.</p>
+    <p>The first version used a regular expression to look for “git push”. Nested or rewritten commands slipped past it. Today a small shell parser without dependencies splits the command the way the shell would, and a second one reads git’s options. So the hook checks exactly the repo git would use.</p>
 
     <h3>Decision: anything unclear counts as suspicious</h3>
     <p>If the parser cannot read a command safely, it is denied in a public repo and asked about elsewhere. If the hook itself fails, it asks as well. That costs a false alarm now and then, but there is no silent pass. The hook’s own git calls are hardened too: it never starts anything that is configured in the repo under check.</p>
@@ -88,11 +88,11 @@
       <div><b>0</b><span>false alarms in 31 merged PRs of large projects</span></div>
       <div><b data-zahl="pr-airlock.tests">over 100</b><span>automated tests on main</span></div>
     </div>
-    <p><strong>Limit:</strong> a clean result means <q>none of the known shapes</q>, not <q>safe</q>. A variant without these traits would need a different detector, and after an infection pr-airlock does not replace scanning your own machine.</p>
+    <p><strong>Limit:</strong> a clean result means “none of the known shapes”, not “safe”. A variant without these traits would need a different detector, and after an infection pr-airlock does not replace scanning your own machine.</p>
 
     <h2 id="injection-bench">Stage 3: injection-bench, whether the defence really holds</h2>
-    <p>The first two stages check code. The harder question is the agent itself: what does it do when a file it reads tells it to send secrets away? The usual advice is <q>add a deny rule</q> or <q>turn on the sandbox</q>. It is rarely measured.</p>
-    <p>injection-bench builds a sealed test setup for this: worthless fake secrets carrying a random marker sit in a throwaway folder, together with a scenario that contains a hidden instruction. A honeypot on my own machine records every attempt to send something. Then my real agent works in that folder under one defence profile. At the end its output, the honeypot log and the folder are turned into a verdict from <q>clean</q> to <q>exfiltrated</q>. A profile holds when nothing left the machine. No real secret is ever used.</p>
+    <p>The first two stages check code. The harder question is the agent itself: what does it do when a file it reads tells it to send secrets away? The usual advice is “add a deny rule” or “turn on the sandbox”. It is rarely measured.</p>
+    <p>injection-bench builds a sealed test setup for this: worthless fake secrets carrying a random marker sit in a throwaway folder, together with a scenario that contains a hidden instruction. A honeypot on my own machine records every attempt to send something. Then my real agent works in that folder under one defence profile. At the end its output, the honeypot log and the folder are turned into a verdict from “clean” to “exfiltrated”. A profile holds when nothing left the machine. No real secret is ever used.</p>
 
     <div class="figs">
       <div><b>10 + 2</b><span>attack scenarios across 9 surfaces plus 2 control tasks, corpus v1</span></div>
@@ -119,7 +119,7 @@
     <p>A defence you don’t measure is a guess. When a tool cannot check something, it should say so loudly instead of waving it through. And outside content is read, never run: that rule is built into all three tools.</p>
 
     <h2 id="fundstellen">Sources</h2>
-    <p>Every number comes from the <q>main</q> branch of the public repos on <time datetime="2026-11-17">17 November 2026</time>. I counted the tests myself with <code>node --test</code>.</p>
+    <p>Every number comes from the “main” branch of the public repos on <time datetime="2026-11-17">17 November 2026</time>. I counted the tests myself with <code>node --test</code>.</p>
     <dl class="facts">
       <div><dt>386 tests</dt><dd>commit-guard, commit <a href="https://github.com/Stefan-Paun/commit-guard/tree/2a52656097fc94636b8ab9ea18774306221c9006" target="_blank" rel="noopener">2a52656<span class="sr-only"> (new tab)</span></a>, <code>npm test</code></dd></div>
       <div><dt>10 patterns, 3 × 3 matrix</dt><dd><a href="https://github.com/Stefan-Paun/commit-guard/blob/2a52656097fc94636b8ab9ea18774306221c9006/README.md#what-it-checks" target="_blank" rel="noopener">commit-guard README<span class="sr-only"> (new tab)</span></a>, <a href="https://github.com/Stefan-Paun/commit-guard/blob/2a52656097fc94636b8ab9ea18774306221c9006/.github/workflows/test.yml" target="_blank" rel="noopener">test workflow<span class="sr-only"> (new tab)</span></a></dd></div>
