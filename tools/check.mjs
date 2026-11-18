@@ -21,6 +21,9 @@
 //      Stelle zeigt genau die Zahl aus zahlen.json (DE 4.400, EN 4,400), data-zahl="projekt.version"
 //      die Release-Version; jedes Projekt steht markiert auf beiden Startseiten, und kein
 //      "über N Tests" steht unmarkiert im Text. Neu messen: node tools/zahlen.mjs
+//   9. Vorschau (sobald eine Seite og:image hat): jede Seite, auch noindex (außer reinen
+//      Weiterleitungen mit http-equiv="refresh"), hat eine <meta name="description">; jede indexierbare Seite hat og:url gleich canonical, og:image
+//      auf eine vorhandene Datei der eigenen Domain mit og:image:width/height und twitter:card.
 //
 // Nur Entwicklungswerkzeug: Die Seite selbst lädt nichts aus tools/.
 
@@ -294,6 +297,27 @@ export function pruefe(wurzel) {
         const erlaubt = art === 'script' ? skripte : stile;
         if (!erlaubt.includes(hash) && !erlaubt.includes("'unsafe-inline'")) fund(datei, zeileVon(seite.html, m.index), `Inline-<${art}> fehlt in der CSP (${art}-src ${hash})`);
       }
+    }
+  }
+
+  // 9. Vorschau beim Teilen (LinkedIn, Messenger) und Suchtreffer-Beschreibung
+  const meta = (seite, schluessel, wert) => seite.tags.find((t) => t.name === 'meta' && (t.attribute[schluessel] ?? '').toLowerCase() === wert);
+  if ([...seiten.values()].some((s) => meta(s, 'property', 'og:image'))) {
+    for (const [datei, seite] of seiten) {
+      if (meta(seite, 'http-equiv', 'refresh')) continue; // Umzugs-Stub, wird nie geteilt
+      if (!(meta(seite, 'name', 'description')?.attribute.content ?? '').trim()) fund(datei, 0, 'hat keine <meta name="description">');
+      if (seite.noindex) continue;
+      const inhalt = (schluessel, wert) => (meta(seite, schluessel, wert)?.attribute.content ?? '').trim();
+      const ogUrl = inhalt('property', 'og:url');
+      const canonical = seite.canonical?.attribute.href ?? '';
+      if (!ogUrl) fund(datei, 0, 'hat kein og:url');
+      else if (canonical && ogUrl !== canonical) fund(datei, meta(seite, 'property', 'og:url').zeile, `og:url ${ogUrl} passt nicht zu canonical ${canonical}`);
+      const bild = inhalt('property', 'og:image');
+      if (!bild) fund(datei, 0, 'hat kein og:image');
+      else if (!bild.startsWith(basis + '/')) fund(datei, meta(seite, 'property', 'og:image').zeile, `og:image ${bild} liegt nicht auf ${basis}`);
+      else if (!istFremd(bild.slice(basis.length)) && !dateien.has(bild.slice(basis.length + 1))) fund(datei, meta(seite, 'property', 'og:image').zeile, `og:image ${bild} gibt es nicht im Repo`);
+      for (const groesse of ['og:image:width', 'og:image:height']) if (bild && !/^\d+$/.test(inhalt('property', groesse))) fund(datei, 0, `hat kein ${groesse}`);
+      if (!inhalt('name', 'twitter:card')) fund(datei, 0, 'hat kein twitter:card');
     }
   }
 
