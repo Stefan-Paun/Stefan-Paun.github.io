@@ -21,6 +21,14 @@
 //      Stelle zeigt genau die Zahl aus zahlen.json (DE 4.400, EN 4,400), data-zahl="projekt.version"
 //      die Release-Version; jedes Projekt steht markiert auf beiden Startseiten, und kein
 //      "über N Tests" steht unmarkiert im Text. Neu messen: node tools/zahlen.mjs
+//   9. Vorschau (sobald eine Seite og:image hat): jede Seite, auch noindex (außer reinen
+//      Weiterleitungen mit http-equiv="refresh"), hat eine <meta name="description">; jede
+//      indexierbare Seite hat og:url gleich canonical, og:image auf eine vorhandene Datei der
+//      eigenen Domain mit og:image:width/height und twitter:card.
+//  10. Lese-Seiten (alle mit notes.css): genau ein Sprunglink <a class="skip" href="#inhalt"> und
+//      genau ein <main id="inhalt">; jede indexierbare Seite mit <article> (also nicht Impressum
+//      und Datenschutz, die sind noindex) hat einen Block <nav class="weiter"> mit mindestens
+//      zwei verschiedenen Zielen, keines davon die Seite selbst.
 //
 // Nur Entwicklungswerkzeug: Die Seite selbst lädt nichts aus tools/.
 
@@ -295,6 +303,50 @@ export function pruefe(wurzel) {
         if (!erlaubt.includes(hash) && !erlaubt.includes("'unsafe-inline'")) fund(datei, zeileVon(seite.html, m.index), `Inline-<${art}> fehlt in der CSP (${art}-src ${hash})`);
       }
     }
+  }
+
+  // 9. Vorschau beim Teilen (LinkedIn, Messenger) und Suchtreffer-Beschreibung
+  const meta = (seite, schluessel, wert) => seite.tags.find((t) => t.name === 'meta' && (t.attribute[schluessel] ?? '').toLowerCase() === wert);
+  if ([...seiten.values()].some((s) => meta(s, 'property', 'og:image'))) {
+    for (const [datei, seite] of seiten) {
+      if (meta(seite, 'http-equiv', 'refresh')) continue; // Umzugs-Stub, wird nie geteilt
+      if (!(meta(seite, 'name', 'description')?.attribute.content ?? '').trim()) fund(datei, 0, 'hat keine <meta name="description">');
+      if (seite.noindex) continue;
+      const inhalt = (schluessel, wert) => (meta(seite, schluessel, wert)?.attribute.content ?? '').trim();
+      const ogUrl = inhalt('property', 'og:url');
+      const canonical = seite.canonical?.attribute.href ?? '';
+      if (!ogUrl) fund(datei, 0, 'hat kein og:url');
+      else if (canonical && ogUrl !== canonical) fund(datei, meta(seite, 'property', 'og:url').zeile, `og:url ${ogUrl} passt nicht zu canonical ${canonical}`);
+      const bild = inhalt('property', 'og:image');
+      if (!bild) fund(datei, 0, 'hat kein og:image');
+      else if (!bild.startsWith(basis + '/')) fund(datei, meta(seite, 'property', 'og:image').zeile, `og:image ${bild} liegt nicht auf ${basis}`);
+      else if (!istFremd(bild.slice(basis.length)) && !dateien.has(bild.slice(basis.length + 1))) fund(datei, meta(seite, 'property', 'og:image').zeile, `og:image ${bild} gibt es nicht im Repo`);
+      for (const groesse of ['og:image:width', 'og:image:height']) if (bild && !/^\d+$/.test(inhalt('property', groesse))) fund(datei, 0, `hat kein ${groesse}`);
+      if (!inhalt('name', 'twitter:card')) fund(datei, 0, 'hat kein twitter:card');
+    }
+  }
+
+  // 10. Sprunglink und Weiterlesen auf den Lese-Seiten
+  for (const [datei, seite] of seiten) {
+    const lesend = seite.tags.some((t) => t.name === 'link' && /(^|\s)stylesheet(\s|$)/i.test(t.attribute.rel ?? '') && /(^|\/)notes\.css$/.test(t.attribute.href ?? ''));
+    if (!lesend) continue;
+    const klasse = (t, name) => (t.attribute.class ?? '').split(/\s+/).includes(name);
+    const spruenge = seite.tags.filter((t) => t.name === 'a' && klasse(t, 'skip'));
+    const mains = seite.tags.filter((t) => t.name === 'main');
+    if (spruenge.length !== 1) fund(datei, 0, `hat ${spruenge.length} Sprunglinks (class="skip"), erwartet genau einen`);
+    else if (spruenge[0].attribute.href !== '#inhalt') fund(datei, spruenge[0].zeile, `Sprunglink zeigt auf ${spruenge[0].attribute.href ?? ''}, erwartet #inhalt`);
+    if (mains.length !== 1 || mains[0].attribute.id !== 'inhalt') fund(datei, mains[0]?.zeile ?? 0, 'braucht genau ein <main id="inhalt">');
+    if (seite.noindex || !seite.tags.some((t) => t.name === 'article')) continue;
+    const block = ohneCode(seite.html).match(/<nav\b[^>]*\bclass="(?:[^"]*\s)?weiter(?:\s[^"]*)?"[^>]*>([\s\S]*?)<\/nav\s*>/i);
+    if (!block) { fund(datei, 0, 'hat keinen Weiterlesen-Block (<nav class="weiter">)'); continue; }
+    const ziele = tags(block[1]).filter((t) => t.name === 'a').map((t) => t.attribute.href ?? '');
+    // Ziele als Pfad auf der eigenen Domain auflösen: jarvis.html, ./jarvis.html, /jarvis.html und
+    // https://<domain>/jarvis.html sind dieselbe Seite.
+    const eigeneUrl = basis + urlZuDatei(datei);
+    const pfadVon = (ziel) => { try { const u = new URL(ziel, eigeneUrl); return u.origin === basis ? u.pathname.replace(/\/index\.html$/, '/') : u.href.split('#')[0]; } catch { return ziel; } };
+    const verschieden = new Set(ziele.map(pfadVon));
+    if (verschieden.size < 2) fund(datei, 0, `Weiterlesen hat ${verschieden.size} verschiedene(s) Ziel(e), erwartet mindestens zwei`);
+    for (const ziel of ziele) if (pfadVon(ziel) === urlZuDatei(datei)) fund(datei, 0, `Weiterlesen verweist auf die Seite selbst (${ziel})`);
   }
 
   // 8. Zahlen-Abgleich mit tools/zahlen.json

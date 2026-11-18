@@ -144,6 +144,58 @@ test('CSP: Inline-Skript ohne Hash, style-Attribut, Seite ohne CSP', () => {
   genauEiner(laufe((d) => { mitCsp(`'self' ${hash}`)(d); d['notiz.html'] = d['notiz.html'].replace(/<meta http-equiv[^>]*>/, ''); }), /^notiz\.html .*keine Content-Security-Policy/);
 });
 
+test('Vorschau: erst aktiv mit og:image, dann vollständige Metatags je Seite', () => {
+  const vorschau = (pfad, bild = 'img/bild.webp') => `<meta name="description" content="Beschreibung">
+<meta property="og:url" content="${BASIS}${pfad}"><meta property="og:image" content="${BASIS}/${bild}">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">`;
+  const vollstaendig = (d) => {
+    d['index.html'] = d['index.html'].replace('<title>t</title>', `<title>t</title>${vorschau('/')}`);
+    d['en/index.html'] = d['en/index.html'].replace('<title>t</title>', `<title>t</title>${vorschau('/en/')}`);
+    d['notiz.html'] = d['notiz.html'].replace('<title>t</title>', `<title>t</title>${vorschau('/notiz.html')}`);
+    d['404.html'] = d['404.html'].replace('<title>404</title>', '<title>404</title><meta name="description" content="Nicht da">');
+    d['alt/index.html'] = '<!doctype html><html><head><title>Umzug</title><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=/"></head><body><a href="/">weiter</a></body></html>';
+  };
+  assert.deepEqual(laufe(vollstaendig), []);
+  const funde = laufe((d) => {
+    vollstaendig(d);
+    d['404.html'] = d['404.html'].replace('<meta name="description" content="Nicht da">', '');
+    d['notiz.html'] = d['notiz.html'].replace(vorschau('/notiz.html'), vorschau('/anders.html', 'img/fehlt.png').replace(/<meta name="twitter:card"[^>]*>/, '').replace(/<meta property="og:image:height"[^>]*>/, ''));
+  });
+  assert.equal(funde.length, 5, funde.join('\n'));
+  assert.ok(funde.some((f) => /^404\.html .*keine <meta name="description">/.test(f)));
+  assert.ok(funde.some((f) => /^notiz\.html.*og:url .*anders\.html passt nicht zu canonical/.test(f)));
+  assert.ok(funde.some((f) => /^notiz\.html.*og:image .*fehlt\.png gibt es nicht im Repo/.test(f)));
+  assert.ok(funde.some((f) => /^notiz\.html .*kein og:image:height/.test(f)));
+  assert.ok(funde.some((f) => /^notiz\.html .*kein twitter:card/.test(f)));
+});
+
+test('Lese-Seiten: Sprunglink, main#inhalt und Weiterlesen', () => {
+  const lese = (rumpf) => (d) => {
+    d['notes.css'] = '';
+    d['notiz.html'] = `${kopf('/notiz.html', '<link rel="stylesheet" href="notes.css">')}<body>${rumpf}</body></html>`;
+  };
+  const gut = '<a class="skip" href="#inhalt">Zum Inhalt</a><main id="inhalt"><article><h2 id="abschnitt">A</h2></article>'
+    + '<nav class="weiter" aria-label="Weiterlesen"><ul><li><a href="./">Start</a></li><li><a href="en/">EN</a></li></ul></nav></main>';
+  assert.deepEqual(laufe(lese(gut)), []);
+  // Seite ohne <article> braucht keinen Weiterlesen-Block
+  assert.deepEqual(laufe(lese('<a class="skip" href="#inhalt">x</a><main id="inhalt"><h2 id="abschnitt">A</h2></main>')), []);
+  genauEiner(laufe(lese(gut.replace('<a class="skip" href="#inhalt">Zum Inhalt</a>', ''))), /0 Sprunglinks/);
+  const ohneId = laufe(lese(gut.replace('<main id="inhalt">', '<main>')));
+  assert.equal(ohneId.length, 2, ohneId.join('\n')); // totes Sprungziel und fehlendes main#inhalt
+  assert.ok(ohneId.some((f) => /genau ein <main id="inhalt">/.test(f)));
+  // noindex-Seite mit <article> (Impressum) braucht keinen Weiterlesen-Block
+  assert.deepEqual(laufe((d) => { lese(gut.replace(/<nav class="weiter"[\s\S]*<\/nav>/, ''))(d); d['notiz.html'] = d['notiz.html'].replace('<title>t</title>', '<title>t</title><meta name="robots" content="noindex">'); d['sitemap.xml'] = d['sitemap.xml'].replace(`<url><loc>${BASIS}/notiz.html</loc></url>\n`, ''); }), []);
+  genauEiner(laufe(lese(gut.replace(/<nav class="weiter"[\s\S]*<\/nav>/, ''))), /keinen Weiterlesen-Block/);
+  const selbst = laufe(lese(gut.replace('<a href="en/">EN</a>', '<a href="notiz.html#abschnitt">Hier</a>')));
+  genauEiner(selbst, /verweist auf die Seite selbst/);
+  for (const ziel of ['/notiz.html', './notiz.html', `${BASIS}/notiz.html`]) {
+    genauEiner(laufe(lese(gut.replace('<a href="en/">EN</a>', `<a href="${ziel}">Hier</a>`))), /verweist auf die Seite selbst/);
+  }
+  genauEiner(laufe(lese(gut.replace('<a href="en/">EN</a>', '<a href="index.html">Start</a>'))), /1 verschiedene\(s\) Ziel/);
+  genauEiner(laufe(lese(gut.replace('class="weiter"', 'class="weiter-alt"'))), /keinen Weiterlesen-Block/);
+  genauEiner(laufe(lese(gut.replace('<li><a href="en/">EN</a></li>', ''))), /1 verschiedene\(s\) Ziel/);
+});
+
 test('tags: Attribute mit > und Zeilennummern, zahlen: ohne Skript und <time>', () => {
   const liste = tags('<p>\n<img alt="a > b" src=x.png>\n<!-- <img src="y.png"> --></p>');
   assert.deepEqual(liste.map((t) => [t.name, t.zeile]), [['p', 1], ['img', 2]]);
