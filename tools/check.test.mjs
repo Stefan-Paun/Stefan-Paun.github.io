@@ -177,7 +177,7 @@ test('Lese-Seiten: Sprunglink, main#inhalt und Weiterlesen', () => {
   const gut = '<a class="skip" href="#inhalt">Zum Inhalt</a><main id="inhalt"><article><h2 id="abschnitt">A</h2></article>'
     + '<nav class="weiter" aria-label="Weiterlesen"><ul><li><a href="./">Start</a></li><li><a href="en/">EN</a></li></ul></nav></main>';
   assert.deepEqual(laufe(lese(gut)), []);
-  // Rechtsseite ohne <article> braucht keinen Weiterlesen-Block
+  // Seite ohne <article> braucht keinen Weiterlesen-Block
   assert.deepEqual(laufe(lese('<a class="skip" href="#inhalt">x</a><main id="inhalt"><h2 id="abschnitt">A</h2></main>')), []);
   genauEiner(laufe(lese(gut.replace('<a class="skip" href="#inhalt">Zum Inhalt</a>', ''))), /0 Sprunglinks/);
   const ohneId = laufe(lese(gut.replace('<main id="inhalt">', '<main>')));
@@ -188,7 +188,12 @@ test('Lese-Seiten: Sprunglink, main#inhalt und Weiterlesen', () => {
   genauEiner(laufe(lese(gut.replace(/<nav class="weiter"[\s\S]*<\/nav>/, ''))), /keinen Weiterlesen-Block/);
   const selbst = laufe(lese(gut.replace('<a href="en/">EN</a>', '<a href="notiz.html#abschnitt">Hier</a>')));
   genauEiner(selbst, /verweist auf die Seite selbst/);
-  genauEiner(laufe(lese(gut.replace('<li><a href="en/">EN</a></li>', ''))), /1 Link\(s\)/);
+  for (const ziel of ['/notiz.html', './notiz.html', `${BASIS}/notiz.html`]) {
+    genauEiner(laufe(lese(gut.replace('<a href="en/">EN</a>', `<a href="${ziel}">Hier</a>`))), /verweist auf die Seite selbst/);
+  }
+  genauEiner(laufe(lese(gut.replace('<a href="en/">EN</a>', '<a href="index.html">Start</a>'))), /1 verschiedene\(s\) Ziel/);
+  genauEiner(laufe(lese(gut.replace('class="weiter"', 'class="weiter-alt"'))), /keinen Weiterlesen-Block/);
+  genauEiner(laufe(lese(gut.replace('<li><a href="en/">EN</a></li>', ''))), /1 verschiedene\(s\) Ziel/);
 });
 
 test('tags: Attribute mit > und Zeilennummern, zahlen: ohne Skript und <time>', () => {

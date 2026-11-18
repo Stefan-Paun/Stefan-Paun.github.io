@@ -22,12 +22,13 @@
 //      die Release-Version; jedes Projekt steht markiert auf beiden Startseiten, und kein
 //      "über N Tests" steht unmarkiert im Text. Neu messen: node tools/zahlen.mjs
 //   9. Vorschau (sobald eine Seite og:image hat): jede Seite, auch noindex (außer reinen
-//      Weiterleitungen mit http-equiv="refresh"), hat eine <meta name="description">; jede indexierbare Seite hat og:url gleich canonical, og:image
-//      auf eine vorhandene Datei der eigenen Domain mit og:image:width/height und twitter:card.
+//      Weiterleitungen mit http-equiv="refresh"), hat eine <meta name="description">; jede
+//      indexierbare Seite hat og:url gleich canonical, og:image auf eine vorhandene Datei der
+//      eigenen Domain mit og:image:width/height und twitter:card.
 //  10. Lese-Seiten (alle mit notes.css): genau ein Sprunglink <a class="skip" href="#inhalt"> und
 //      genau ein <main id="inhalt">; jede indexierbare Seite mit <article> (also nicht Impressum
-//      und Datenschutz, die sind noindex) hat einen Block <nav class="weiter">
-//      mit mindestens zwei Links, keiner davon auf die Seite selbst.
+//      und Datenschutz, die sind noindex) hat einen Block <nav class="weiter"> mit mindestens
+//      zwei verschiedenen Zielen, keines davon die Seite selbst.
 //
 // Nur Entwicklungswerkzeug: Die Seite selbst lädt nichts aus tools/.
 
@@ -336,12 +337,16 @@ export function pruefe(wurzel) {
     else if (spruenge[0].attribute.href !== '#inhalt') fund(datei, spruenge[0].zeile, `Sprunglink zeigt auf ${spruenge[0].attribute.href ?? ''}, erwartet #inhalt`);
     if (mains.length !== 1 || mains[0].attribute.id !== 'inhalt') fund(datei, mains[0]?.zeile ?? 0, 'braucht genau ein <main id="inhalt">');
     if (seite.noindex || !seite.tags.some((t) => t.name === 'article')) continue;
-    const block = ohneCode(seite.html).match(/<nav\b[^>]*\bclass="[^"]*\bweiter\b[^"]*"[^>]*>([\s\S]*?)<\/nav\s*>/i);
+    const block = ohneCode(seite.html).match(/<nav\b[^>]*\bclass="(?:[^"]*\s)?weiter(?:\s[^"]*)?"[^>]*>([\s\S]*?)<\/nav\s*>/i);
     if (!block) { fund(datei, 0, 'hat keinen Weiterlesen-Block (<nav class="weiter">)'); continue; }
     const ziele = tags(block[1]).filter((t) => t.name === 'a').map((t) => t.attribute.href ?? '');
-    if (ziele.length < 2) fund(datei, 0, `Weiterlesen hat ${ziele.length} Link(s), erwartet mindestens zwei`);
-    const selbst = posix.basename(datei);
-    for (const ziel of ziele) if (ziel.split('#')[0] === selbst || ziel.split('#')[0] === '') fund(datei, 0, `Weiterlesen verweist auf die Seite selbst (${ziel})`);
+    // Ziele als Pfad auf der eigenen Domain auflösen: jarvis.html, ./jarvis.html, /jarvis.html und
+    // https://<domain>/jarvis.html sind dieselbe Seite.
+    const eigeneUrl = basis + urlZuDatei(datei);
+    const pfadVon = (ziel) => { try { const u = new URL(ziel, eigeneUrl); return u.origin === basis ? u.pathname.replace(/\/index\.html$/, '/') : u.href.split('#')[0]; } catch { return ziel; } };
+    const verschieden = new Set(ziele.map(pfadVon));
+    if (verschieden.size < 2) fund(datei, 0, `Weiterlesen hat ${verschieden.size} verschiedene(s) Ziel(e), erwartet mindestens zwei`);
+    for (const ziel of ziele) if (pfadVon(ziel) === urlZuDatei(datei)) fund(datei, 0, `Weiterlesen verweist auf die Seite selbst (${ziel})`);
   }
 
   // 8. Zahlen-Abgleich mit tools/zahlen.json
