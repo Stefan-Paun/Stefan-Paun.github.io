@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fallstudie Nachsitzen · Stefan Paun</title>
+<meta name="description" content="Wie ich ein Werwolf-Spiel mit Claude-Figuren fair gemacht habe: getrennte Sicht je Figur, eine Welt, die nicht lügt, und Regeln, die vor dem Einbau gemessen werden.">
+<meta name="theme-color" content="#0E1013">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefanpaun.page/nachsitzen-fallstudie.html">
+<link rel="alternate" hreflang="de" href="https://stefanpaun.page/nachsitzen-fallstudie.html">
+<link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/nachsitzen-case-study.html">
+<link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/nachsitzen-fallstudie.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fallstudie: Nachsitzen, ein Werwolf-Spiel mit Claude-Figuren">
+<meta property="og:description" content="Problem, Entscheidungen und Abwägungen hinter einem Spiel, in dem KI-Figuren lügen dürfen, die Welt aber nicht.">
+<meta property="og:url" content="https://stefanpaun.page/nachsitzen-fallstudie.html">
+<meta property="og:image" content="https://stefanpaun.page/img/vorschau.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Datenblatt SP-17: Stefan Paun, 17, Wien. Ich baue KI-Agents und lerne Cybersecurity. Daneben ein Chip mit elf Pins, einer pro Projekt.">
+<meta property="og:site_name" content="Stefan Paun">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <p class="id"><b>SP-17</b><b>Stefan Paun</b><span>Fallstudie Nachsitzen</span><span>Application Note AN-07</span></p>
+  <nav class="links2" aria-label="Seitennavigation"><a href="en/nachsitzen-case-study.html" hreflang="en" lang="en">English</a><a class="back" href="index.html#p-nachsitzen">← Datenblatt SP-17</a></nav>
+</div></header>
+
+<main>
+  <article>
+    <h1>Nachsitzen: Die Figuren dürfen lügen, die Welt nicht. <span>Eine Fallstudie.</span></h1>
+    <p class="meta">Öffentlich seit <time datetime="2026-10-31">31. Oktober 2026</time> · Stand <time datetime="2026-11-25">25. November 2026</time> · gebaut mit Claude Code</p>
+    <p class="lede">Nachsitzen ist ein Werwolf-Spiel: Sieben sitzen nachts in einer Schule fest, eine Figur ist heimlich der Schatten. Die anderen Mitspieler sind Claude-Figuren. Sie reden, verdächtigen, stimmen ab und schreiben nach der Partie in ihr Heft, wem sie trauen. Damit das ein Spiel ist und kein Würfeln, musste jede Figur genau so viel wissen, wie sie wissen darf.</p>
+
+    <ul class="take" aria-label="Das Wichtigste in drei Sätzen">
+      <li><b>Problem:</b> Ein Sprachmodell, das alles sieht, verrät den Schatten. Eines, das sich Spuren ausdenkt, macht jede Abstimmung zum Raten.</li>
+      <li><b>Lösung:</b> Jede Figur hat ihren eigenen Kontext, und alle Spuren kommen aus einer Welt, die nur Wahres erzeugt.</li>
+      <li><b>Absicherung:</b> Regeländerungen messe ich vorher in Tausenden Partien mit Skript-Figuren, ohne Netz und ohne Kosten.</li>
+    </ul>
+
+    <h2>Das Problem</h2>
+    <p>Werwolf lebt von verstecktem Wissen. Der Schatten weiß, wer er ist, die anderen nicht. Wer nachts an der Tür stand, hat Schritte gehört, wer am Fenster stand, hat Gesichter im Mondlicht gesehen. Gibt man sieben KI-Figuren einen gemeinsamen Prompt, weiß jede alles, und das Spiel ist vorbei, bevor es anfängt. Und wenn die Figuren sich ihre Beobachtungen selbst ausdenken, lässt sich keine Behauptung prüfen. Dann gewinnt, wer am überzeugendsten klingt, nicht wer genau hinschaut.</p>
+
+    <h2>Entscheidung 1: Sieben getrennte Köpfe statt eines Prompts</h2>
+    <p>Jedes Ereignis im Spiel trägt mit, wer es sehen darf. Der Kontext einer Figur besteht nur aus den Ereignissen, die für sie sichtbar sind. Rollen, der Platz in der Nacht, die Wahl des Schattens und Untersuchungsergebnisse bleiben privat. Wer ausscheidet, schaut als Geist weiter und sieht dann alles. Der Preis: Jede Figur ist ein eigener Aufruf. Eine Partie braucht 40 bis 80 Aufrufe. Deshalb laufen die Figuren auf einem kleinen, günstigen Modell, und der feste Teil des Prompts wird zwischengespeichert. Eine Partie kostet laut README etwa 2 bis 4 Cent.</p>
+
+    <h2>Entscheidung 2: Eine Welt, die nicht lügt</h2>
+    <p>Hinter dem Gerede steht eine zweite Schicht: die Wahrheit. Sie kennt die Orte, den echten Weg des Schattens und wer wo stand. Daraus entstehen die Spuren am Morgen: eine Tintenspur, die zeigt, von welcher Seite der Schatten kam, Kreidestaub, wo er durchging, Zeugen, die jemanden vorbeihuschen sahen. Alles, was aus dieser Schicht kommt, muss wahr sein, und Tests prüfen genau das. Lügen dürfen nur die Figuren. Wer über seinen Platz lügt, kann deshalb auffliegen, weil eine andere Figur ihn dort nicht gesehen hat.</p>
+
+    <h2>Entscheidung 3: Regeln messen, bevor sie ins Spiel kommen</h2>
+    <p>Neben den Claude-Figuren gibt es Skript-Figuren mit festen Strategien. Mit ihnen spiele ich komplette Partien ohne Netz und ohne einen Cent. Ein Balance-Labor vergleicht Regelvarianten in je 2000 Partien und gibt jede Siegquote mit einem 95-%-Intervall an. Ein Unterschied gilt nur als belegt, wenn sich die Intervalle nicht überlappen und er sich mit anderen Startwerten wiederholt. So kam die Petze ins Spiel, eine Rolle, die jede zweite Nacht die Rolle einer Person erfährt: Ohne sie gewinnt der Schatten bei 7 Figuren 51,9 % der Partien, mit ihr 44,1 %. Beides liegt im Ziel von 40 bis 60 %, aber nur die Petze ist in beiden Läufen belegt. Ich lasse sie deshalb drin. Die Grenze schreibe ich dazu: Skript-Figuren spielen anders als Claude-Figuren. Die Zahlen messen das Gleichgewicht der Regeln, sie sagen keine echte Partie voraus.</p>
+
+    <h2>Wie ich weiß, dass es hält</h2>
+    <p>Über <span data-zahl="detention.tests">140</span> automatische Tests laufen ohne Netz: Regeln, Welt, Server, Simulation und die Claude-Figur selbst gegen eine nachgebaute API. Für jede neue Ereignisart gibt es einen Test, wer sie sehen darf. Dann haben 10 Test-Agenten mit verschiedenen Personas je eine echte Partie gespielt, jeder auf seinem eigenen Server. Aus ihrem Feedback wurden eine geheime Abstimmung, ein Schutz für den menschlichen Spieler in der ersten Nacht, Beweise, die man vorzeigen kann, und ein Platz mehr: Jetzt sitzen du und 6 KI-Figuren am Tisch.</p>
+
+    <div class="figs">
+      <div><b>6</b><span>KI-Figuren, jede mit eigenem Kontext</span></div>
+      <div><b>2000</b><span>Skript-Partien je Regelvariante im Labor</span></div>
+      <div><b>0</b><span>Abhängigkeiten, Node ohne Pakete</span></div>
+    </div>
+
+    <h2>Grenzen, die nie verhandelt werden</h2>
+    <p>Gruselig darf es sein, grausam nicht. Im Systemprompt stehen feste Grenzen: Tinte statt Blut, Verschwinden statt Sterben, nichts zu Selbstverletzung, nichts Sexuelles, keine echten Personen. Der API-Schlüssel bleibt am lokalen Server und geht nie an den Browser. Ein Tagesdeckel von 0,50 $ hält die Kosten auch dann klein, wenn etwas schiefläuft. Was die Figuren in ihre Hefte schreiben, zeige ich hier bewusst nicht.</p>
+
+    <h2>Was ich mitnehme</h2>
+    <p>Bei mehreren KI-Agents ist die wichtigste Frage nicht, was sie sagen, sondern was sie wissen. Getrennte Kontexte machen ein Spiel mit KI erst fair. Eine Schicht, die nur Wahres erzeugt, macht Lügen überprüfbar. Und eine Regel, die ich in 2000 Partien gemessen habe, ist besser als eine, die sich nur gut anfühlt.</p>
+
+    <p class="note">Code, Regeln und Messungen sind öffentlich. Die Browser-Demo spielt mit Skript-Figuren, ohne Schlüssel und ohne Kosten.</p>
+    <div class="links">
+      <a href="https://stefanpaun.page/detention/" target="_blank" rel="noopener">Demo im Browser spielen<span class="sr-only"> (neuer Tab)</span></a>
+      <a href="https://github.com/Stefan-Paun/detention" target="_blank" rel="noopener">Code und Anleitung auf GitHub<span class="sr-only"> (neuer Tab)</span></a>
+      <a href="https://github.com/Stefan-Paun/detention/blob/main/docs/balance-labor.md" target="_blank" rel="noopener">Messungen des Balance-Labors lesen<span class="sr-only"> (neuer Tab)</span></a>
+    </div>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="index.html">Zur Startseite</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></footer>
+</body>
+</html>
