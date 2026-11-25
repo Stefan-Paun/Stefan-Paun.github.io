@@ -21,6 +21,9 @@
 //      Stelle zeigt genau die Zahl aus zahlen.json (DE 4.400, EN 4,400), data-zahl="projekt.version"
 //      die Release-Version; jedes Projekt steht markiert auf beiden Startseiten, und kein
 //      "über N Tests" steht unmarkiert im Text. Neu messen: node tools/zahlen.mjs
+//  11. Hreflang-Paare: Jede Seite, auf die ein <link rel="alternate" hreflang> zeigt, verweist mit
+//      einem eigenen <link rel="alternate" hreflang> zurück, und die Sprache stimmt mit ihrem
+//      <html lang> überein. (Nummer 11, weil 9 und 10 im offenen Druck-/Weiterlesen-PR stecken.)
 //
 // Nur Entwicklungswerkzeug: Die Seite selbst lädt nichts aus tools/.
 
@@ -253,6 +256,25 @@ export function pruefe(wurzel) {
     const enDatei = pfad && !istFremd(pfad) ? dateiZuPfad(pfad.split(/[?#]/)[0], dateien) : null;
     if (!enDatei || !seiten.has(enDatei)) { if (pfad && !istFremd(pfad)) fund(datei, alt.zeile, `hreflang="en" zeigt auf ${href}, die Datei gibt es nicht`); continue; }
     if (enDatei !== datei) vergleiche(datei, enDatei);
+  }
+
+  // 11. Hreflang-Paare: Rückverweis und passende Sprache
+  const alternativen = (seite) => seite.tags.filter((t) => t.name === 'link' && /(^|\s)alternate(\s|$)/i.test(t.attribute.rel ?? '') && t.attribute.hreflang);
+  for (const [datei, seite] of seiten) {
+    const eigene = basis + urlZuDatei(datei);
+    for (const alt of alternativen(seite)) {
+      const sprache = alt.attribute.hreflang.toLowerCase();
+      const href = alt.attribute.href ?? '';
+      if (sprache === 'x-default' || href === eigene) continue;
+      const pfad = href === basis || href.startsWith(basis + '/') ? href.slice(basis.length) || '/' : null;
+      if (!pfad || istFremd(pfad)) continue;
+      const ziel = dateiZuPfad(pfad.split(/[?#]/)[0], dateien);
+      if (!ziel || !seiten.has(ziel)) { if (sprache !== 'en') fund(datei, alt.zeile, `hreflang="${sprache}" zeigt auf ${href}, die Datei gibt es nicht`); continue; }
+      if (pfad !== urlZuDatei(ziel)) fund(datei, alt.zeile, `hreflang="${sprache}" sollte ${basis}${urlZuDatei(ziel)} heißen`);
+      const lang = (seiten.get(ziel).html.match(/<html\b[^>]*\blang="([^"]*)"/i)?.[1] ?? '').toLowerCase();
+      if (lang && lang.split('-')[0] !== sprache.split('-')[0]) fund(datei, alt.zeile, `hreflang="${sprache}" zeigt auf ${ziel}, die Seite ist aber lang="${lang}"`);
+      if (!alternativen(seiten.get(ziel)).some((t) => (t.attribute.href ?? '').split(/[?#]/)[0] === eigene)) fund(ziel, 0, `verweist nicht per <link rel="alternate" hreflang> zurück auf ${eigene} (${datei} zeigt hierher)`);
+    }
   }
 
   // 6. Domain

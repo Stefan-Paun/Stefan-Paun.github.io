@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nachsitzen case study · Stefan Paun</title>
+<meta name="description" content="How I made a Werewolf-style game with Claude characters fair: a separate view per character, a world that doesn’t lie, and rules measured before they ship.">
+<meta name="theme-color" content="#0E1013">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefanpaun.page/en/nachsitzen-case-study.html">
+<link rel="alternate" hreflang="de" href="https://stefanpaun.page/nachsitzen-fallstudie.html">
+<link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/nachsitzen-case-study.html">
+<link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/nachsitzen-fallstudie.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Case study: Nachsitzen, a Werewolf-style game with Claude characters">
+<meta property="og:description" content="Problem, decisions and trade-offs behind a game where AI characters may lie, but the world may not.">
+<meta property="og:url" content="https://stefanpaun.page/en/nachsitzen-case-study.html">
+<meta property="og:image" content="https://stefanpaun.page/img/vorschau-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Datasheet SP-17: Stefan Paun, 17, Vienna. I build AI agents and I’m learning cybersecurity. Next to it a chip with eleven pins, one per project.">
+<meta property="og:site_name" content="Stefan Paun">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preload" href="../fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <p class="id"><b>SP-17</b><b>Stefan Paun</b><span>Case study Nachsitzen</span><span>Application Note AN-07</span></p>
+  <nav class="links2" aria-label="Page navigation"><a href="../nachsitzen-fallstudie.html" hreflang="de" lang="de">Deutsch</a><a class="back" href="./#p-nachsitzen">← Datasheet SP-17</a></nav>
+</div></header>
+
+<main>
+  <article>
+    <h1>Nachsitzen: the characters may lie, the world may not. <span>A case study.</span></h1>
+    <p class="meta">Public since <time datetime="2026-10-31">31 October 2026</time> · as of <time datetime="2026-11-25">25 November 2026</time> · built with Claude Code</p>
+    <p class="lede">Nachsitzen (“detention”) is a Werewolf-style game: seven are locked in a school at night, and one character is secretly the Shadow. The other players are Claude characters. They talk, suspect, vote and, after the game, write in their notebook whom they trust. For this to be a game and not a dice roll, every character had to know exactly as much as it is allowed to know.</p>
+
+    <ul class="take" aria-label="The gist in three sentences">
+      <li><b>Problem:</b> a language model that sees everything gives the Shadow away. One that makes up clues turns every vote into guesswork.</li>
+      <li><b>Solution:</b> every character has its own context, and all clues come from a world that only produces true things.</li>
+      <li><b>Safeguard:</b> I measure rule changes beforehand in thousands of games with scripted characters, offline and free.</li>
+    </ul>
+
+    <h2>The problem</h2>
+    <p>Werewolf lives on hidden knowledge. The Shadow knows who it is, the others don’t. Whoever stood at the door at night heard footsteps, whoever stood at the window saw faces in the moonlight. Give seven AI characters one shared prompt and each one knows everything, so the game is over before it starts. And if the characters make up their own observations, no claim can be checked. Then the most convincing voice wins, not the one who looks closely.</p>
+
+    <h2>Decision 1: seven separate heads instead of one prompt</h2>
+    <p>Every event in the game carries who may see it. A character’s context consists only of the events visible to it. Roles, the spot at night, the Shadow’s choice and investigation results stay private. Whoever is out keeps watching as a ghost and then sees everything. The price: every character is a separate call. A game needs 40 to 80 calls. That is why the characters run on a small, cheap model, and the fixed part of the prompt is cached. A game costs about 2 to 4 cents, according to the README.</p>
+
+    <h2>Decision 2: a world that doesn’t lie</h2>
+    <p>Behind the talk there is a second layer: the truth. It knows the places, the Shadow’s real path and who stood where. The morning clues come from it: an ink trail showing which side the Shadow came from, chalk dust where it passed, witnesses who saw someone slip by. Everything that comes out of this layer has to be true, and tests check exactly that. Only the characters may lie. So whoever lies about their spot can be caught, because another character didn’t see them there.</p>
+
+    <h2>Decision 3: measure rules before they go into the game</h2>
+    <p>Next to the Claude characters there are scripted characters with fixed strategies. With them I play complete games offline and without spending a cent. A balance lab compares rule variants in 2000 games each and gives every win rate with a 95 % interval. A difference only counts as proven if the intervals don’t overlap, and it only matters once it repeats with other seeds. That is how the snitch was confirmed, a role that learns one person’s role every second night: without it the Shadow wins 51.9 % of games with 7 characters, with it 44.1 %, closer to the middle of the target of 40 to 60 %. The snitch is the only rule whose effect is proven in both runs. So I keep it. I write the limit down as well: scripted characters play differently from Claude characters. The numbers measure the balance of the rules, they don’t predict a real game.</p>
+
+    <h2>How I know it holds</h2>
+    <p>Over <span data-zahl="detention.tests">140</span> automated tests run offline: rules, world, server, simulation and the Claude character itself against a fake API. Every new kind of event gets a test for who may see it. Then 10 test agents with different personas each played a real game, each on its own server. Their feedback turned into a secret vote, protection for the human player in the first night, evidence you can present, and one more seat: now you and 6 AI characters sit at the table.</p>
+
+    <div class="figs">
+      <div><b>6</b><span>AI characters, each with its own context</span></div>
+      <div><b>2000</b><span>scripted games per rule variant in the lab</span></div>
+      <div><b>0</b><span>dependencies, Node without packages</span></div>
+    </div>
+
+    <h2>Limits that are never up for negotiation</h2>
+    <p>Creepy is fine, cruel is not. Whoever the Shadow takes simply vanishes. The system prompt has fixed limits: ink instead of blood, nothing about self-harm, nothing sexual, no real people. The API key stays on the local server and never goes to the browser. A daily cap of $0.50 keeps costs small even when something goes wrong. What the characters write in their notebooks I deliberately don’t show here.</p>
+
+    <h2>What I take away</h2>
+    <p>With several AI agents, the most important question is not what they say but what they know. Separate contexts are what make a game with AI fair. A layer that only produces true things makes lies checkable. And a rule I measured in 2000 games beats one that only feels right.</p>
+
+    <p class="note">Code, rules and measurements are public. The browser demo plays with scripted characters, without a key and for free (German only).</p>
+    <div class="links">
+      <a href="https://stefanpaun.page/detention/" target="_blank" rel="noopener">Play the demo in your browser<span class="sr-only"> (new tab)</span></a>
+      <a href="https://github.com/Stefan-Paun/detention" target="_blank" rel="noopener">Code and setup on GitHub<span class="sr-only"> (new tab)</span></a>
+      <a href="https://github.com/Stefan-Paun/detention/blob/main/docs/balance-labor.md" target="_blank" rel="noopener">Read the balance lab measurements (German)<span class="sr-only"> (new tab)</span></a>
+    </div>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="./">Home</a><a href="legal-notice.html">Legal notice</a><a href="privacy.html">Privacy</a></div></footer>
+</body>
+</html>
