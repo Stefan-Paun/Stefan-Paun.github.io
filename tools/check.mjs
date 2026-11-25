@@ -273,7 +273,7 @@ export function pruefe(wurzel) {
       if (pfad !== urlZuDatei(ziel)) fund(datei, alt.zeile, `hreflang="${sprache}" sollte ${basis}${urlZuDatei(ziel)} heißen`);
       const lang = (seiten.get(ziel).html.match(/<html\b[^>]*\blang="([^"]*)"/i)?.[1] ?? '').toLowerCase();
       if (lang && lang.split('-')[0] !== sprache.split('-')[0]) fund(datei, alt.zeile, `hreflang="${sprache}" zeigt auf ${ziel}, die Seite ist aber lang="${lang}"`);
-      if (!alternativen(seiten.get(ziel)).some((t) => t.attribute.href === eigene)) fund(ziel, 0, `verweist nicht per <link rel="alternate" hreflang> zurück auf ${eigene} (${datei} zeigt hierher)`);
+      if (!alternativen(seiten.get(ziel)).some((t) => (t.attribute.href ?? '').split(/[?#]/)[0] === eigene)) fund(ziel, 0, `verweist nicht per <link rel="alternate" hreflang> zurück auf ${eigene} (${datei} zeigt hierher)`);
     }
   }
 
