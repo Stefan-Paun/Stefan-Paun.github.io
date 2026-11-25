@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jarvis: how my voice assistant is built · Stefan Paun</title>
+<meta name="description" content="How my private voice assistant Jarvis is built: the path of a request, decisions with trade-offs, numbers and limits.">
+<meta name="theme-color" content="#0E1013">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefanpaun.page/en/jarvis.html">
+<link rel="alternate" hreflang="de" href="https://stefanpaun.page/jarvis.html">
+<link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/jarvis.html">
+<link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/jarvis.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jarvis: how my voice assistant is built">
+<meta property="og:description" content="How my private voice assistant Jarvis is built: the path of a request, decisions with trade-offs, numbers and limits.">
+<meta property="og:url" content="https://stefanpaun.page/en/jarvis.html">
+<meta property="og:image" content="https://stefanpaun.page/img/vorschau-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Datasheet SP-17: Stefan Paun, 17, Vienna. I build AI agents and I’m learning cybersecurity. Next to it a chip with eleven pins, one per project.">
+<meta property="og:site_name" content="Stefan Paun">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preload" href="../fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <p class="id"><b>SP-17</b><b>Stefan Paun</b><span>Jarvis: architecture</span><span>Application Note AN-02</span></p>
+  <nav class="links2" aria-label="Page navigation"><a href="../jarvis.html" hreflang="de" lang="de">Deutsch</a><a class="back" href="./#p-jarvis">← Datasheet SP-17</a></nav>
+</div></header>
+
+<main>
+  <article>
+    <h1>Jarvis: how my voice assistant is built. <span>Flow, decisions, limits.</span></h1>
+    <p class="meta">As of <time datetime="2026-11-17">17 November 2026</time> · private project, built with Claude Code</p>
+    <p class="lede">Jarvis is my personal voice assistant. I talk to it, it understands me, uses tools and answers with a voice. I built it in Python, together with Claude Code. The code is private. Here I describe how it works.</p>
+
+    <ul class="take" aria-label="The gist in three sentences">
+      <li><b>Flow:</b> a key or “Hey Jarvis”, then Whisper, then Claude with tools, then a voice.</li>
+      <li><b>Stance:</b> personal data is encrypted, tests may never touch it, and I merge myself.</li>
+      <li><b>Number:</b> over <span data-zahl="jarvis.tests">4,400</span> automated tests. That is a lot, but no proof that everything is right.</li>
+    </ul>
+
+    <h2>The path of a request</h2>
+    <p>I press a key or say “Hey Jarvis”. Whisper turns my speech into text. The text goes to Claude, and Claude may use tools, for example for weather, timers or music. The answer is spoken out loud. There is also a web interface for the browser and the iPhone.</p>
+    <svg role="img" aria-labelledby="dg-t dg-d" viewBox="0 0 640 150" class="flow-svg">
+      <title id="dg-t">The path of a request to Jarvis</title>
+      <desc id="dg-d">Four stations from left to right: input by key or wake word, Whisper turns speech into text, Claude with tools, answer as a voice.</desc>
+      <g fill="none" stroke="#A8A39B" stroke-width="2"><path d="M152 70 H176"/><path d="M312 70 H336"/><path d="M472 70 H496"/></g>
+      <g fill="#A8A39B"><path d="M176 64 l8 6 l-8 6z"/><path d="M336 64 l8 6 l-8 6z"/><path d="M496 64 l8 6 l-8 6z"/></g>
+      <g fill="#0E1013" stroke="#ECE8E1" stroke-width="2"><rect x="8" y="30" width="144" height="80"/></g>
+      <g fill="#0E1013" stroke="#A8A39B" stroke-width="2"><rect x="184" y="30" width="128" height="80"/></g>
+      <g fill="#0E1013" stroke="#D9773B" stroke-width="3"><rect x="344" y="30" width="128" height="80"/></g>
+      <g fill="#0E1013" stroke="#A8A39B" stroke-width="2"><rect x="504" y="30" width="128" height="80"/></g>
+      <g fill="#ECE8E1" font-family="Archivo,Arial,sans-serif" font-size="15" text-anchor="middle" font-weight="600">
+        <text x="80" y="66">Key or</text><text x="80" y="86">“Hey Jarvis”</text>
+        <text x="248" y="66">Whisper</text><text x="248" y="86">speech → text</text>
+        <text x="408" y="66">Claude</text><text x="408" y="86">with tools</text>
+        <text x="568" y="66">Answer</text><text x="568" y="86">as a voice</text>
+      </g>
+      <g fill="#A8A39B" font-family="Archivo,Arial,sans-serif" font-size="12" text-anchor="middle">
+        <text x="80" y="136">1 Input</text><text x="248" y="136">2 Text</text><text x="408" y="136">3 AI agent</text><text x="568" y="136">4 Output</text>
+      </g>
+    </svg>
+    <p>Claude does not get all tools at once. The most important ones come with a full description, the rest are listed in one line each and loaded when needed. That saves tokens. On top of that there is a fixed budget for the start of every request. If a description gets too long, I shorten it. I don’t raise the limit.</p>
+
+    <div class="figs">
+      <div><b>3,600+</b><span>automated tests</span></div>
+      <div><b>1</b><span>codebase for Mac and Windows</span></div>
+      <div><b>4</b><span>stations per request</span></div>
+    </div>
+
+    <h2>Decisions and what spoke against them</h2>
+
+    <h3>Encrypted data, key in the keychain</h3>
+    <p>Personal data is stored encrypted on the Mac. The key lives in the macOS keychain, not in the project folder. That costs more effort and carries a risk: if the key is lost, the data is gone. I accept that risk.</p>
+
+    <h3>An extra confirmation for sensitive tools</h3>
+    <p>Tools that change something or touch personal things need an extra confirmation, on the Mac also via Touch ID. I have to consciously decide for every new tool whether it belongs behind this lock. Exactly this gap was found by one of my security reviews: a tool I had forgotten to classify.</p>
+
+    <h3>Tests protect the real data</h3>
+    <p>The tests run with redirected data paths so they never change my real data. How I learned that is in the <a href="notes-tests.html">note on tests</a>.</p>
+
+    <h3>Tests locally, cloud only at night</h3>
+    <p>The repo is private, and GitHub’s free compute minutes are limited. In October they ran out once. Since then I test locally and push sparingly. In addition, a cloud run on Linux, the “night watch”, runs at night. It runs the tests and reports failures. That catches things that only work on my Mac. The downside: that run does not see Mac-specific tests.</p>
+
+    <h3>Night-shift routine with draft PRs</h3>
+    <p>I write an issue and give it a label. At night a routine takes the oldest of these issues, builds it on its own branch, runs the tests and opens a draft PR. It never merges. I do that myself in the morning. If there is no issue, it does nothing. More on this in the <a href="../notizen-agents.html" hreflang="de">note on agents (German)</a>.</p>
+
+    <h3>One codebase for Mac and Windows</h3>
+    <p>I didn’t want to maintain a second version. That is why Mac code sits behind a platform layer, and Windows runs in CI. The price: everything that only works on the Mac has to be marked cleanly.</p>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>For an assistant with tools, security mostly means: classify every new tool.</li>
+      <li>An assistant that is allowed to act needs confirmations in the code, not only in the prompt.</li>
+      <li>With AI agents I build faster. I still have to check things myself.</li>
+    </ul>
+
+    <h2>Limits</h2>
+    <p>Some tests fail now and then, for example because of timing, network problems or high load. Some of the newer features have not yet been tried in everyday use. And over <span data-zahl="jarvis.tests">4,400</span> tests only say that the cases I thought of work.</p>
+
+    <h2>Why the code is private</h2>
+    <p>Jarvis works with very personal data. Even clean code gives hints about what exists and where it lives. So I show the architecture, but no code and no screenshots with content. Public and ready to show instead is <a href="agent-board-case-study.html">Agent-Board</a>.</p>
+
+    <p class="note">Built with Claude Code. I decide what gets built and check what comes back. I deliberately don’t name personal data here.</p>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="./">Home</a><a href="legal-notice.html">Legal notice</a><a href="privacy.html">Privacy</a></div></footer>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What tests taught me · Stefan Paun</title>
+<meta name="description" content="Lessons from Jarvis and Agent-Board: why tests must protect real data, what flaky tests mean and why red tests don’t get pushed.">
+<meta name="theme-color" content="#0E1013">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://stefanpaun.page/en/notes-tests.html">
+<link rel="alternate" hreflang="de" href="https://stefanpaun.page/notizen-tests.html">
+<link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/notes-tests.html">
+<link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/notizen-tests.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="What tests taught me">
+<meta property="og:description" content="Lessons from Jarvis and Agent-Board: why tests must protect real data, what flaky tests mean and why red tests don’t get pushed.">
+<meta property="og:url" content="https://stefanpaun.page/en/notes-tests.html">
+<meta property="og:image" content="https://stefanpaun.page/img/vorschau-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Datasheet SP-17: Stefan Paun, 17, Vienna. I build AI agents and I’m learning cybersecurity. Next to it a chip with eleven pins, one per project.">
+<meta property="og:site_name" content="Stefan Paun">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preload" href="../fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../notes.css">
+</head>
+<body>
+<header class="nav"><div class="in">
+  <p class="id"><b>SP-17</b><b>Stefan Paun</b><span>Note: tests</span><span>Application Note AN-04</span></p>
+  <nav class="links2" aria-label="Page navigation"><a href="../notizen-tests.html" hreflang="de" lang="de">Deutsch</a><a class="back" href="./#notizen">← Datasheet SP-17</a></nav>
+</div></header>
+
+<main>
+  <article>
+    <h1>What tests taught me. <span>Lessons from two projects.</span></h1>
+    <p class="meta">Note · as of <time datetime="2026-11-16">16 November 2026</time></p>
+    <p class="lede">At first I thought writing tests was a side issue. Then tests did real damage on my machine, and I understood why tests themselves need rules.</p>
+
+    <ul class="take" aria-label="The gist in three sentences">
+      <li><b>Data protection:</b> tests must never touch real data. A guard in the code and a check after every run make sure of that.</li>
+      <li><b>Flaky tests:</b> a test that is sometimes red and sometimes green often points to a real problem.</li>
+      <li><b>Rule:</b> I don’t push red tests, and I look at the exit code, not just the output.</li>
+    </ul>
+
+    <div class="figs">
+      <div><b>3,600+</b><span>tests in Jarvis</span></div>
+      <div><b>290+</b><span>unit tests in Agent-Board, plus browser tests</span></div>
+      <div><b>0</b><span>new files allowed in the data folder after a run</span></div>
+    </div>
+
+    <h2>A test run changed real data</h2>
+    <p>In Jarvis, tests wrote files into the real data folder several times. Once a file the assistant needs every day was even overwritten. The second time, an agent had started the tests through its own script. Real test notifications probably went to my phone as well.</p>
+    <p>The cause was simple: my guard recognises a test run by its start arguments. A custom script bypassed it. That was my gap, not only the agent’s.</p>
+
+    <h2>What I do since then</h2>
+    <ul>
+      <li>A guard module recognises test runs, redirects the data paths and locks the data folder for other users.</li>
+      <li>Tests only run through the normal command. Custom runner scripts are off-limits and written down as a rule in the project instructions.</li>
+      <li>Before every run I create a marker file. Afterwards there must be no newer files in the data folder. If there are, a test is leaking.</li>
+      <li>The notification tool refuses real push messages under tests.</li>
+      <li>New data sources have to be replaced in tests.</li>
+    </ul>
+
+    <h2>Flaky tests are hints</h2>
+    <p>Some tests in Jarvis fail under load or because of the time of day. I used to restart them and carry on. One case turned out to depend on the time. I wrote an issue for it, and the fix came as a PR. Another finding of the nightly test runs was a write that could collide when two processes ran at the same time. I switched it to atomic saving.</p>
+    <p>Not every flaky test has a cause. Some stay unexplained, and then I write them down as “known flaky” instead of pretending I know. Live tests with a network and tests with real hardware are unreliable by nature.</p>
+
+    <h2>I don’t push red tests</h2>
+    <p>In Agent-Board I once pushed although two tests were red. I had only searched the output for a keyword and not checked the exit code. Since then I look at the exit code. In Jarvis my guard also asks before a push if the current state has no green test run. Even a green run on the Mac is not always enough: CI tests Windows, and the night cloud doesn’t see some Mac tests.</p>
+
+    <h2>A test that doesn’t need real data is better</h2>
+    <p>Where I can, I replace real things with fakes. That makes tests faster and safer. It has limits: a fake can drift from reality, and then the test stays green although the feature is broken.</p>
+
+    <h2>What I take away</h2>
+    <p>More tests don’t automatically mean more safety. What matters more is that I can trust them. That takes a guard against side effects, a close look at flaky tests and a clear rule for when to push.</p>
+
+    <p class="note">Built and tested with Claude Code. For Jarvis I deliberately give no details about the personal data.</p>
+  </article>
+</main>
+
+<footer><div class="in"><span>© 2026 Stefan Paun</span><a href="./">Home</a><a href="legal-notice.html">Legal notice</a><a href="privacy.html">Privacy</a></div></footer>
+</body>
+</html>

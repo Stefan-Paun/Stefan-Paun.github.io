@@ -32,8 +32,22 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://stefanpaun.page/stackworks/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://stefanpaun.page/stackworks/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/stackworks/"/></url>
-  <url><loc>https://stefanpaun.page/jarvis.html</loc><lastmod>2026-11-16</lastmod></url>
+  <url><loc>https://stefanpaun.page/jarvis.html</loc><lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://stefanpaun.page/jarvis.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/jarvis.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/jarvis.html"/></url>
+  <url><loc>https://stefanpaun.page/en/jarvis.html</loc><lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://stefanpaun.page/jarvis.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/jarvis.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/jarvis.html"/></url>
   <url><loc>https://stefanpaun.page/notizen-agents.html</loc><lastmod>2026-11-16</lastmod></url>
-  <url><loc>https://stefanpaun.page/notizen-tests.html</loc><lastmod>2026-11-16</lastmod></url>
+  <url><loc>https://stefanpaun.page/notizen-tests.html</loc><lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://stefanpaun.page/notizen-tests.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/notes-tests.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/notizen-tests.html"/></url>
+  <url><loc>https://stefanpaun.page/en/notes-tests.html</loc><lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://stefanpaun.page/notizen-tests.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://stefanpaun.page/en/notes-tests.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://stefanpaun.page/notizen-tests.html"/></url>
   <url><loc>https://stefanpaun.page/sicherheit-iphone.html</loc><lastmod>2026-10-30</lastmod></url>
 </urlset>

@@ -105,13 +105,27 @@ test('DE und EN: ids und Zahlen müssen gleich sein', () => {
 test('DE und EN: auch Unterseiten, die per hreflang verbunden sind', () => {
   const paar = (d, zahlEn, idEn = 'kern') => {
     d['notiz.html'] = d['notiz.html'].replace('</head>', `<link rel="alternate" hreflang="en" href="${BASIS}/en/note.html"></head>`).replace('<a href="./">', '<p id="kern">386 Tests</p><a href="./">');
-    d['en/note.html'] = `${kopf('/en/note.html')}<body><h2 id="abschnitt">A</h2><p id="${idEn}">${zahlEn} tests</p><a href="./">Start</a></body></html>`;
+    d['en/note.html'] = `${kopf('/en/note.html', `<link rel="alternate" hreflang="de" href="${BASIS}/notiz.html">`)}<body><h2 id="abschnitt">A</h2><p id="${idEn}">${zahlEn} tests</p><a href="./">Start</a></body></html>`;
     d['sitemap.xml'] = d['sitemap.xml'].replace('</urlset>', `<url><loc>${BASIS}/en/note.html</loc></url>\n</urlset>`);
   };
   assert.deepEqual(laufe((d) => paar(d, '386')), []);
   genauEiner(laufe((d) => paar(d, '385')).filter((f) => f.includes('386')), /^notiz\.html .*Zahl 386 steht 1-mal im Text, in en\/note\.html 0-mal/);
   genauEiner(laufe((d) => paar(d, '386', 'anders')).filter((f) => f.includes('kern')), /^en\/note\.html .*id="kern" fehlt/);
   genauEiner(laufe((d) => { d['notiz.html'] = d['notiz.html'].replace('</head>', `<link rel="alternate" hreflang="en" href="${BASIS}/en/fehlt.html"></head>`); }), /hreflang="en" zeigt auf .*fehlt\.html, die Datei gibt es nicht/);
+});
+
+test('Hreflang-Paare: Rückverweis fehlt, falsche Sprache, tote Gegenseite', () => {
+  const paar = (d, { zurueck = true, lang = 'en', ziel = '/en/note.html' } = {}) => {
+    d['notiz.html'] = d['notiz.html'].replace('<html>', '<html lang="de">').replace('</head>', `<link rel="alternate" hreflang="de" href="${BASIS}/notiz.html"><link rel="alternate" hreflang="en" href="${BASIS}${ziel}"><link rel="alternate" hreflang="x-default" href="${BASIS}/notiz.html"></head>`);
+    const rueck = zurueck ? `<link rel="alternate" hreflang="de" href="${BASIS}/notiz.html">` : '';
+    d['en/note.html'] = `${kopf('/en/note.html', rueck).replace('<html>', `<html lang="${lang}">`)}<body><h2 id="abschnitt">A</h2><a href="./">Start</a></body></html>`;
+    d['sitemap.xml'] = d['sitemap.xml'].replace('</urlset>', `<url><loc>${BASIS}/en/note.html</loc></url>\n</urlset>`);
+  };
+  assert.deepEqual(laufe((d) => paar(d)), []);
+  genauEiner(laufe((d) => paar(d, { zurueck: false })), /^en\/note\.html .*verweist nicht .*zurück auf https:\/\/beispiel\.test\/notiz\.html/);
+  genauEiner(laufe((d) => paar(d, { lang: 'de' })), /^notiz\.html:\d+ .*hreflang="en" zeigt auf en\/note\.html, die Seite ist aber lang="de"/);
+  // Rückverweis von der EN-Seite auf eine DE-Seite, die es nicht gibt
+  genauEiner(laufe((d) => { paar(d); d['en/note.html'] = d['en/note.html'].replace(`${BASIS}/notiz.html`, `${BASIS}/weg.html`); }).filter((f) => !f.includes('verweist nicht')), /^en\/note\.html:\d+ .*hreflang="de" zeigt auf .*weg\.html, die Datei gibt es nicht/);
 });
 
 test('falsches oder fehlendes canonical', () => {
