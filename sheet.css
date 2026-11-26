@@ -30,7 +30,7 @@ p{margin:0;text-wrap:pretty}
 h1,h2,h3{margin:0;font-weight:800;text-wrap:balance}
 ul,ol,dl,dd{margin:0;padding:0}
 ul,ol{list-style:none}
-time,.fv,td,.pin-no,.tb-read b{font-variant-numeric:tabular-nums}
+time,.fv,td,.pin-no{font-variant-numeric:tabular-nums}
 a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1px}
 :focus-visible{outline:2px solid var(--cu);outline-offset:3px}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -49,11 +49,8 @@ a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1px}
 .brand{padding-inline:var(--pad) 16px!important;font-stretch:125%}
 .brand b{font-size:1.05rem;font-weight:800;letter-spacing:.02em}
 .tb-meta{display:flex;align-items:center;gap:0;margin:0}
-.tb-meta span+span::before{content:"";display:inline-block;width:1px;height:14px;margin:0 14px;background:var(--g);opacity:.45;vertical-align:-2px}
 .clk{flex:1 1 90px;align-self:center;height:24px;min-width:70px;margin:0 18px;overflow:visible}
 .clk path{fill:none;stroke:var(--g);stroke-width:1.5;vector-effect:non-scaling-stroke;opacity:.8}
-.tb-read{display:flex;align-items:center;gap:18px;margin:0;font-family:var(--mono);font-stretch:100%;font-size:.75rem;font-weight:500;letter-spacing:.04em;white-space:nowrap}
-.tb-read b{font-weight:700;display:inline-block;min-width:2ch;text-align:right}
 .tb-nav{display:flex}
 .lang{border-left:1px solid rgba(14,16,19,.35)}
 .kbtn kbd{font:600 .75rem/1 var(--mono);padding:4px 6px;border:1px solid currentColor;letter-spacing:0}
@@ -142,10 +139,11 @@ h1{font:800 clamp(2.3rem,11.2vw,4.6rem)/.98 var(--sans);font-stretch:125%;letter
   .pin[data-pin="6"] .pin-name{padding-top:1.6rem}
 }
 @media (max-width:720px){
-  .chip{display:block;max-width:none}
-  .chip-body{width:100%;margin-bottom:clamp(14px,4vw,22px)}
+  /* Handy: erst der Satz, der die Zeichnung erklärt, dann der Chip */
+  .chip{display:flex;flex-direction:column;max-width:none}
+  .chip figcaption{order:-1;margin:0 0 16px}
+  .chip-body{width:100%}
   .pinout{display:none}
-  .chip figcaption{margin-top:14px}
 }
 
 /* ---------- Gruppen und Projekt-Abschnitte ---------- */
@@ -227,7 +225,8 @@ h1{font:800 clamp(2.3rem,11.2vw,4.6rem)/.98 var(--sans);font-stretch:125%;letter
 
 /* ---------- Pinbelegung: alle Projekte in einer Tabelle ---------- */
 .sheet-lede+.own{margin-top:-14px;margin-bottom:clamp(22px,3vw,34px)}
-.own{max-width:60ch;padding-left:14px;border-left:2px solid var(--cu);font:500 1.0625rem/1.5 var(--sans);color:var(--ink)}
+.own{max-width:60ch;font:400 1rem/1.55 var(--sans);color:var(--ink2)}
+.own b{color:var(--ink);font-weight:700}
 .pins-t tbody th,.pins-t td{vertical-align:middle;padding-top:10px;padding-bottom:10px}
 .pins-t .o-pin{width:3.6rem}
 .pins-t tbody .o-name{width:auto;font:800 1.0625rem/1.25 var(--sans);font-stretch:112%;white-space:nowrap}
@@ -259,33 +258,38 @@ h1{font:800 clamp(2.3rem,11.2vw,4.6rem)/.98 var(--sans);font-stretch:125%;letter
   .pins-t tbody .o-go{grid-area:go;align-self:end;justify-self:end}
 }
 
-/* ---------- Kompakte Projekte: höchstens drei Sätze, Kennwerte zum Aufklappen ---------- */
-.ds--compact .ds-in{grid-template-areas:"head" "text" "links" "more" "media";padding-block:clamp(26px,3.6vw,48px)}
-.ds--compact h3{font-size:clamp(1.45rem,2.6vw,2.1rem)}
-.ds--compact .pinlead{width:clamp(2.9rem,4.4vw,3.8rem);height:clamp(2.1rem,3vw,2.6rem);font-size:clamp(.95rem,1.5vw,1.2rem)}
-.more{grid-area:more;min-width:0;max-width:64ch;border-top:1px solid var(--hair2);border-bottom:1px solid var(--hair2)}
+/* ---------- Weitere Projekte: Kurzeinträge in zwei Spalten, Kennwerte und Bild zum Aufklappen ---------- */
+.rest{outline:0}
+.rest-grid{display:grid;grid-template-columns:minmax(0,1fr)}
+.ds--compact{display:grid}
+.ds--compact .ds-in{grid-template-areas:"head" "text" "links" "more";grid-template-rows:auto 1fr auto auto;row-gap:14px;padding-block:clamp(26px,3.4vw,44px)}
+.ds--compact .ds-head{align-items:center;gap:16px}
+.ds--compact h3{font-size:clamp(1.3rem,2vw,1.7rem)}
+.ds--compact .pinlead{width:3.2rem;height:2.3rem;font-size:1rem}
+.ds--compact .kind{margin-top:6px}
+.ds--compact .ds-text p{font-size:1rem;line-height:1.55}
+.ds:target .pinlead{background:var(--cu);color:var(--g)}
+.more{grid-area:more;min-width:0;border-top:1px solid var(--hair2)}
 .more summary{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;list-style:none;font:700 .8125rem/1 var(--sans);font-stretch:75%;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
 .more summary::-webkit-details-marker{display:none}
 .more summary::before{content:"";width:9px;height:9px;flex:none;border-right:2px solid var(--cu);border-bottom:2px solid var(--cu);transform:rotate(-45deg);transition:transform .12s steps(2,end)}
 .more[open] summary::before{transform:rotate(45deg)}
 .more summary:hover{color:var(--cu)}
-.more .ds-table{padding-bottom:10px}
-.ds--compact .ds-media .shot{max-width:420px}
-.ds--compact .ds-links .links{gap:2px 26px}
+.more .ds-table{padding-bottom:6px}
+.more .ds-media{padding:10px 0 4px}
 @media (min-width:900px){
-  .ds--compact .ds-in{grid-template-columns:minmax(0,7fr) minmax(0,4fr);grid-template-areas:"head media" "text media" "links media" "more media";align-items:start;align-content:start}
-  .ds--compact .ds-media{grid-row:1/6}
-  .ds--compact .ds-media .shot{max-width:none}
+  .rest-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rest-grid .ds:nth-child(odd){border-right:1px solid var(--hair)}
+  .rest-grid .ds:nth-last-child(-n+2){border-bottom:0}
 }
-@media (max-width:720px){
-  .ds--compact .ds-head{flex-direction:row;align-items:center}
-  .ds--compact .ds-media .shot{max-width:none}
-}
-@media (min-width:900px){
-  /* ohne Bild: Kennwerte rechts neben dem Text (sheet.js klappt sie am Desktop auf) */
-  .ds--nomedia .ds-in{grid-template-columns:minmax(0,6fr) minmax(0,5fr);grid-template-rows:auto auto 1fr;grid-template-areas:"head head" "text more" "links more"}
-  .ds--nomedia .more{grid-row:2/4;border-top:0}
-}
+@media (max-width:899px){.rest-grid .ds:last-child{border-bottom:0}}
+@media (max-width:720px){.ds--compact .ds-head{flex-direction:row;align-items:center}}
+
+/* ---------- Hauptprojekte: die Werte tragen den Abschnitt ---------- */
+.ds:not(.ds--compact) .kv td.v{font-size:1.2rem;line-height:1.15}
+.ds:not(.ds--compact) .kv .c-typ .q{font-size:.875rem}
+@media (min-width:761px){.ds:not(.ds--compact) .kv tbody th,.ds:not(.ds--compact) .kv tbody td{padding-top:13px;padding-bottom:13px;vertical-align:baseline}}
+@media (max-width:760px){.ds:not(.ds--compact) .kv:not(.rev):not(.pins-t) .c-typ{font-size:1.25rem}}
 
 /* ---------- Sektionen Arbeitsweise / Gerade / Kontakt ---------- */
 .sheet{border-bottom:1px solid var(--hair);outline:0}
@@ -299,26 +303,6 @@ h1{font:800 clamp(2.3rem,11.2vw,4.6rem)/.98 var(--sans);font-stretch:125%;letter
 .path li:nth-child(4){border-style:dashed}
 .path h3{font:800 1.25rem/1.1 var(--sans);font-stretch:125%;margin-bottom:8px}
 .path p{font-size:.9375rem;line-height:1.5;color:var(--ink2)}
-.timing-fig{margin:clamp(28px,4vw,48px) 0 0}
-.timing-fig figcaption{margin-top:10px;font:400 .875rem/1.5 var(--sans);color:var(--ink2)}
-.scrollx{overflow-x:auto;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
-.scrollx:focus-visible{outline-offset:-3px}
-.timing{display:block;width:100%;height:auto}
-.timing.tm-d{min-width:640px}
-.timing.tm-m{display:none}
-.timing .grid{stroke:var(--hair2);stroke-width:1}
-.timing .base{stroke:var(--hair);stroke-width:1}
-.timing .sig{fill:none;stroke:var(--cu);stroke-width:2;stroke-linejoin:miter}
-.timing .sig.dash{stroke-dasharray:8 5}
-.timing .dep{fill:none;stroke:var(--ink2);stroke-width:1;stroke-dasharray:3 3}
-.timing .arrow{fill:none;stroke:var(--ink2);stroke-width:1}
-.timing text{font:500 12px var(--mono);fill:var(--ink2)}
-.timing .lab{fill:var(--ink);font-weight:600;font-size:12px}
-.timing .ann{fill:var(--ink);font-size:12px}
-.timing .ax{font-size:12px}
-.timing .ax.end{text-anchor:end}
-.timing .ax.mid{text-anchor:middle}
-
 .now-grid{display:grid;gap:clamp(30px,4vw,56px);grid-template-columns:minmax(0,1fr)}
 @media (min-width:1000px){.now-grid{grid-template-columns:minmax(0,7fr) minmax(0,4fr);column-gap:var(--pad)}}
 .rev td,.rev th{vertical-align:top}
@@ -330,12 +314,8 @@ h1{font:800 clamp(2.3rem,11.2vw,4.6rem)/.98 var(--sans);font-stretch:125%;letter
 a.pinref:hover{background:var(--cu);color:var(--g)}
 .pinrefs{display:inline-flex;gap:6px}
 .now-side h3{font:800 1.3rem/1.15 var(--sans);font-stretch:125%;margin-bottom:14px}
-.rules>div{padding:12px 0;border-top:1px solid var(--hair)}
-.rules dt{font-weight:700}
-.rules dd{margin-top:2px;color:var(--ink2);font-size:.9375rem;line-height:1.5}
-.notes{margin-top:clamp(26px,3.5vw,44px)}
 .notes li{padding:10px 0;border-top:1px solid var(--hair)}
-.notes .lnk{min-height:32px;font-weight:600}
+.notes .lnk{display:inline-flex;align-items:center;min-height:32px;font-weight:600}
 .notes small{display:block;color:var(--ink2);font-size:.8125rem}
 
 .order{display:grid;gap:clamp(18px,3vw,36px);grid-template-columns:auto minmax(0,1fr);align-items:start}
@@ -370,10 +350,6 @@ a.pinref:hover{background:var(--cu);color:var(--g)}
 .js .ds-in.cut .pinlead{animation:pin-flash .56s steps(1,end) both}
 
 /* ---------- Layout-Feinschliff ---------- */
-@media (max-width:1100px){
-  .tb-meta span:nth-child(n+2){display:none}
-  .tb-meta span+span::before{display:none}
-}
 @media (max-width:1000px){
   .tb-nav{display:none}
   .path{grid-template-columns:1fr;gap:34px}
@@ -383,7 +359,6 @@ a.pinref:hover{background:var(--cu);color:var(--g)}
 }
 @media (max-width:720px){
   .tb-meta{display:none}
-  .tb-read{display:none}
   .clk{margin:0 8px;min-width:50px}
   .kbtn kbd{display:none}
   .kbtn-t{display:inline}
@@ -434,14 +409,6 @@ button,input{color:inherit}
   .rev td:last-child{grid-column:1/-1;grid-row:2}
 }
 
-.timing .ann.end{text-anchor:end}
-.timing .ann.mid{text-anchor:middle}
-@media (max-width:720px){
-  .timing.tm-d{display:none}
-  .timing.tm-m{display:block;width:350px;min-width:350px;max-width:none}
-  /* am Handy doppeln die Zeitdiagramme nur Liste und Tabelle darüber: weglassen, die Seite wird kürzer */
-  .timing-fig{display:none}
-}
 
 /* Zähler: der echte Wert steht im DOM; während des Hochzählens liegt eine Zahl als Pseudo-Element darüber */
 .counting{position:relative;-webkit-text-fill-color:transparent}

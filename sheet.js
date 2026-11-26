@@ -1,5 +1,5 @@
 /* SP-17 Datenblatt: gemeinsamer Takt, Taktwelle, ballistische Zähler, Pin-Ereignisse,
-   Scroll-Spy (Seite/Pin im Kopfband), Raster-Schnitte, Befehlspalette. Ohne Bibliotheken. */
+   Scroll-Spy (aktueller Abschnitt und Pin), Raster-Schnitte, Befehlspalette. Ohne Bibliotheken. */
 (function () {
   "use strict";
 
@@ -82,11 +82,10 @@
     if (!wOn) { wOn = true; SPClock.on(waveTick); }
   }
 
-  /* ---------- Scroll-Spy: Seite x/y und Pin im Kopfband ---------- */
-  var pages = $$("[data-page]"), rdPage = $("#rd-page"), rdPin = $("#rd-pin");
+  /* ---------- Scroll-Spy: aktueller Abschnitt (.is-on) und aktueller Pin (sp:here, Pin am Chip) ---------- */
+  var pages = $$("[data-page]");
   var curPage = 0, curPin = "";
   var pinEls = $$(".pin");
-  function pad2(n) { return (n < 10 ? "0" : "") + n; }
   function spy() {
     var y = bandH() + innerHeight * 0.35, hit = pages[0];
     for (var i = 0; i < pages.length; i++) { if (pages[i].getBoundingClientRect().top <= y) hit = pages[i]; else break; }
@@ -94,11 +93,11 @@
     if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) hit = pages[pages.length - 1];
     var pg = +hit.getAttribute("data-page"), pin = hit.getAttribute("data-pin") || "";
     if (pg !== curPage) {
-      curPage = pg; if (rdPage) rdPage.textContent = pad2(pg);
+      curPage = pg;
       pages.forEach(function (p) { p.classList.toggle("is-on", p === hit); });
     }
     if (pin !== curPin) {
-      curPin = pin; if (rdPin) rdPin.textContent = pin ? pad2(+pin) : "—";
+      curPin = pin;
       pinEls.forEach(function (a) {
         var on = a.getAttribute("data-pin") === pin;
         a.classList.toggle("is-here", on);
@@ -178,15 +177,6 @@
     }, { rootMargin: "0px 0px 12% 0px" });
     els.forEach(function (el) { io.observe(el); });
     });
-  })();
-
-  /* ---------- Kompakte Projekte: am Desktop Kennwerte gleich offen, am Handy zugeklappt ---------- */
-  (function () {
-    if (!window.matchMedia) return;
-    var mq = matchMedia("(min-width: 900px)"), more = $$(".ds--compact .more");
-    function apply() { more.forEach(function (d) { d.open = mq.matches; }); }
-    apply();
-    if (mq.addEventListener) mq.addEventListener("change", apply);
   })();
 
   /* ---------- Pins: Hover/Fokus/Klick -> sp:pin ---------- */
