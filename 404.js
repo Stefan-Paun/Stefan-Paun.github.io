@@ -3,6 +3,7 @@ document.getElementById("addr").textContent = location.pathname;
 if (/^\/en(\/|$)/.test(location.pathname)) {
   document.documentElement.lang = "en";
   document.title = "404 · Pin not connected · Stefan Paun";
+  document.querySelector('meta[name="description"]').content = "This address does not exist on stefanpaun.page. Go to the home page with all of Stefan Paun's projects.";
   for (const el of document.querySelectorAll("[data-en]")) {
     if (el.hasAttribute("aria-label")) el.setAttribute("aria-label", el.dataset.en);
     else el.textContent = el.dataset.en;

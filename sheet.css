@@ -416,3 +416,38 @@ button,input{color:inherit}
 .kv .c-typ .q{font:500 .8125rem/1 var(--sans);color:var(--ink2);margin-right:.3em}
 /* ohne JavaScript keine Suche (ersetzt das frühere <noscript><style>, CSP ohne unsafe-inline) */
 html:not(.js) .kbtn{display:none}
+
+/* ---------- Druck: weißes Blatt, dunkle Schrift, ein Steckbrief statt Bühne ----------
+   Ohne Kopfband, Chip, Suche, Zeitdiagramme, Screenshots und die aufklappbaren Kennwerte der
+   kleinen Projekte (die drei Hauptprojekte behalten ihre Tabelle); Links mit Adresse. */
+@media print{
+  :root{--g:#fff;--g2:#fff;--g3:#fff;--ink:#111;--ink2:#444;--hair:#999;--hair2:#ccc;--pad:0px;color-scheme:light}
+  @page{size:A4;margin:14mm 14mm 16mm}
+  html,body{background:#fff;color:#111;font-size:10pt;line-height:1.45}
+  .skip,.topband,.chip,.palette,.kbtn,.live,.ds-media,.timing-fig,.more{display:none!important}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  [data-wipe],.cut{clip-path:none!important}
+  .hero{display:block;min-height:0;padding:0 0 14pt;border-bottom:1pt solid #111}
+  h1{font-size:28pt}
+  .leit{max-width:none;font-size:14pt}
+  /* Bänder ohne Kupferfläche: Hintergründe druckt der Browser oft nicht, die Schrift bliebe weiß */
+  .band{background:none;color:#111;border-top:2pt solid #111;border-bottom:1pt solid #111;break-after:avoid}
+  .band-in{min-height:0;padding:0}
+  .band .ln line{stroke:#111}
+  .pintab{display:inline;min-height:0;padding:0;background:none;color:#111;clip-path:none;text-decoration:underline}
+  .pinlead,.pin-no,.pinref,.ds.is-on .pinlead,.pins-t tr.is-main .pinref{background:none!important;color:#111!important;border-color:#111!important}
+  .ds-in,.sheet-in{display:block;padding:12pt 0}
+  .ds-in>*+*{margin-top:8pt}
+  .ds-head{break-after:avoid}
+  .ds h3,.ds--lead h3{font-size:16pt}
+  .ds-text,.ds-links,.sheet-lede,.order-text{max-width:none}
+  .kv tr,.path li,.rules>div,.notes li,.features li,.shot{break-inside:avoid}
+  .path{display:block}
+  .path li{margin:0 0 6pt;padding:6pt 10pt;background:none;border-color:#111}
+  .path li:not(:last-child)::after,.path li:not(:last-child)::before{display:none}
+  .avatar{background:none}
+  .lnk,.kv .c-cond a,.pins-t .o-name a{color:#111}
+  a[href^="http"]::after{content:" (" attr(href) ")";font:400 8pt/1.3 var(--mono);color:#444;overflow-wrap:anywhere}
+  .pins-t a[href^="http"]::after{content:none} /* die Adressen stehen in den Projekt-Abschnitten */
+  .foot{padding:12pt 0 0;border-top:1pt solid #111}
+}
